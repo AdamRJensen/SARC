@@ -132,8 +132,8 @@ Alias Lufft_WS601_data(4) = Lufft_WS601_precipitation_type
 Alias Lufft_WS601_data(5) = Lufft_WS601_air_temperature_degC : Units Lufft_WS601_air_temperature_degC = degC
 Alias Lufft_WS601_data(6) = Lufft_WS601_wind_gust_ms : Units Lufft_WS601_wind_gust_ms = m/s
 Alias Lufft_WS601_data(7) = Lufft_WS601_wind_speed_ms : Units Lufft_WS601_wind_speed_ms = m/s
-Alias Lufft_WS601_data(8) = Lufft_WS601_precipitation_absolute_mm : Units Lufft_WS601_precipitation_absolute_mm = mm
-Alias Lufft_WS601_data(9) = Lufft_WS601_precipitation_difference_mm : Units Lufft_WS601_precipitation_difference_mm = mm
+Alias Lufft_WS601_data(8) = Lufft_WS601_precipitation_cumulative_mm : Units Lufft_WS601_precipitation_cumulative_mm = mm
+Alias Lufft_WS601_data(9) = Lufft_WS601_precipitation_mm : Units Lufft_WS601_precipitation_mm = mm
 Alias Lufft_WS601_data(10) = Lufft_WS601_precipitation_intensity_mmh : Units Lufft_WS601_precipitation_intensity_mmh = mm/h
 Alias Lufft_WS601_data(11) = Lufft_WS601_humidity_relative_per : Units Lufft_WS601_humidity_relative_per = %
 Alias Lufft_WS601_data(12) = Lufft_WS601_air_pressure_relative_hPa : Units Lufft_WS601_air_pressure_relative_hPa = hPa
@@ -166,7 +166,7 @@ Public CMP11_128758_DHI_mV As Float: Units CMP11_128758_DHI_mV = mV
 Const MODBUS_TIMEOUT = 3 ' [multiple of 0.01 seconds]
 Const MODBUS_RETRIES = 1 ' number of tries for each modbus request
 
-'Set sclae factor
+'Set scale factor
 Const SCALE_CODE = 1 ' Scale factor code for Kipp & Zonen smart instruments
 Public Scale_code_initial(7) As Long
 Dim Scale_code_result_code(7) As Float
@@ -225,8 +225,11 @@ EndSub
 'Declare variables for creating a timestamp for file saving
 Dim TStamp_format_4 As String * 32
 Dim TStamp_format_6 As String * 32
-Public TStamp As String * 32 : Alias TStamp = Time_stamp
+Public TStamp As String * 32 : Alias TStamp = Time
 'Public Primary_slow_filename As String * 64
+
+'Declare other variables
+Public CR1000X_primary_temperature_degC As Float: Units CR1000X_primary_temperature_degC = degC
 
 'Save data to Table
 DataTable(Fast_table_primary, 1, -1)
@@ -282,6 +285,7 @@ DataTable(Slow_table_primary, 1, - 1)
   Sample(1,Lufft_WS601_data(13),IEEE4)
   Sample(1,Solys2_140027_azimuth_deg,IEEE4)
   Sample(1,Solys2_140027_tilt_deg,IEEE4)
+  Sample(1,CR1000X_primary_temperature_degC,IEEE4)
 EndTable
 
 
@@ -455,6 +459,8 @@ BeginProg
   SlowSequence
 
     Scan(10,Sec,2,0)
+
+    PanelTemp(CR1000X_primary_temperature_degC,50)
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'Lufft WS601 (serial number: 29307241115251)
