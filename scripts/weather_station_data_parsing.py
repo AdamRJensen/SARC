@@ -6,11 +6,7 @@ import glob
 import pvlib
 import os
 
-# temperature air
-# Add calculation of CHP1
-# Calculate DNI from Hukseflux & SPN1 & decomposition models
-# Correct LWD calculation
-# Add date specific import
+# Calculate net radiation for CGR4
 
 # %%
 
@@ -90,8 +86,9 @@ def get_file_date(file):
 
 
 def select_files_from_period(files, start, end):
-    start = pd.Timestamp(start)
-    end = pd.Timestamp(end)
+    offset = pd.Timedelta(days=1)  # due to file naming convention
+    start = pd.Timestamp(start) + offset
+    end = pd.Timestamp(end) + offset
     files = [f for f in files if (get_file_date(f) >= start) & (get_file_date(f) <= end)]
     return files
 
@@ -99,7 +96,7 @@ def select_files_from_period(files, start, end):
 # %%
 path = 'C:/Users/arajen/Downloads/station_data/'
 
-start = '2025-05-03'
+start = '2025-04-15'
 end = '2025-05-05'
 
 na_values = [
@@ -140,10 +137,6 @@ df = asfreq_with_report(df_raw, freq='1s', round_value='1s', report=True)
 df = df.resample('1min').mean()
 
 # %%
-
-df_raw['SHP1_185163_DNI_Wm2'].dropna().index.diff().value_counts()
-
-# %%
 df['StarSchenk_7773_GHI_Wm2'] = 83.8 * df['StarSchenk_7773_GHI_mV']
 df['Licor_PY116375_GHI_Wm2'] = 100 * df['Licor_PY116375_GHI_mV']
 df['CMP11_128758_DHI_Wm2'] = df['CMP11_128758_DHI_mV'] / (9.89 * 10**-3)
@@ -180,6 +173,11 @@ df['Calc_from-GHI-DHI_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['SMP22_200057_GHI_Wm2'], dhi=df['SMP22_200060_DHI_Wm2'])['dni']
 df['SPN1_A270_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['SPN1_A270_GHI_Wm2'], dhi=df['SPN1_A270_DHI_Wm2'])['dni']
+df['SR_Calc-SR300-SRD100_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
+    solpos['apparent_zenith'], ghi=df['SR300_45389_GHI_Wm2'], dhi=df['SRD100_14401_DHI_Wm2'])['dni']
+
+df['SR_Calc-MS80SHplus_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
+    solpos['apparent_zenith'], ghi=df['MS80SHplus_1209_GHI_Wm2'], dhi=df['MS80SHplus_1209_DHI_Wm2'])['dni']
 
 
 # %%
@@ -239,7 +237,7 @@ for m in meta['parameter'].unique():
 # %% Plots for each sensor
 
 for s in meta['sensor'].unique():
-    axes = df[meta[meta['sensor'] == s].index].iloc[-60*20:].plot(sharex=True, subplots=True, figsize=(8, 8))
+    axes = df[meta[meta['sensor'] == s].index].plot(sharex=True, subplots=True, figsize=(8, 8))
     axes[0].set_title(s)
     plt.show()
 
