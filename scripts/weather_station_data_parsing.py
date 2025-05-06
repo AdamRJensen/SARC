@@ -6,8 +6,6 @@ import glob
 import pvlib
 import os
 
-# Calculate net radiation for CGR4
-
 # %%
 
 
@@ -142,6 +140,7 @@ df['Licor_PY116375_GHI_Wm2'] = 100 * df['Licor_PY116375_GHI_mV']
 df['CMP11_128758_DHI_Wm2'] = df['CMP11_128758_DHI_mV'] / (9.89 * 10**-3)
 df['CMP11_128767_GHI_Wm2'] = df['CMP11_128767_GHI_mV'] / (8.02 * 10**-3)
 df['CHP1_140049_DNI_Wm2'] = df['CHP1_140049_DNI_mV'] / (7.87 * 10**-3)
+df['CGR4_170223_LWN_Wm2'] = df['CGR4_170223_LWD_mV'] / (8.95 * 10**-3)
 df['CGR4_170223_LWD_Wm2'] = (
     df['CGR4_170223_LWD_mV'] / (8.95 * 10**-3)
     + 5.67*10**-8 * (df['CGR4_170223_temperature_degC'] + 273.15)**4)
@@ -176,7 +175,7 @@ df['SPN1_A270_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
 df['SR_Calc-SR300-SRD100_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['SR300_45389_GHI_Wm2'], dhi=df['SRD100_14401_DHI_Wm2'])['dni']
 
-df['SR_Calc-MS80SHplus_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
+df['MS80SHplus_1209_DNI_calc_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['MS80SHplus_1209_GHI_Wm2'], dhi=df['MS80SHplus_1209_DHI_Wm2'])['dni']
 
 
