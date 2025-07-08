@@ -1,4 +1,4 @@
-'CR1000Xe Series Datalogger
+  'CR1000Xe Series Datalogger
 
 'Kipp & Zonen register no.
 'Register 4: Scale factor (s16)
@@ -18,12 +18,12 @@
 'Register 6: Sensor temperature (s16)
 'Register 8: Scale factor irradiance (u16)
 'Register 9: Scale factor temperature (u16)
-'Register 10: Sensor voltage putput (s32)
+'Register 10: Sensor voltage output (s32)
 'Register 98: RH (u16)
 'Register 137: Pressure (u16)
 'Register 194: Tilt (u16)
 'Register 195: Average tilt (u16) - only for DR30
-'REgister 196: Fan speed (u16) - only for SR30 and SR300
+'Register 196: Fan speed (u16) - only for SR30 and SR300
 'Register 198: Heater current (u16)
 
 'SR300 register no.
@@ -35,6 +35,21 @@
 'Register 1410 (0x0582) - Heater current (i16) [mA]
 'Register 1536 (0x0600) - Tilt (float) [deg]
 'Register 1538 (0x0602) - Rotation (float) [deg]
+'Register 1664 (0x0680) - Internal relative humidity (float) [%]
+
+'SRD100 register no.
+'Register 512 (0x0200) - Temperature compensated irradiance (float) [W/m^2]
+'Register 514 (0x0202) - Instrument temperature (float) [C]
+'Register 1056 (0x0420) - Temperature compensated diffuse irradiance detector 1.1 (float) [W/m^2]
+'Register 1058 (0x0422) - Temperature compensated diffuse irradiance detector 1.2 (float) [W/m^2]
+'Register 1060 (0x0424) - Temperature compensated diffuse irradiance detector 1.3 (float) [W/m^2]
+'Register 1062 (0x0426) - Temperature compensated diffuse irradiance detector 2.1 (float) [W/m^2]
+'Register 1064 (0x0428) - Temperature compensated diffuse irradiance detector 2.2 (float) [W/m^2]
+'Register 1066 (0x042a) - Temperature compensated diffuse irradiance detector 2.3 (float) [W/m^2]
+'Register 1068 (0x042c) - Temperature compensated diffuse irradiance detector 3.1 (float) [W/m^2]
+'Register 1070 (0x042e) - Temperature compensated diffuse irradiance detector 3.2 (float) [W/m^2]
+'Register 1072 (0x0430) - Temperature compensated diffuse irradiance detector 3.3 (float) [W/m^2]
+'Register 1410 (0x0582) - Heater current (i16) [mA]
 'Register 1664 (0x0680) - Internal relative humidity (float) [%]
 
 'Apogee register no.
@@ -50,6 +65,33 @@
 'Register 18: Raw solar irradiance  [W/m^2]
 'Register 20: Sensor output voltage [mV]
 'Register 24: sensor humidity [%]
+'Register 28: Alerts for abnormal dome heating [boolean] - 0:normal, 1:alert
+
+'SPN1 register no.
+'Register 8 - 15: Calibrated detector measurements [W/m^2]
+'Register 16: Global Horizontal Irradiance [W/m^2]
+'Register 17: Diffuse Horizontal irradiance [W/m^2]
+'Register 18: Sun [boolean]
+'Register 27: Heater rate
+'Register 45: Relatve humidity [%]
+'Register 46: Unit temperature [C]
+
+'Spectrafy register no.
+'Register 13: Current azimuth position of the band [deg]
+'Register 14: Internal temperature [degC]
+'Register 15: Internal humidity [%]
+'Register 16: Voltage from GHI channel, base [mV]
+'Register 17: Voltage from GHI channel, fraction [mV]
+'Register 18: Voltage from DHI channel, base [mV]
+'Register 19: Voltage from DHI channel, fraction [mV]
+'Register 20: Device tilt [deg]
+'Register 21: GHI value, base [W/m^2]
+'Register 22: GHI value, fraction [W/m^2]
+'Register 23: DHI value, base [W/m^2]
+'Register 24: DHI value, fraction [W/m^2]
+'Register 25: DNI value, base [W/m^2]
+'Register 26: DNI value, fraction [W/m^2]
+'Register 27: Either 0 or 1 (DNI  > 120 W/m2) 
 
 'FTP server specs
 Public FTPResultCodeFast
@@ -59,26 +101,26 @@ Public FTPResultCodeSlow
 
 
 'PH1 - SN: 190116
-Const PH1_190116_modbus_addr = 24
-Dim PH1_190116_result_code As Long
-Dim PH1_190116_scale_factor As Float
-Dim PH1_190116_raw_data(5) As Long
-Public PH1_190116_data(4) As Float
-Alias PH1_190116_data(1) = PH1_190116_DNI_Wm2: Units PH1_190116_DNI_Wm2 = W/m^2
-Alias PH1_190116_data(2) = PH1_190116_DNI_raw_Wm2: Units PH1_190116_DNI_raw_Wm2 = W/m^2
-Alias PH1_190116_data(3) = PH1_190116_DNI_std_Wm2: Units PH1_190116_DNI_std_Wm2 = W/m^2
-Alias PH1_190116_data(4) = PH1_190116_temperature_degC: Units PH1_190116_temperature_degC = degC
+'Const PH1_190116_modbus_addr = 24
+'Dim PH1_190116_result_code As Long
+'Dim PH1_190116_scale_factor As Float
+'Dim PH1_190116_raw_data(5) As Long
+'Public PH1_190116_data(4) As Float = NAN
+'Alias PH1_190116_data(1) = PH1_190116_DNI_Wm2: Units PH1_190116_DNI_Wm2 = W/m^2
+'Alias PH1_190116_data(2) = PH1_190116_DNI_raw_Wm2: Units PH1_190116_DNI_raw_Wm2 = W/m^2
+'Alias PH1_190116_data(3) = PH1_190116_DNI_std_Wm2: Units PH1_190116_DNI_std_Wm2 = W/m^2
+'Alias PH1_190116_data(4) = PH1_190116_temperature_degC: Units PH1_190116_temperature_degC = degC
 
 'PR1 - SN: 190116
-Const PR1_190116_modbus_addr = 19
-Dim PR1_190116_result_code As Long
-Dim PR1_190116_scale_factor As Float
-Dim PR1_190116_raw_data(5) As Long
-Public PR1_190116_data(4) As Float
-Alias PR1_190116_data(1) = PR1_190116_DHI_Wm2: Units PR1_190116_DHI_Wm2 = W/m^2
-Alias PR1_190116_data(2) = PR1_190116_DHI_raw_Wm2: Units PR1_190116_DHI_raw_Wm2 = W/m^2
-Alias PR1_190116_data(3) = PR1_190116_DHI_std_Wm2: Units PR1_190116_DHI_std_Wm2 = W/m^2
-Alias PR1_190116_data(4) = PR1_190116_temperature_degC: Units PR1_190116_temperature_degC = degC
+'Const PR1_190116_modbus_addr = 19
+'Dim PR1_190116_result_code As Long
+'Dim PR1_190116_scale_factor As Float
+'Dim PR1_190116_raw_data(5) As Long
+'Public PR1_190116_data(4) As Float = NAN
+'Alias PR1_190116_data(1) = PR1_190116_DHI_Wm2: Units PR1_190116_DHI_Wm2 = W/m^2
+'Alias PR1_190116_data(2) = PR1_190116_DHI_raw_Wm2: Units PR1_190116_DHI_raw_Wm2 = W/m^2
+'Alias PR1_190116_data(3) = PR1_190116_DHI_std_Wm2: Units PR1_190116_DHI_std_Wm2 = W/m^2
+'Alias PR1_190116_data(4) = PR1_190116_temperature_degC: Units PR1_190116_temperature_degC = degC
 
 'DR30 - SN: 65086
 Const DR30_65086_modbus_addr = 22
@@ -86,7 +128,7 @@ Dim DR30_65086_result_code As Long
 'Public DR30_65086_irrad_scale_factor As Long
 'Public DR30_65086_temp_scale_factor As Long
 Dim DR30_65086_raw_data(2) As Long
-Public DR30_65086_data(7) As Float
+Public DR30_65086_data(7) As Float = NAN
 Alias DR30_65086_data(1) = DR30_65086_DNI_Wm2: Units DR30_65086_DNI_Wm2 = W/m^2
 Alias DR30_65086_data(2) = DR30_65086_DNI_raw_Wm2: Units DR30_65086_DNI_raw_Wm2 = W/m^2
 Alias DR30_65086_data(3) = DR30_65086_DNI_mV : Units DR30_65086_DNI_mV = mV
@@ -99,7 +141,7 @@ Alias DR30_65086_data(7) = DR30_65086_heater_current_mA : Units DR30_65086_heate
 Const SR30_23485_modbus_addr = 17
 Dim SR30_23485_result_code As Long
 Dim SR30_23485_raw_data(2) As Long
-Public SR30_23485_data(8) As Float
+Public SR30_23485_data(8) As Float = NAN
 Alias SR30_23485_data(1) = SR30_23485_GHI_Wm2: Units SR30_23485_GHI_Wm2 = W/m^2
 Alias SR30_23485_data(2) = SR30_23485_GHI_raw_Wm2: Units SR30_23485_GHI_raw_Wm2 = W/m^2
 Alias SR30_23485_data(3) = SR30_23485_GHI_mV : Units SR30_23485_GHI_mV = mV
@@ -112,9 +154,9 @@ Alias SR30_23485_data(8) = SR30_23485_heater_current_mA : Units SR30_23485_heate
 'SR300 - SN: 45389
 Const SR300_45389_modbus_addr = 21
 Dim SR300_45389_result_code
-Dim SR300_45389_raw_data_int As Long
+Dim SR300_45389_raw_data_int(1) As Long
 Dim SR300_45389_raw_data_float(3) As Float
-Public SR300_45389_data(9) As Float
+Public SR300_45389_data(9) As Float = NAN
 Alias SR300_45389_data(1) = SR300_45389_GHI_Wm2 : Units SR300_45389_GHI_Wm2 = W/m^2
 Alias SR300_45389_data(2) = SR300_45389_temperature_degC : Units SR300_45389_temperature_degC = degC
 Alias SR300_45389_data(3) = SR300_45389_GHI_raw_Wm2 : Units SR300_45389_GHI_raw_Wm2 = W/m^2
@@ -128,13 +170,22 @@ Alias SR300_45389_data(9) = SR300_45389_heater_current_mA : Units SR300_45389_he
 'SRD100 - SN: 14401
 Const SRD100_14401_modbus_addr = 26
 Dim SRD100_14401_result_code
-Dim SRD100_14401_raw_data_float(2) As Float
-Dim SRD100_14401_raw_data_int As Long
-Public SRD100_14401_data(4) As Float
+Dim SRD100_14401_raw_data_float(9) As Float
+Dim SRD100_14401_raw_data_int(1) As Long
+Public SRD100_14401_data(13) As Float = NAN
 Alias SRD100_14401_data(1) = SRD100_14401_DHI_Wm2 : Units SRD100_14401_DHI_Wm2 = W/m^2
 Alias SRD100_14401_data(2) = SRD100_14401_temperature_degC : Units SRD100_14401_temperature_degC = degC
-Alias SRD100_14401_data(3) = SRD100_14401_rh_per : Units SRD100_14401_rh_per = per
-Alias SRD100_14401_data(4) = SRD100_14401_heater_current_mA : Units SRD100_14401_heater_current_mA = mA
+Alias SRD100_14401_data(3) = SRD100_14401_thermopile_1x1_Wm2 : Units SRD100_14401_thermopile_1x1_Wm2 = W/m^2 
+Alias SRD100_14401_data(4) = SRD100_14401_thermopile_1x2_Wm2 : Units SRD100_14401_thermopile_1x2_Wm2 = W/m^2 
+Alias SRD100_14401_data(5) = SRD100_14401_thermopile_1x3_Wm2 : Units SRD100_14401_thermopile_1x3_Wm2 = W/m^2 
+Alias SRD100_14401_data(6) = SRD100_14401_thermopile_2x1_Wm2 : Units SRD100_14401_thermopile_2x1_Wm2 = W/m^2 
+Alias SRD100_14401_data(7) = SRD100_14401_thermopile_2x2_Wm2 : Units SRD100_14401_thermopile_2x2_Wm2 = W/m^2 
+Alias SRD100_14401_data(8) = SRD100_14401_thermopile_2x3_Wm2 : Units SRD100_14401_thermopile_2x3_Wm2 = W/m^2 
+Alias SRD100_14401_data(9) = SRD100_14401_thermopile_3x1_Wm2 : Units SRD100_14401_thermopile_3x1_Wm2 = W/m^2 
+Alias SRD100_14401_data(10) = SRD100_14401_thermopile_3x2_Wm2 : Units SRD100_14401_thermopile_3x2_Wm2 = W/m^2 
+Alias SRD100_14401_data(11) = SRD100_14401_thermopile_3x3_Wm2 : Units SRD100_14401_thermopile_3x3_Wm2 = W/m^2 
+Alias SRD100_14401_data(12) = SRD100_14401_rh_per : Units SRD100_14401_rh_per = per
+Alias SRD100_14401_data(13) = SRD100_14401_heater_current_mA : Units SRD100_14401_heater_current_mA = mA
 
 'SP-522 - SN: 1265
 'TODO - check the units of the outputs!! Manual mentions the irradiance is in watts and does not give unit for heater
@@ -156,12 +207,11 @@ Alias SP422_1843_data(1) = SP422_1843_GHI_Wm2 : Units SP422_1843_GHI_Wm2 = W/m^2
 Alias SP422_1843_data(2) = SP422_1843_GHI_mV  : Units SP422_1843_GHI_mV  = mV
 Alias SP422_1843_data(3) = SP422_1843_heater_state
 
-
 'EKO MS80SH - SN: S24053407
 Const MS80SH_S24053407_modbus_addr = 23
 Public MS80SH_S24053407_result_code
-Dim MS80SH_S24053407_raw_data(12) As Float
-Public MS80SH_S24053407_data(12) As Float
+Dim MS80SH_S24053407_raw_data(14) As Float
+Public MS80SH_S24053407_data(14) As Float = NAN
 Alias MS80SH_S24053407_data(1) = MS80SH_S24053407_GHI_Wm2 : Units MS80SH_S24053407_GHI_Wm2 = W/m^2
 Alias MS80SH_S24053407_data(4) = MS80SH_S24053407_temperature_degC : Units MS80SH_S24053407_temperature_degC = degC
 Alias MS80SH_S24053407_data(7) = MS80SH_S24053407_tilt_x_deg : Units MS80SH_S24053407_tilt_x_deg = deg
@@ -169,27 +219,69 @@ Alias MS80SH_S24053407_data(8) = MS80SH_S24053407_tilt_y_deg : Units MS80SH_S240
 Alias MS80SH_S24053407_data(9) = MS80SH_S24053407_GHI_raw_Wm2 : Units MS80SH_S24053407_GHI_raw_Wm2 = W/m^2
 Alias MS80SH_S24053407_data(10) = MS80SH_S24053407_GHI_mV : Units MS80SH_S24053407_GHI_mV = mV
 Alias MS80SH_S24053407_data(12) = MS80SH_S24053407_rh_per : Units MS80SH_S24053407_rh_per = per
+Alias MS80SH_S24053407_data(14) = MS80SH_S24053407_heater_alert
 
 'EKO MS80SHplus - SN: 1209
 Const MS80SHplus_1209_modbus_addr = 28
 Public MS80SHplus_1209_result_code
-Dim MS80SHplus_1209_raw_data(10) As Long
+Dim MS80SHplus_1209_raw_data(14) As Long
 Dim MS80SHplus_1209_raw_data_unsigned As Long
-Public MS80SHplus_1209_data(10) As Float = NAN
+Public MS80SHplus_1209_data(12) As Float = NAN
 Alias MS80SHplus_1209_data(1) = MS80SHplus_1209_GHI_Wm2 : Units MS80SHplus_1209_GHI_Wm2 = W/m^2
+Alias MS80SHplus_1209_data(2) = MS80SHplus_1209_DHI_uncorrected_Wm2 : Units MS80SHplus_1209_DHI_uncorrected_Wm2 = W/m^2
+Alias MS80SHplus_1209_data(3) = MS80SHplus_1209_DNI_uncorrected_Wm2 : Units MS80SHplus_1209_DNI_uncorrected_Wm2 = W/m^2
 Alias MS80SHplus_1209_data(4) = MS80SHplus_1209_DHI_Wm2 : Units MS80SHplus_1209_DHI_Wm2 = W/m^2
 Alias MS80SHplus_1209_data(5) = MS80SHplus_1209_DNI_Wm2 : Units MS80SHplus_1209_DNI_Wm2 = W/m^2
-Alias MS80SHplus_1209_data(6) = MS80SHplus_1209_GHI_reading_Wm2 : Units MS80SHplus_1209_GHI_reading_Wm2 = W/m^2
-Alias MS80SHplus_1209_data(7) = MS80SHplus_1209_temperature_degC : Units MS80SHplus_1209_temperature_degC = degC
-Alias MS80SHplus_1209_data(8) = MS80SHplus_1209_tilt_x_deg : Units MS80SHplus_1209_tilt_x_deg = deg
-Alias MS80SHplus_1209_data(9) = MS80SHplus_1209_tilt_y_deg : Units MS80SHplus_1209_tilt_y_deg = deg
-Alias MS80SHplus_1209_data(10) = MS80SHplus_1209_rh_per : Units MS80SHplus_1209_rh_per = per
+Alias MS80SHplus_1209_data(6) = MS80SHplus_1209_band_offset_neg_Wm2 : Units MS80SHplus_1209_band_offset_neg_Wm2 = W/m^2
+Alias MS80SHplus_1209_data(7) = MS80SHplus_1209_band_offset_pos_Wm2 : Units MS80SHplus_1209_band_offset_pos_Wm2 = W/m^2
+Alias MS80SHplus_1209_data(8) = MS80SHplus_1209_GHI_reading_Wm2 : Units MS80SHplus_1209_GHI_reading_Wm2 = W/m^2
+Alias MS80SHplus_1209_data(9) = MS80SHplus_1209_temperature_degC : Units MS80SHplus_1209_temperature_degC = degC
+Alias MS80SHplus_1209_data(10) = MS80SHplus_1209_tilt_x_deg : Units MS80SHplus_1209_tilt_x_deg = deg
+Alias MS80SHplus_1209_data(11) = MS80SHplus_1209_tilt_y_deg : Units MS80SHplus_1209_tilt_y_deg = deg
+Alias MS80SHplus_1209_data(12) = MS80SHplus_1209_rh_per : Units MS80SHplus_1209_rh_per = per
+
+'SPN1 - SN: A270
+Const SPN1_A270_modbus_addr = 31
+Public SPN1_A270_result_code
+Dim SPN1_A270_raw_data(39) As Long
+Public SPN1_A270_data(14) As Float = NAN
+Alias SPN1_A270_data(1) = SPN1_A270_ground_ref_Wm2 : Units SPN1_A270_ground_ref_Wm2 = W/m^2
+Alias SPN1_A270_data(2) = SPN1_A270_thermopile_1_Wm2 : Units SPN1_A270_thermopile_1_Wm2 = W/m^2
+Alias SPN1_A270_data(3) = SPN1_A270_thermopile_2_Wm2 : Units SPN1_A270_thermopile_2_Wm2 = W/m^2
+Alias SPN1_A270_data(4) = SPN1_A270_thermopile_3_Wm2 : Units SPN1_A270_thermopile_3_Wm2 = W/m^2
+Alias SPN1_A270_data(5) = SPN1_A270_thermopile_4_Wm2 : Units SPN1_A270_thermopile_4_Wm2 = W/m^2
+Alias SPN1_A270_data(6) = SPN1_A270_thermopile_5_Wm2 : Units SPN1_A270_thermopile_5_Wm2 = W/m^2
+Alias SPN1_A270_data(7) = SPN1_A270_thermopile_6_Wm2 : Units SPN1_A270_thermopile_6_Wm2 = W/m^2
+Alias SPN1_A270_data(8) = SPN1_A270_thermopile_7_Wm2 : Units SPN1_A270_thermopile_7_Wm2 = W/m^2
+Alias SPN1_A270_data(9) = SPN1_A270_GHI_Wm2 : Units SPN1_A270_GHI_Wm2 = W/m^2
+Alias SPN1_A270_data(10) = SPN1_A270_DHI_Wm2 : Units SPN1_A270_DHI_Wm2 = W/m^2
+Alias SPN1_A270_data(11) = SPN1_A270_sun_ratio
+Alias SPN1_A270_data(12) = SPN1_A270_heater_ratio
+Alias SPN1_A270_data(13) = SPN1_A270_rh_per : Units SPN1_A270_rh_per = per
+Alias SPN1_A270_data(14) = SPN1_A270_temperature_degC : Units SPN1_A270_temperature_degC = degC
+
+'Spectrafy SolarBand-C3 - SN: SN50013
+Const SolarBandC3_SN50013_modbus_addr = 55
+Public SolarBandC3_SN50013_result_code
+Dim SolarBandC3_SN50013_raw_data(50) As Long
+Public SolarBandC3_SN50013_data(11) As Float = NAN
+Alias SolarBandC3_SN50013_data(1) = SolarBandC3_SN50013_azimuth_deg : Units SolarBandC3_SN50013_azimuth_deg = deg
+Alias SolarBandC3_SN50013_data(2) = SolarBandC3_SN50013_temperature_degC : Units SolarBandC3_SN50013_temperature_degC = degC
+Alias SolarBandC3_SN50013_data(3) = SolarBandC3_SN50013_rh_per : Units SolarBandC3_SN50013_rh_per = per
+Alias SolarBandC3_SN50013_data(4) = SolarBandC3_SN50013_GHI_mV : Units SolarBandC3_SN50013_GHI_mV = mV
+Alias SolarBandC3_SN50013_data(5) = SolarBandC3_SN50013_DHI_mV : Units SolarBandC3_SN50013_DHI_mV = mV
+Alias SolarBandC3_SN50013_data(6) = SolarBandC3_SN50013_tilt_deg : Units SolarBandC3_SN50013_tilt_deg = deg
+Alias SolarBandC3_SN50013_data(7) = SolarBandC3_SN50013_GHI_Wm2 : Units SolarBandC3_SN50013_GHI_Wm2 = W/m^2
+Alias SolarBandC3_SN50013_data(8) = SolarBandC3_SN50013_DHI_Wm2 : Units SolarBandC3_SN50013_DHI_Wm2 = W/m^2
+Alias SolarBandC3_SN50013_data(9) = SolarBandC3_SN50013_DNI_Wm2 : Units SolarBandC3_SN50013_DNI_Wm2 = W/m^2
+Alias SolarBandC3_SN50013_data(10) = SolarBandC3_SN50013_sun
+Alias SolarBandC3_SN50013_data(11) = SolarBandC3_SN50013_DHI_CH2_mV : Units SolarBandC3_SN50013_DHI_CH2_mV = mV
 
 'Licor - SN: PY116375
-Public Licor_PY116375_GHI_mV As Float: Units Licor_PY116375_GHI_mV = mV
+Public Licor_PY116375_GHI_mV As Float = NAN: Units Licor_PY116375_GHI_mV = mV
 
 'Star Schenk - SN: 7773
-Public StarSchenk_7773_GHI_mV As Float: Units StarSchenk_7773_GHI_mV = mV
+Public StarSchenk_7773_GHI_mV As Float = NAN: Units StarSchenk_7773_GHI_mV = mV
 
 'Time_out - wait time for a modbus call
 Const MODBUS_TIMEOUT = 3 ' [multiple of 0.01 seconds]
@@ -200,88 +292,67 @@ Dim TStamp_format_4 As String * 32
 Dim TStamp_format_6 As String * 32
 Public TStamp As String * 32 : Alias TStamp = Time
 
-'Set sclae factor
-Const SCALE_CODE = 1 ' Scale factor code for Kipp & Zonen smart instruments
-Public Scale_code_initial(2) As Long
-Dim Scale_code_result_code(2) As Float
+'Set scale factor
+'Const SCALE_CODE = 1 ' Scale factor code for Kipp & Zonen smart instruments
+'Public Scale_code_initial(2) As Long
+'Dim Scale_code_result_code(2) As Float
 
-Function kipp_zonen_scale_factor(scale_code_int)
-    Dim scale As Float
-    If scale_code_int = 2 Then
-      scale = 0.01
-    ElseIf scale_code_int = 1 Then
-      scale = 0.1
-    ElseIf scale_code_int = 0 Then
-      scale = 1
-    ElseIf scale_code_int = -1 Then
-      scale = 10
-    Else
-      scale = NAN
-    EndIf
-    Return scale
-EndFunction
+'Function kipp_zonen_scale_factor(scale_code_int)
+'    Dim scale As Float
+'    If scale_code_int = 2 Then
+'      scale = 0.01
+'    ElseIf scale_code_int = 1 Then
+'      scale = 0.1
+'    ElseIf scale_code_int = 0 Then
+'      scale = 1
+'    ElseIf scale_code_int = -1 Then
+'      scale = 10
+'    Else
+'      scale = NAN
+'    EndIf
+'    Return scale
+'EndFunction
 
 'Declare other variables
-Public CR1000X_secondary_temperature_degC As Float: Units CR1000X_secondary_temperature_degC = degC
+Public CR1000X_secondary_temperature_degC As Float = NAN: Units CR1000X_secondary_temperature_degC = degC
 
 'Save data to Table
 DataTable(Fast_table_secondary, 1, -1)
   TableFile("CRD:"&TStamp_format_6&"_secondary_fast_table",11,-1,0,1,Day,0,0)
   DataInterval(0,1,Sec,0)
   Sample(1,TStamp,String)
-  Sample(2,PH1_190116_data(),IEEE4)
-  Sample(1,PH1_190116_data(4),IEEE4)
-  Sample(2,PR1_190116_data(),IEEE4)
-  Sample(1,PR1_190116_data(4),IEEE4)
+  'Sample(2,PH1_190116_data(),IEEE4)
+  'Sample(1,PH1_190116_data(4),IEEE4)
+  'Sample(2,PR1_190116_data(),IEEE4)
+  'Sample(1,PR1_190116_data(4),IEEE4)
   Sample(1,MS80SH_S24053407_data(1),IEEE4)
   Sample(1,MS80SH_S24053407_data(4),IEEE4)
-  Sample(1,MS80SH_S24053407_data(7),IEEE4)
-  Sample(1,MS80SH_S24053407_data(8),IEEE4)
-  Sample(1,MS80SH_S24053407_data(9),IEEE4)
-  Sample(1,MS80SH_S24053407_data(10),IEEE4)
+  Sample(4,MS80SH_S24053407_data(7),IEEE4)
   Sample(1,MS80SH_S24053407_data(12),IEEE4)
-  Sample(1,MS80SHplus_1209_data(1),IEEE4)
-  Sample(1,MS80SHplus_1209_data(4),IEEE4)
-  Sample(1,MS80SHplus_1209_data(5),IEEE4)
-  Sample(1,MS80SHplus_1209_data(6),IEEE4)
-  Sample(1,MS80SHplus_1209_data(7),IEEE4)
-  Sample(1,MS80SHplus_1209_data(8),IEEE4)
-  Sample(1,MS80SHplus_1209_data(9),IEEE4)
-  Sample(1,MS80SHplus_1209_data(10),IEEE4)
+  Sample(1,MS80SH_S24053407_data(14),IEEE4)
   Sample(3,DR30_65086_data(),IEEE4)
-  Sample(1,DR30_65086_data(4),IEEE4)
   Sample(1,DR30_65086_data(5),IEEE4)
   Sample(3,SR30_23485_data(),IEEE4)
-  Sample(1,SR30_23485_data(4),IEEE4)
-  Sample(1,SR300_45389_data(1),IEEE4)
-  Sample(1,SR300_45389_data(2),IEEE4)
-  Sample(1,SR300_45389_data(3),IEEE4)
-  Sample(1,SR300_45389_data(4),IEEE4)
-  Sample(1,SRD100_14401_data(1),IEEE4)
-  Sample(1,SRD100_14401_data(2),IEEE4)
+  Sample(4,SR300_45389_data(),IEEE4)
+  Sample(11,SRD100_14401_data(),IEEE4)
   Sample(2,SP522_1265_data(),IEEE4)
   Sample(2,SP422_1843_data(),IEEE4)
   Sample(1,Licor_PY116375_GHI_mV,IEEE4)
   Sample(1,StarSchenk_7773_GHI_mV,IEEE4)
+  Sample(14,SPN1_A270_data(),IEEE4)
+  Sample(10,SolarBandC3_SN50013_data(),IEEE4)
+  Sample(12,MS80SHplus_1209_data(),IEEE4)
 EndTable
 
 DataTable(Slow_table_secondary, 1, -1)
   TableFile("CRD:"&TStamp_format_6&"_secondary_slow_table",11,-1,0,1,Day,0,0)
-  DataInterval(0,1,Min,0)
+  DataInterval(0,15,Sec,0)
   Sample(1,TStamp,String)
-  Sample(1,DR30_65086_data(6),IEEE4)
-  Sample(1,DR30_65086_data(7),IEEE4)
-  Sample(1,SR30_23485_data(5),IEEE4)
-  Sample(1,SR30_23485_data(6),IEEE4)
-  Sample(1,SR30_23485_data(7),IEEE4)
-  Sample(1,SR30_23485_data(8),IEEE4)
-  Sample(1,SR300_45389_data(5),IEEE4)
-  Sample(1,SR300_45389_data(6),IEEE4)
-  Sample(1,SR300_45389_data(7),IEEE4)
-  Sample(1,SR300_45389_data(8),IEEE4)
-  Sample(1,SR300_45389_data(9),IEEE4)
-  Sample(1,SRD100_14401_data(3),IEEE4)
-  Sample(1,SRD100_14401_data(4),IEEE4)
+  Sample(1,DR30_65086_data(4),IEEE4)
+  Sample(2,DR30_65086_data(6),IEEE4)
+  Sample(5,SR30_23485_data(4),IEEE4)
+  Sample(5,SR300_45389_data(5),IEEE4)
+  Sample(2,SRD100_14401_data(12),IEEE4)
   Sample(1,SP522_1265_data(3),IEEE4)
   Sample(1,SP422_1843_data(3),IEEE4)
   Sample(1,CR1000X_secondary_temperature_degC,IEEE4)
@@ -289,7 +360,7 @@ EndTable
 
 'Main Program
 BeginProg
-	SerialOpen(ComC1,19200,2,0,500,4)
+  SerialOpen(ComC1,19200,2,0,500,4)
 	SerialOpen(ComC3,19200,2,0,500,4)
 	SerialOpen(ComC5,19200,2,0,500,4)
 	SerialOpen(ComC7,19200,2,0,500,4)
@@ -302,30 +373,125 @@ BeginProg
     TStamp = Mid(TStamp_format_4,1,10)+ "T" + Mid(TStamp_format_4,12,12) + "+00:00"
     
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'EKO MS80SH (serial number: S24053407)
+    ModbusClient(MS80SH_S24053407_result_code,ComC3,19200,MS80SH_S24053407_modbus_addr,3,MS80SH_S24053407_raw_data(),2+1,14,MODBUS_RETRIES,MODBUS_TIMEOUT+2,2)
+    MS80SH_S24053407_data() = MS80SH_S24053407_raw_data()
+    If MS80SH_S24053407_result_code <> 0 Then MS80SH_S24053407_data() = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'PH1 (serial number: 190116)
-    ModbusClient(PH1_190116_result_code,ComC3,19200,PH1_190116_modbus_addr,4,PH1_190116_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+    'ModbusClient(PH1_190116_result_code,ComC3,19200,PH1_190116_modbus_addr,4,PH1_190116_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
     'ResultCode is 0 if communication is successful otherwise set to NAN
-    If PH1_190116_result_code <> 0 Then PH1_190116_raw_data() = NAN
-    PH1_190116_scale_factor = kipp_zonen_scale_factor(PH1_190116_raw_data(1)) 'Convert scale code to scale factor using function
-    PH1_190116_data(1) = PH1_190116_raw_data(2) * PH1_190116_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
-    PH1_190116_data(2) = PH1_190116_raw_data(3) * PH1_190116_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    PH1_190116_data(3) = PH1_190116_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    PH1_190116_data(4) = PH1_190116_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'If PH1_190116_result_code <> 0 Then PH1_190116_raw_data() = NAN
+    'PH1_190116_scale_factor = kipp_zonen_scale_factor(PH1_190116_raw_data(1)) 'Convert scale code to scale factor using function
+    'PH1_190116_data(1) = PH1_190116_raw_data(2) * PH1_190116_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
+    'PH1_190116_data(2) = PH1_190116_raw_data(3) * PH1_190116_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
+    'PH1_190116_data(3) = PH1_190116_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    'PH1_190116_data(4) = PH1_190116_raw_data(5) * 0.1 'Register 8 - Body temperature
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'PR1 (serial number: 190116)
-    ModbusClient(PR1_190116_result_code,ComC3,19200,PR1_190116_modbus_addr,4,PR1_190116_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+    'ModbusClient(PR1_190116_result_code,ComC3,19200,PR1_190116_modbus_addr,4,PR1_190116_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
     'ResultCode is 0 if communication is successful otherwise set to NAN
-    If PR1_190116_result_code <> 0 Then PR1_190116_raw_data() = NAN
-    PR1_190116_scale_factor = kipp_zonen_scale_factor(PR1_190116_raw_data(1)) 'Convert scale code to scale factor using function
-    PR1_190116_data(1) = PR1_190116_raw_data(2) * PR1_190116_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
-    PR1_190116_data(2) = PR1_190116_raw_data(3) * PR1_190116_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    PR1_190116_data(3) = PR1_190116_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    PR1_190116_data(4) = PR1_190116_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'If PR1_190116_result_code <> 0 Then PR1_190116_raw_data() = NAN
+    'PR1_190116_scale_factor = kipp_zonen_scale_factor(PR1_190116_raw_data(1)) 'Convert scale code to scale factor using function
+    'PR1_190116_data(1) = PR1_190116_raw_data(2) * PR1_190116_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
+    'PR1_190116_data(2) = PR1_190116_raw_data(3) * PR1_190116_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
+    'PR1_190116_data(3) = PR1_190116_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    'PR1_190116_data(4) = PR1_190116_raw_data(5) * 0.1 'Register 8 - Body temperature
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SolarBand-C3 (serial number: SN50013)
+    ModbusClient(SolarBandC3_SN50013_result_code,ComC3,19200,SolarBandC3_SN50013_modbus_addr,3,SolarBandC3_SN50013_raw_data(),13+1,50,MODBUS_RETRIES,50,3)
+    SolarBandC3_SN50013_data(1) = SolarBandC3_SN50013_raw_data(1) / 100 - 200 'Register 13: azimuth
+    SolarBandC3_SN50013_data(2) = SolarBandC3_SN50013_raw_data(2) / 100 - 100 'Register 14: internal temperature
+    SolarBandC3_SN50013_data(3) = SolarBandC3_SN50013_raw_data(3) / 100 'Register 15: relative humidity
+    SolarBandC3_SN50013_data(4) = SolarBandC3_SN50013_raw_data(4) + SolarBandC3_SN50013_raw_data(5) / 1000 'Registers 16+17: base GHI value and fraction in mV
+    SolarBandC3_SN50013_data(5) = SolarBandC3_SN50013_raw_data(6) + SolarBandC3_SN50013_raw_data(7) / 1000 'Registers 18+19: base DHI value and fraction in mV
+    SolarBandC3_SN50013_data(6) = SolarBandC3_SN50013_raw_data(8) / 10 - 200 'Register 20: tilt
+    SolarBandC3_SN50013_data(7) = SolarBandC3_SN50013_raw_data(9) + SolarBandC3_SN50013_raw_data(10) / 1000 'Registers 21+22: base GHI value and fraction in W/m^2
+    SolarBandC3_SN50013_data(8) = SolarBandC3_SN50013_raw_data(11) + SolarBandC3_SN50013_raw_data(12) / 1000 'Registers 23+24: base DHI value and fraction in W/m^2
+    SolarBandC3_SN50013_data(9) = SolarBandC3_SN50013_raw_data(13) + SolarBandC3_SN50013_raw_data(14) / 1000 'Registers 25+26: base DNI value and fraction in W/m^2
+    SolarBandC3_SN50013_data(10) = SolarBandC3_SN50013_raw_data(15)
+    SolarBandC3_SN50013_data(11) = SolarBandC3_SN50013_raw_data(49) + SolarBandC3_SN50013_raw_data(50) / 1000 'Registers 61+62: base DHI CH2 value and fraction in W/m^2
+    If SolarBandC3_SN50013_result_code <> 0 Then SolarBandC3_SN50013_data() = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SR30 (serial number: 23485)
+    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),2+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SR30_23485_data(1) = SR30_23485_raw_data(1) / 100 'Register 2+3 - Temperature compensated radiation in W/m2
+    SR30_23485_data(2) = SR30_23485_raw_data(2) / 100 'Register 4+5 - Raw sensor data - calibrated but not linearized or temperature compensated
+    If SR30_23485_result_code <> 0 Then SR30_23485_data() = NAN
+
+    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),10+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SR30_23485_data(3) = SR30_23485_raw_data(1) * 0.000001 'Register 10+11 - Sensor voltage output in mV
+    If SR30_23485_result_code <> 0 Then SR30_23485_data(3) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SR300 (serial number: 45389)
+    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),512+1,3,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SR300_45389_data(1) = SR300_45389_raw_data_float(1) 'Register 512 (0x0200) - Temperature compensated irradiance (float) [W/m^2]
+    SR300_45389_data(2) = SR300_45389_raw_data_float(2) 'Register 514 (0x0202) - Instrument temperature (float) [C]
+    SR300_45389_data(3) = SR300_45389_raw_data_float(3) 'Register 516 (0x0204) - Uncompensated irradiance (float) [W/m^2]
+    If SR300_45389_result_code <> 0 Then SR300_45389_data() = NAN
+
+    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),647+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SR300_45389_data(4) = SR300_45389_raw_data_float(1) * 1000 'Register 647 (0x0287) - Uncompensated thermopile voltage (float) [mV]
+    If SR300_45389_result_code <> 0 Then SR300_45389_data(4) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SRD100 (serial number: 14401)
+    ModbusClient(SRD100_14401_result_code,ComC5,19200,SRD100_14401_modbus_addr,4,SRD100_14401_raw_data_float(),512+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SRD100_14401_data(1) = SRD100_14401_raw_data_float(1) 'Register 512 (0x0200) - Temperature compensated irradiance (float) [W/m^2]
+    SRD100_14401_data(2) = SRD100_14401_raw_data_float(2) 'Register 514 (0x0202) - Instrument temperature (float) [C]
+    If SRD100_14401_result_code <> 0 Then SRD100_14401_data() = NAN
+    
+    ModbusClient(SRD100_14401_result_code,ComC5,19200,SRD100_14401_modbus_addr,4,SRD100_14401_raw_data_float(),1056+1,9,MODBUS_RETRIES,MODBUS_TIMEOUT+1,2)
+    SRD100_14401_data(3) = SRD100_14401_raw_data_float(1) 'Register 1056 - Thermopile 1x1
+    SRD100_14401_data(4) = SRD100_14401_raw_data_float(2) 'Register 1058 - Thermopile 1x2
+    SRD100_14401_data(5) = SRD100_14401_raw_data_float(3) 'Register 1060 - Thermopile 1x3
+    SRD100_14401_data(6) = SRD100_14401_raw_data_float(4) 'Register 1062 - Thermopile 2x1
+    SRD100_14401_data(7) = SRD100_14401_raw_data_float(5) 'Register 1064 - Thermopile 2x2
+    SRD100_14401_data(8) = SRD100_14401_raw_data_float(6) 'Register 1066 - Thermopile 2x3
+    SRD100_14401_data(9) = SRD100_14401_raw_data_float(7) 'Register 1068 - Thermopile 3x1
+    SRD100_14401_data(10) = SRD100_14401_raw_data_float(8) 'Register 1070 - Thermopile 3x2
+    SRD100_14401_data(11) = SRD100_14401_raw_data_float(9) 'Register 1072 - Thermopile 3x3
+    If SRD100_14401_result_code <> 0 Then SRD100_14401_data() = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SPN1 (serial number: A270)
+    ModbusClient(SPN1_A270_result_code,ComC3,19200,SPN1_A270_modbus_addr,3,SPN1_A270_raw_data(),8+1,39,MODBUS_RETRIES,13,3)
+    SPN1_A270_data(1) = SPN1_A270_raw_data(1) / 10 
+    SPN1_A270_data(2) = SPN1_A270_raw_data(2) / 10
+    SPN1_A270_data(3) = SPN1_A270_raw_data(3) / 10
+    SPN1_A270_data(4) = SPN1_A270_raw_data(4) / 10
+    SPN1_A270_data(5) = SPN1_A270_raw_data(5) / 10
+    SPN1_A270_data(6) = SPN1_A270_raw_data(6) / 10
+    SPN1_A270_data(7) = SPN1_A270_raw_data(7) / 10
+    SPN1_A270_data(8) = SPN1_A270_raw_data(8) / 10
+    SPN1_A270_data(9) = SPN1_A270_raw_data(9) / 10
+    SPN1_A270_data(10) = SPN1_A270_raw_data(10) / 10
+    SPN1_A270_data(11) = SPN1_A270_raw_data(11) / 1000
+    SPN1_A270_data(12) = Round(SPN1_A270_raw_data(20) / 4096, 1)
+    SPN1_A270_data(13) = SPN1_A270_raw_data(38) / 100
+    SPN1_A270_data(14) = SPN1_A270_raw_data(39) / 100
+    If SPN1_A270_result_code <> 0 Then SPN1_A270_data() = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'DR30 (serial number: 65086)
@@ -335,10 +501,6 @@ BeginProg
     If DR30_65086_result_code <> 0 Then DR30_65086_data(1) = NAN
     If DR30_65086_result_code <> 0 Then DR30_65086_data(2) = NAN
 
-    ModbusClient(DR30_65086_result_code,ComC7,19200,DR30_65086_modbus_addr,4,DR30_65086_raw_data(),6+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    DR30_65086_data(4) = Round(DR30_65086_raw_data(1) / 100, 3) 'Register 6 - Temperature in degC
-    If DR30_65086_result_code <> 0 Then DR30_65086_data(4) = NAN
-
     ModbusClient(DR30_65086_result_code,ComC7,19200,DR30_65086_modbus_addr,4,DR30_65086_raw_data(),10+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
     DR30_65086_data(3) = DR30_65086_raw_data(1) * 0.000001 'Register 10+11 - Sensor voltage output in mV
     If DR30_65086_result_code <> 0 Then DR30_65086_data(3) = NAN
@@ -347,96 +509,23 @@ BeginProg
     DR30_65086_data(5) = DR30_65086_raw_data(1) / 100 'Register 195 - average tilt of sensor in horizontal plane
     If DR30_65086_result_code <> 0 Then DR30_65086_data(5) = NAN
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'SR30 (serial number: 23485)
-    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),2+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    SR30_23485_data(1) = SR30_23485_raw_data(1) / 100 'Register 2+3 - Temperature compensated radiation in W/m2
-    SR30_23485_data(2) = SR30_23485_raw_data(2) / 100 'Register 4+5 - Raw sensor data - calibrated but not linearized or temperature compensated
-    If SR30_23485_result_code <> 0 Then SR30_23485_data(1) = NAN
-    If SR30_23485_result_code <> 0 Then SR30_23485_data(2) = NAN
-
-    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),6+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    If SR30_23485_result_code <> 0 Then SR30_23485_raw_data() = NAN
-    SR30_23485_data(4) = SR30_23485_raw_data(1) / 100 'Register 6 - Temperature in degC
-
-    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),10+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SR30_23485_result_code <> 0 Then SR30_23485_raw_data() = NAN
-    SR30_23485_data(3) = SR30_23485_raw_data(1) * 0.000001 'Register 10+11 - Sensor voltage output in mV
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'SR300 (serial number: 45389)
-    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),512+1,3,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SR300_45389_result_code <> 0 Then SR300_45389_raw_data_float() = NAN
-    SR300_45389_data(1) = SR300_45389_raw_data_float(1) 'Register 512 (0x0200) - Temperature compensated irradiance (float) [W/m^2]
-    SR300_45389_data(2) = SR300_45389_raw_data_float(2) 'Register 514 (0x0202) - Instrument temperature (float) [C]
-    SR300_45389_data(3) = SR300_45389_raw_data_float(3) 'Register 516 (0x0204) - Uncompensated irradiance (float) [W/m^2]
-
-    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),647+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SR300_45389_result_code <> 0 Then SR300_45389_raw_data_float() = NAN
-    SR300_45389_data(4) = SR300_45389_raw_data_float(1) * 1000 'Register 647 (0x0287) - Uncompensated thermopile voltage (float) [mV]
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'SRD100 (serial number: 14401)
-    ModbusClient(SRD100_14401_result_code,ComC5,19200,SRD100_14401_modbus_addr,4,SRD100_14401_raw_data_float(),512+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SRD100_14401_result_code <> 0 Then SRD100_14401_raw_data_float() = NAN
-    SRD100_14401_data(1) = SRD100_14401_raw_data_float(1) 'Register 512 (0x0200) - Temperature compensated irradiance (float) [W/m^2]
-    SRD100_14401_data(2) = SRD100_14401_raw_data_float(2) 'Register 514 (0x0202) - Instrument temperature (float) [C]
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+    
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SP-522 (serial number: 1265)
-    ModbusClient(SP522_1265_result_code,ComC7,19200,SP522_1265_modbus_addr,3,SP522_1265_raw_data(),0+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SP522_1265_result_code <> 0 Then SP522_1265_raw_data() = NAN
+    ModbusClient(SP522_1265_result_code,ComC1,19200,SP522_1265_modbus_addr,3,SP522_1265_raw_data(),0+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
     SP522_1265_data(1) = SP522_1265_raw_data(1) 'Register 0+1 - Calibrated output watts
     SP522_1265_data(2) = SP522_1265_raw_data(2) 'Register 2+3 - Detector millivolts
+    If SP522_1265_result_code <> 0 Then SP522_1265_data() = NAN
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SP-422 (serial number: 1843)
     ModbusClient(SP422_1843_result_code,ComC7,19200,SP422_1843_modbus_addr,3,SP422_1843_raw_data(),0+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SP422_1843_result_code <> 0 Then SP422_1843_raw_data() = NAN
     SP422_1843_data(1) = SP422_1843_raw_data(1) 'Register 0+1 - Calibrated output watts
     SP422_1843_data(2) = SP422_1843_raw_data(2) 'Register 2+3 - Detector millivolts
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'EKO MS80SH (serial number: S24053407)
-    ModbusClient(MS80SH_S24053407_result_code,ComC3,19200,MS80SH_S24053407_modbus_addr,3,MS80SH_S24053407_raw_data(),2+1,12,MODBUS_RETRIES,MODBUS_TIMEOUT*2,2)
-    If MS80SH_S24053407_result_code <> 0 Then MS80SH_S24053407_raw_data() = NAN
-    MS80SH_S24053407_data() = MS80SH_S24053407_raw_data()
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'EKO MS80SHplus (serial number: 1209)
-    ModbusClient(MS80SHplus_1209_result_code,ComC1,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data(),7+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    MS80SHplus_1209_data() = MS80SHplus_1209_raw_data() / 10
-    If MS80SHplus_1209_result_code <> 0 Then MS80SHplus_1209_data() = NAN
-
-    ModbusClient(MS80SHplus_1209_result_code,ComC1,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data(),17+1,4,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    MS80SHplus_1209_data(6) = MS80SHplus_1209_raw_data(1) / 10
-    MS80SHplus_1209_data(7) = MS80SHplus_1209_raw_data(2) / 10
-    MS80SHplus_1209_data(8) = MS80SHplus_1209_raw_data(3) / 10
-    MS80SHplus_1209_data(9) = MS80SHplus_1209_raw_data(4) / 10
-    If MS80SHplus_1209_result_code <> 0 Then
-      MS80SHplus_1209_data(6) = NAN
-      MS80SHplus_1209_data(7) = NAN
-      MS80SHplus_1209_data(8) = NAN
-      MS80SHplus_1209_data(9) = NAN
-    EndIf
-
-    ModbusClient(MS80SHplus_1209_result_code,ComC1,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data_unsigned,21+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
-    MS80SHplus_1209_data(10) = MS80SHplus_1209_raw_data_unsigned / 10
-    If MS80SHplus_1209_result_code <> 0 Then MS80SHplus_1209_data(10) = NAN
+    If SP422_1843_result_code <> 0 Then SP422_1843_data() = NAN
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
@@ -451,6 +540,31 @@ BeginProg
     VoltDiff(Licor_PY116375_GHI_mV,1,AutorangeC,2,True,0,50,1.0,0)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    If IfTime(0,10,Sec)
+      'EKO MS80SHplus (serial number: 1209)
+      ModbusClient(MS80SHplus_1209_result_code,ComC5,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data(),7+1,14,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+      MS80SHplus_1209_data(1) = MS80SHplus_1209_raw_data(1) / 10
+      MS80SHplus_1209_data(2) = MS80SHplus_1209_raw_data(2) / 10
+      MS80SHplus_1209_data(3) = MS80SHplus_1209_raw_data(3) / 10
+      MS80SHplus_1209_data(4) = MS80SHplus_1209_raw_data(4) / 10
+      MS80SHplus_1209_data(5) = MS80SHplus_1209_raw_data(5) / 10
+      MS80SHplus_1209_data(6) = MS80SHplus_1209_raw_data(7) / 10
+      MS80SHplus_1209_data(7) = MS80SHplus_1209_raw_data(9) / 10
+      MS80SHplus_1209_data(8) = MS80SHplus_1209_raw_data(11) / 10
+      MS80SHplus_1209_data(9) = MS80SHplus_1209_raw_data(12) / 10
+      MS80SHplus_1209_data(10) = MS80SHplus_1209_raw_data(13) / 10
+      MS80SHplus_1209_data(11) = MS80SHplus_1209_raw_data(14) / 10
+      If MS80SHplus_1209_result_code <> 0 Then MS80SHplus_1209_data() = NAN
+
+      'ModbusClient(MS80SHplus_1209_result_code,ComC1,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data_unsigned,21+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
+      'MS80SHplus_1209_data(12) = MS80SHplus_1209_raw_data_unsigned / 10
+      'If MS80SHplus_1209_result_code <> 0 Then MS80SHplus_1209_data(12) = NAN
+      ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Else
+      MS80SHplus_1209_data = NAN
+    EndIf
+
 		CallTable Fast_table_secondary
 		
     'Check the time drift every 24 hrs and reset to UTC if deviation >100 ms
@@ -458,26 +572,33 @@ BeginProg
 
 	NextScan
 
-
   SlowSequence
-
-  Scan(10,Sec,2,0)
+  Scan(15,Sec,2,0)
     
     PanelTemp(CR1000X_secondary_temperature_degC,50)
+    
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'DR30 (serial number: 65086)
+    ModbusClient(DR30_65086_result_code,ComC7,19200,DR30_65086_modbus_addr,4,DR30_65086_raw_data(),6+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+    DR30_65086_data(4) = Round(DR30_65086_raw_data(1) / 100, 3) 'Register 6 - Temperature in degC
+    If DR30_65086_result_code <> 0 Then DR30_65086_data(4) = NAN
+    
     ModbusClient(DR30_65086_result_code,ComC7,19200,DR30_65086_modbus_addr,4,DR30_65086_raw_data(),98+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
-    If DR30_65086_result_code <> 0 Then DR30_65086_raw_data() = NAN
     DR30_65086_data(6) = DR30_65086_raw_data(1) / 100 'Register 98 - Internal relative humidity of the sensor in %
+    If DR30_65086_result_code <> 0 Then DR30_65086_data(6) = NAN
     
     ModbusClient(DR30_65086_result_code,ComC7,19200,DR30_65086_modbus_addr,4,DR30_65086_raw_data(),198+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
-    If DR30_65086_result_code <> 0 Then DR30_65086_raw_data() = NAN
     DR30_65086_data(7) = DR30_65086_raw_data(1) 'Register 198 - Heater current [mA]
+    If DR30_65086_result_code <> 0 Then DR30_65086_data(7) = NAN
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
   
   
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SR30 (serial number: 23485)
+    ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),6+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+    SR30_23485_data(4) = SR30_23485_raw_data(1) / 100 'Register 6 - Temperature in degC
+    If SR30_23485_result_code <> 0 Then SR30_23485_data(4) = NAN
+    
     ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),98+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
     SR30_23485_data(5) = SR30_23485_raw_data(1) / 100 'Register 98 - Internal relative humidity of the sensor in %
     If SR30_23485_result_code <> 0 Then SR30_23485_data(5) = NAN
@@ -485,7 +606,7 @@ BeginProg
     ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),194+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
     SR30_23485_data(6) = SR30_23485_raw_data(1) / 100 'Register 194 - tilt of sensor in horizontal plane
     If SR30_23485_result_code <> 0 Then SR30_23485_data(6) = NAN
-    
+
     ModbusClient(SR30_23485_result_code,ComC5,19200,SR30_23485_modbus_addr,4,SR30_23485_raw_data(),196+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
     SR30_23485_data(7) = SR30_23485_raw_data(1) 'Register 196 - Fan speed [rpm]
     If SR30_23485_result_code <> 0 Then SR30_23485_data(7) = NAN
@@ -499,27 +620,72 @@ BeginProg
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SR300 (serial number: 45389)
     ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),1536+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SR300_45389_result_code <> 0 Then SR300_45389_raw_data_float() = NAN
     SR300_45389_data(5) = SR300_45389_raw_data_float(1) 'Register 1536 (0x0600) - Tilt (float) [deg]
     SR300_45389_data(6) = SR300_45389_raw_data_float(2) 'Register 1538 (0x0602) - Rotation (float) [deg]
+    If SR300_45389_result_code <> 0 Then
+       SR300_45389_data(5) = NAN
+       SR300_45389_data(6) = NAN
+    EndIf
 
-    'ModbusClient(MS80SHplus_1209_result_code,ComC3,19200,MS80SHplus_1209_modbus_addr,3,MS80SHplus_1209_raw_data(),7+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'MS80SHplus_1209_data() = MS80SHplus_1209_raw_data() / 10
-    'If MS80SHplus_1209_result_code <> 0 Then MS80SHplus_1209_data() = NAN
+    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_float(),1664+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT+1,2)
+    SR300_45389_data(7) = SR300_45389_raw_data_float(1) 'Register 1664 (0x0680) - Relative humidity (float) [%]
+    If SR300_45389_result_code <> 0 Then SR300_45389_data(7) = NAN
 
+    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_int(),1282+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT+1,1)
+    SR300_45389_data(8) = SR300_45389_raw_data_int(1) 'Register 1282 (0x0502) - Fan speed (i16) [RPM]
+    If SR300_45389_result_code <> 0 Then SR300_45389_data(8) = NAN
 
-    ' Set scale factor of Kipp & Zonen smart pyranometers
-    ' The tries and timeouts have been increased to ensure that the scale factors are set
-    ModbusClient(Scale_code_result_code(1),ComC3,19200,PH1_190116_modbus_addr,4,scale_code_initial(1),34+1,1,3,5,1)
-    ' If the scale code is not 1, then it is changed
-    If scale_code_initial(1) <> 1 Then ModbusClient(Scale_code_result_code(1),ComC3,19200,PH1_190116_modbus_addr,6,SCALE_CODE,34+1,1,3,5,1)
+    ModbusClient(SR300_45389_result_code,ComC5,19200,SR300_45389_modbus_addr,4,SR300_45389_raw_data_int(),1410+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT+1,1)
+    SR300_45389_data(9) = SR300_45389_raw_data_int(1) 'Register 1410 (0x0582) - Heater current (i16) [mA]
+    If SR300_45389_result_code <> 0 Then SR300_45389_data(9) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
-    ModbusClient(Scale_code_result_code(2),ComC3,19200,PR1_190116_modbus_addr,4,scale_code_initial(2),34+1,1,3,5,1)
-    If scale_code_initial(2) <> 1 Then ModbusClient(Scale_code_result_code(2),ComC3,19200,PR1_190116_modbus_addr,6,SCALE_CODE,34+1,1,3,5,1)
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SRD100 (serail number: 14401)
+    ModbusClient(SRD100_14401_result_code,ComC5,19200,SRD100_14401_modbus_addr,4,SRD100_14401_raw_data_float(),1664+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT+1,2)
+    SRD100_14401_data(12) = SRD100_14401_raw_data_float(1) 'Register 1664 (0x0680) - Relative humidity (float) [%]
+    If SRD100_14401_result_code <> 0 Then SRD100_14401_data(12) = NAN
+
+    ModbusClient(SRD100_14401_result_code,ComC5,19200,SRD100_14401_modbus_addr,4,SRD100_14401_raw_data_int(),1410+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT+1,1)
+    SRD100_14401_data(13) = SRD100_14401_raw_data_int(1) 'Register 1410 (0x0582) - Heater current (i16) [mA]
+    If SRD100_14401_result_code <> 0 Then SRD100_14401_data(13) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SP-522 (serial number: 1265)
+    ModbusClient(SP522_1265_result_code,ComC1,19200,SP522_1265_modbus_addr,3,SP522_1265_raw_data(),34+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SP522_1265_data(3) = SP522_1265_raw_data(1) 'Register 34+35 - Heater state
+    If SP522_1265_result_code <> 0 Then SP522_1265_data(3) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'SP-422 (serial number: 1843)
+    ModbusClient(SP422_1843_result_code,ComC7,19200,SP422_1843_modbus_addr,3,SP422_1843_raw_data(),34+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SP422_1843_data(3) = SP422_1843_raw_data(1) 'Register 34+35 - Heater state
+    If SP422_1843_result_code <> 0 Then SP422_1843_data(3) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
 		CallTable Slow_table_secondary
 	  NextScan
-  EndSequence	
+	 EndSequence
+
+
+   'SlowSequence
+    'Scan(1,Min,2,0)
+      ' Set scale factor of Kipp & Zonen smart pyranometers
+      ' The tries and timeouts have been increased to ensure that the scale factors are set
+      'ModbusClient(Scale_code_result_code(1),ComC3,19200,PH1_190116_modbus_addr,4,Scale_code_initial(1),34+1,1,1,5,1)
+      ' If the scale code is not 1, then it is changed
+      'If Scale_code_initial(1) <> 1 Then ModbusClient(Scale_code_result_code(1),ComC3,19200,PH1_190116_modbus_addr,6,SCALE_CODE,34+1,1,1,5,1)
+      
+      'ModbusClient(Scale_code_result_code(2),ComC3,19200,PR1_190116_modbus_addr,4,Scale_code_initial(2),34+1,1,1,5,1)
+      'If Scale_code_initial(2) <> 1 Then ModbusClient(Scale_code_result_code(2),ComC3,19200,PR1_190116_modbus_addr,6,SCALE_CODE,34+1,1,1,5,1)
+    'NextScan
+    
+  'EndSequence	
   
 
  'Send Data To FTP server

@@ -31,39 +31,38 @@ Public FTPResultCodeFast
 Public FTPResultCodeSlow
 'FTP parameter strings (as constants), Message String & Result Variable
 
-
 'SHP1 - SN: 185163
 Const SHP1_185163_modbus_addr = 10
 Dim SHP1_185163_result_code As Long
 Dim SHP1_185163_scale_factor As Float
 Dim SHP1_185163_raw_data(5) As Long
-Public SHP1_185163_data(4) As Float
+Public SHP1_185163_data(3) As Float = NAN
 Alias SHP1_185163_data(1) = SHP1_185163_DNI_Wm2: Units SHP1_185163_DNI_Wm2 = W/m^2
 Alias SHP1_185163_data(2) = SHP1_185163_DNI_raw_Wm2: Units SHP1_185163_DNI_raw_Wm2 = W/m^2
-Alias SHP1_185163_data(3) = SHP1_185163_DNI_std_Wm2: Units SHP1_185163_DNI_std_Wm2 = W/m^2
-Alias SHP1_185163_data(4) = SHP1_185163_temperature_degC: Units SHP1_185163_temperature_degC = degC
+'Alias SHP1_185163_data(3) = SHP1_185163_DNI_std_Wm2: Units SHP1_185163_DNI_std_Wm2 = W/m^2
+Alias SHP1_185163_data(3) = SHP1_185163_temperature_degC: Units SHP1_185163_temperature_degC = degC
 
 'SMP10 - SN: 248585
 Const SMP10_248585_modbus_addr = 16
 Dim SMP10_248585_result_code As Long
 Public SMP10_248585_scale_factor As Float
 Dim SMP10_248585_raw_data(5) As Long
-Public SMP10_248585_data(4) As Float
+Public SMP10_248585_data(3) As Float = NAN
 Alias SMP10_248585_data(1) = SMP10_248585_GHI_Wm2: Units SMP10_248585_GHI_Wm2 = W/m^2
 Alias SMP10_248585_data(2) = SMP10_248585_GHI_raw_Wm2: Units SMP10_248585_GHI_raw_Wm2 = W/m^2
-Alias SMP10_248585_data(3) = SMP10_248585_GHI_std_Wm2: Units SMP10_248585_GHI_std_Wm2 = W/m^2
-Alias SMP10_248585_data(4) = SMP10_248585_temperature_degC: Units SMP10_248585_temperature_degC = degC
+'Alias SMP10_248585_data(3) = SMP10_248585_GHI_std_Wm2: Units SMP10_248585_GHI_std_Wm2 = W/m^2
+Alias SMP10_248585_data(3) = SMP10_248585_temperature_degC: Units SMP10_248585_temperature_degC = degC
 
 'SMP10 - SN: 196704
 Const SMP10_196704_modbus_addr = 20
 Dim SMP10_196704_result_code As Long
 Public SMP10_196704_scale_factor As Float
 Dim SMP10_196704_raw_data(5) As Long
-Public SMP10_196704_data(4) As Float
+Public SMP10_196704_data(3) As Float = NAN
 Alias SMP10_196704_data(1) = SMP10_196704_GNI_Wm2: Units SMP10_196704_GNI_Wm2 = W/m^2
 Alias SMP10_196704_data(2) = SMP10_196704_GNI_raw_Wm2: Units SMP10_196704_GNI_raw_Wm2 = W/m^2
-Alias SMP10_196704_data(3) = SMP10_196704_GNI_std_Wm2: Units SMP10_196704_GNI_std_Wm2 = W/m^2
-Alias SMP10_196704_data(4) = SMP10_196704_temperature_degC: Units SMP10_196704_temperature_degC = degC
+'Alias SMP10_196704_data(3) = SMP10_196704_GNI_std_Wm2: Units SMP10_196704_GNI_std_Wm2 = W/m^2
+Alias SMP10_196704_data(3) = SMP10_196704_temperature_degC: Units SMP10_196704_temperature_degC = degC
 
 'SMP12 - SN: 233555
 Const SMP12_233555_modbus_addr = 15
@@ -74,93 +73,93 @@ Dim SMP12_233555_result_code_float As Long
 Dim SMP12_233555_raw_data_signed(5) As Long
 Dim SMP12_233555_raw_data_unsigned(2) As Long
 Dim SMP12_233555_raw_data_float(2) As Float
-Public SMP12_233555_data(8) As Float
+Public SMP12_233555_data(7) As Float = NAN
 Alias SMP12_233555_data(1) = SMP12_233555_GHI_Wm2: Units SMP12_233555_GHI_Wm2 = W/m^2
 Alias SMP12_233555_data(2) = SMP12_233555_GHI_raw_Wm2: Units SMP12_233555_GHI_raw_Wm2 = W/m^2
-Alias SMP12_233555_data(3) = SMP12_233555_GHI_std_Wm2: Units SMP12_233555_GHI_std_Wm2 = W/m^2
-Alias SMP12_233555_data(4) = SMP12_233555_temperature_degC: Units SMP12_233555_temperature_degC = degC
-Alias SMP12_233555_data(5) = SMP12_233555_tilt_deg: Units SMP12_233555_tilt_deg = deg
-Alias SMP12_233555_data(6) = SMP12_233555_rh_per: Units SMP12_233555_rh_per = %
-Alias SMP12_233555_data(7) = SMP12_233555_roll_deg: Units SMP12_233555_roll_deg = deg
-Alias SMP12_233555_data(8) = SMP12_233555_pitch_deg: Units SMP12_233555_pitch_deg = deg
+'Alias SMP12_233555_data(3) = SMP12_233555_GHI_std_Wm2: Units SMP12_233555_GHI_std_Wm2 = W/m^2
+Alias SMP12_233555_data(3) = SMP12_233555_temperature_degC: Units SMP12_233555_temperature_degC = degC
+Alias SMP12_233555_data(4) = SMP12_233555_tilt_deg: Units SMP12_233555_tilt_deg = deg
+Alias SMP12_233555_data(5) = SMP12_233555_rh_per: Units SMP12_233555_rh_per = %
+Alias SMP12_233555_data(6) = SMP12_233555_roll_deg: Units SMP12_233555_roll_deg = deg
+Alias SMP12_233555_data(7) = SMP12_233555_pitch_deg: Units SMP12_233555_pitch_deg = deg
 
 'SMP22 - SN: 200057
 Const SMP22_200057_modbus_addr = 12
 Dim SMP22_200057_result_code As Long
 Dim SMP22_200057_scale_factor As Float
 Dim SMP22_200057_raw_data(5) As Long
-Public SMP22_200057_data(4) As Float
+Public SMP22_200057_data(3) As Float = NAN
 Alias SMP22_200057_data(1) = SMP22_200057_GHI_Wm2: Units SMP22_200057_GHI_Wm2 = W/m^2
 Alias SMP22_200057_data(2) = SMP22_200057_GHI_raw_Wm2: Units SMP22_200057_GHI_raw_Wm2 = W/m^2
-Alias SMP22_200057_data(3) = SMP22_200057_GHI_std_Wm2: Units SMP22_200057_GHI_std_Wm2 = W/m^2
-Alias SMP22_200057_data(4) = SMP22_200057_temperature_degC: Units SMP22_200057_temperature_degC = degC
+'Alias SMP22_200057_data(3) = SMP22_200057_GHI_std_Wm2: Units SMP22_200057_GHI_std_Wm2 = W/m^2
+Alias SMP22_200057_data(3) = SMP22_200057_temperature_degC: Units SMP22_200057_temperature_degC = degC
 
 'SMP22 - SN: 200060
 Const SMP22_200060_modbus_addr = 13
 Dim SMP22_200060_result_code As Long
 Dim SMP22_200060_scale_factor As Float
 Dim SMP22_200060_raw_data(5) As Long
-Public SMP22_200060_data(4) As Float
+Public SMP22_200060_data(3) As Float = NAN
 Alias SMP22_200060_data(1) = SMP22_200060_DHI_Wm2: Units SMP22_200060_DHI_Wm2 = W/m^2
 Alias SMP22_200060_data(2) = SMP22_200060_DHI_raw_Wm2: Units SMP22_200060_DHI_raw_Wm2 = W/m^2
-Alias SMP22_200060_data(3) = SMP22_200060_DHI_std_Wm2: Units SMP22_200060_DHI_std_Wm2 = W/m^2
-Alias SMP22_200060_data(4) = SMP22_200060_temperature_degC: Units SMP22_200060_temperature_degC = degC
+'Alias SMP22_200060_data(3) = SMP22_200060_DHI_std_Wm2: Units SMP22_200060_DHI_std_Wm2 = W/m^2
+Alias SMP22_200060_data(3) = SMP22_200060_temperature_degC: Units SMP22_200060_temperature_degC = degC
 
 'SGR3 - SN: 200107
 Const SGR3_200107_modbus_addr = 14
 Public SGR3_200107_result_code As Long
 Dim SGR3_200107_scale_factor As Float
 Dim SGR3_200107_raw_data(8) As Long
-Public SGR3_200107_data(7) As Float
+Public SGR3_200107_data(6) As Float = NAN
 Alias SGR3_200107_data(1) = SGR3_200107_LWN_Wm2: Units SGR3_200107_LWN_Wm2 = W/m^2
 Alias SGR3_200107_data(2) = SGR3_200107_LWN_raw_Wm2: Units SGR3_200107_LWN_raw_Wm2 = W/m^2
 Alias SGR3_200107_data(3) = SGR3_200107_LWD_Wm2: Units SGR3_200107_LWD_Wm2 = W/m^2
 Alias SGR3_200107_data(4) = SGR3_200107_LWD_raw_Wm2: Units SGR3_200107_LWD_raw_Wm2 = W/m^2
-Alias SGR3_200107_data(5) = SGR3_200107_LWN_std_Wm2: Units SGR3_200107_LWN_std_Wm2 = W/m^2
-Alias SGR3_200107_data(6) = SGR3_200107_temperature_degC: Units SGR3_200107_temperature_degC = degC
-Alias SGR3_200107_data(7) = SGR3_200107_external_voltage_V: Units SGR3_200107_external_voltage_V = V
+'Alias SGR3_200107_data(5) = SGR3_200107_LWN_std_Wm2: Units SGR3_200107_LWN_std_Wm2 = W/m^2
+Alias SGR3_200107_data(5) = SGR3_200107_temperature_degC: Units SGR3_200107_temperature_degC = degC
+Alias SGR3_200107_data(6) = SGR3_200107_external_voltage_V: Units SGR3_200107_external_voltage_V = V
 
 'Lufft WS601 - SN: 29307241115251
 Const Lufft_WS601_modbus_addr = 27
 Dim Lufft_WS601_result_code
 Dim Lufft_WS601_raw_data(13) As Long
-Public Lufft_WS601_data(13) As Float
+Public Lufft_WS601_data(13) As Float = NAN
 Alias Lufft_WS601_data(1) = Lufft_WS601_wind_direction_min_deg : Units Lufft_WS601_wind_direction_min_deg = deg
 Alias Lufft_WS601_data(2) = Lufft_WS601_wind_direction_max_deg : Units Lufft_WS601_wind_direction_max_deg = deg 
 Alias Lufft_WS601_data(3) = Lufft_WS601_compass_deg : Units Lufft_WS601_compass_deg = deg
 Alias Lufft_WS601_data(4) = Lufft_WS601_precipitation_type
-Alias Lufft_WS601_data(5) = Lufft_WS601_air_temperature_degC : Units Lufft_WS601_air_temperature_degC = degC
+Alias Lufft_WS601_data(5) = Lufft_WS601_temperature_air_degC : Units Lufft_WS601_temperature_air_degC = degC
 Alias Lufft_WS601_data(6) = Lufft_WS601_wind_gust_ms : Units Lufft_WS601_wind_gust_ms = m/s
 Alias Lufft_WS601_data(7) = Lufft_WS601_wind_speed_ms : Units Lufft_WS601_wind_speed_ms = m/s
 Alias Lufft_WS601_data(8) = Lufft_WS601_precipitation_cumulative_mm : Units Lufft_WS601_precipitation_cumulative_mm = mm
 Alias Lufft_WS601_data(9) = Lufft_WS601_precipitation_mm : Units Lufft_WS601_precipitation_mm = mm
 Alias Lufft_WS601_data(10) = Lufft_WS601_precipitation_intensity_mmh : Units Lufft_WS601_precipitation_intensity_mmh = mm/h
 Alias Lufft_WS601_data(11) = Lufft_WS601_humidity_relative_per : Units Lufft_WS601_humidity_relative_per = %
-Alias Lufft_WS601_data(12) = Lufft_WS601_air_pressure_relative_hPa : Units Lufft_WS601_air_pressure_relative_hPa = hPa
-Alias Lufft_WS601_data(13) = Lufft_WS601_air_pressure_absolute_hPa : Units Lufft_WS601_air_pressure_absolute_hPa = hPa
+Alias Lufft_WS601_data(12) = Lufft_WS601_pressure_relative_air_hPa : Units Lufft_WS601_pressure_relative_air_hPa = hPa
+Alias Lufft_WS601_data(13) = Lufft_WS601_pressure_absolute_air_hPa : Units Lufft_WS601_pressure_absolute_air_hPa = hPa
 
 'Pulse measurements for CVF4
-Public CVF4_193087_speed_GHI_Hz As Float: Units CVF4_193087_speed_GHI_Hz = Hz
-Public CVF4_193086_speed_DHI_Hz As Float: Units CVF4_193086_speed_DHI_Hz = Hz
-Public CVF4_247678_speed_LWD_Hz As Float: Units CVF4_247678_speed_LWD_Hz = Hz
+Public CVF4_193087_speed_GHI_Hz As Float = NAN: Units CVF4_193087_speed_GHI_Hz = Hz
+Public CVF4_193086_speed_DHI_Hz As Float = NAN: Units CVF4_193086_speed_DHI_Hz = Hz
+Public CVF4_247678_speed_LWD_Hz As Float = NAN: Units CVF4_247678_speed_LWD_Hz = Hz
 
 'CHP1 - SN: 140049
-Public CHP1_140049_DNI_mV As Float: Units CHP1_140049_DNI_mV = mV
-Dim CHP1_140049_temperature_ohm_100 As Float 'Unit is x100 Ohms due to ref. resistance (4WPB100)
-Public CHP1_140049_temperature_ohm As Float: Units CHP1_140049_temperature_ohm = ohm
-Public CHP1_140049_temperature_degC As Float: Units CHP1_140049_temperature_degC = degC
+Public CHP1_140049_DNI_mV As Float = NAN: Units CHP1_140049_DNI_mV = mV
+Dim CHP1_140049_temperature_ohm_100 As Float = NAN 'Unit Is x100 Ohms due To ref. resistance (4WPB100)
+Public CHP1_140049_temperature_ohm As Float = NAN: Units CHP1_140049_temperature_ohm = ohm
+Public CHP1_140049_temperature_degC As Float = NAN: Units CHP1_140049_temperature_degC = degC
 
 'CGR4 - SN: 170223
-Public CGR4_170223_LWD_mV As Float: Units CGR4_170223_LWD_mV = mV
-Dim CGR4_170223_temperature_ohm_100 As Float 'Unit is x100 Ohms due to ref. resistance (4WPB100)
-Public CGR4_170223_temperature_ohm As Float: Units CGR4_170223_temperature_ohm = ohm
-Public CGR4_170223_temperature_degC As Float: Units CGR4_170223_temperature_degC = degC
+Public CGR4_170223_LWD_mV As Float = NAN: Units CGR4_170223_LWD_mV = mV
+Dim CGR4_170223_temperature_ohm_100 As Float = NAN 'Unit is x100 Ohms due to ref. resistance (4WPB100)
+Public CGR4_170223_temperature_ohm As Float = NAN: Units CGR4_170223_temperature_ohm = ohm
+Public CGR4_170223_temperature_degC As Float = NAN: Units CGR4_170223_temperature_degC = degC
 
 'CMP11 - SN: 128767
-Public CMP11_128767_GHI_mV As Float: Units CMP11_128767_GHI_mV = mV
+Public CMP11_128767_GHI_mV As Float = NAN: Units CMP11_128767_GHI_mV = mV
 
 'CMP11 - SN: 128758
-Public CMP11_128758_DHI_mV As Float: Units CMP11_128758_DHI_mV = mV
+Public CMP11_128758_DHI_mV As Float = NAN: Units CMP11_128758_DHI_mV = mV
 
 'Time_out - wait time for a modbus call
 Const MODBUS_TIMEOUT = 3 ' [multiple of 0.01 seconds]
@@ -229,45 +228,26 @@ Public TStamp As String * 32 : Alias TStamp = Time
 'Public Primary_slow_filename As String * 64
 
 'Declare other variables
-Public CR1000X_primary_temperature_degC As Float: Units CR1000X_primary_temperature_degC = degC
+Public CR1000X_primary_temperature_degC As Float = NAN: Units CR1000X_primary_temperature_degC = degC
 
 'Save data to Table
 DataTable(Fast_table_primary, 1, -1)
   TableFile("CRD:"&TStamp_format_6&"_primary_fast_table",11,-1,0,1,Day,0,0)
   DataInterval(0,1,Sec,0)
   Sample(1,TStamp,String)
-  Sample(2,SHP1_185163_data(),IEEE4) 'irradiance values
-  'Sample(1,SHP1_185163_data(3),FP2) 'do we want to save the irradiance std?
-  Sample(1,SHP1_185163_data(4),FP2)
-  Sample(2,SMP10_248585_data(),IEEE4) 'irradiance values
-  'Sample(1,SMP10_248585_data(3),FP2) 'do we want to save the irradiance std?
-  Sample(1,SMP10_248585_data(4),FP2)
-  Sample(2,SMP10_196704_data(),IEEE4) 'irradiance values
-  'Sample(1,SMP10_196704_data(3),FP2) 'do we want to save the irradiance std? 
-  Sample(1,SMP10_196704_data(4),FP2)
-  Sample(2,SMP12_233555_data(),IEEE4) 'irradiance values
-  'Sample(1,SMP12_233555_data(3),FP2) 'do we want to save the irradiance std?  
-  Sample(1,SMP12_233555_data(4),FP2)
-  Sample(1,SMP12_233555_data(5),FP2)
-  Sample(1,SMP12_233555_data(6),FP2)
-  Sample(1,SMP12_233555_data(7),FP2)
-  Sample(1,SMP12_233555_data(8),FP2)   
-  Sample(2,SMP22_200057_data(),IEEE4) 'irradiance values
-  'Sample(1,SMP22_200057_data(3),FP2) 'do we want to save the irradiance std?
-  Sample(1,SMP22_200057_data(4),FP2)
-  Sample(2,SMP22_200060_data(),IEEE4) 'irradiance values
-  'Sample(1,SMP22_200060_data(3),FP2) 'do we want to save the irradiance std?
-  Sample(1,SMP22_200060_data(4),FP2)
-  Sample(4,SGR3_200107_data(),IEEE4) 'irradiance values
-  'Sample(1,SGR3_200107_data(5),FP2) 'do we want to save the irradiance std?
-  Sample(1,SGR3_200107_data(6),FP2)
-  'Sample(1,SGR3_200107_data(7),FP2) 'do we want to save the external power?
-  Sample(1,CHP1_140049_DNI_mV,FP2)
-  Sample(1,CHP1_140049_temperature_ohm,FP2)
-  Sample(1,CHP1_140049_temperature_degC,FP2)
+  Sample(3,SHP1_185163_data(),IEEE4)
+  Sample(3,SMP10_248585_data(),IEEE4)
+  Sample(3,SMP10_196704_data(),IEEE4) 
+  Sample(7,SMP12_233555_data(),IEEE4)   
+  Sample(3,SMP22_200057_data(),IEEE4)
+  Sample(3,SMP22_200060_data(),IEEE4)
+  Sample(6,SGR3_200107_data(),IEEE4)
+  Sample(1,CHP1_140049_DNI_mV,IEEE4)
+  Sample(1,CHP1_140049_temperature_ohm,IEEE4)
+  Sample(1,CHP1_140049_temperature_degC,IEEE4)
   Sample(1,CGR4_170223_LWD_mV,IEEE4)
-  Sample(1,CGR4_170223_temperature_ohm,FP2)
-  Sample(1,CGR4_170223_temperature_degC,FP2)
+  Sample(1,CGR4_170223_temperature_ohm,IEEE4)
+  Sample(1,CGR4_170223_temperature_degC,IEEE4)
   Sample(1,CMP11_128767_GHI_mV,IEEE4)
   Sample(1,CMP11_128758_DHI_mV,IEEE4)
 EndTable
@@ -276,13 +256,10 @@ DataTable(Slow_table_primary, 1, - 1)
   TableFile("CRD:"&TStamp_format_6&"_primary_slow_table",11,-1,0,1,Day,0,0)
   DataInterval(0,10,Sec,0)
   Sample(1,TStamp,String)
-  Sample(1,CVF4_193087_speed_GHI_Hz,FP2,False)
-  Sample(1,CVF4_193086_speed_DHI_Hz,FP2,False)
-  Sample(1,CVF4_247678_speed_LWD_Hz,FP2,False)
-  Sample(9,Lufft_WS601_data(),FP2)
-  Sample(1,Lufft_WS601_data(11),IEEE4)
-  Sample(1,Lufft_WS601_data(12),IEEE4)
-  Sample(1,Lufft_WS601_data(13),IEEE4)
+  Sample(1,CVF4_193087_speed_GHI_Hz,IEEE4,False)
+  Sample(1,CVF4_193086_speed_DHI_Hz,IEEE4,False)
+  Sample(1,CVF4_247678_speed_LWD_Hz,IEEE4,False)
+  Sample(13,Lufft_WS601_data(),IEEE4)
   Sample(1,Solys2_140027_azimuth_deg,IEEE4)
   Sample(1,Solys2_140027_tilt_deg,IEEE4)
   Sample(1,CR1000X_primary_temperature_degC,IEEE4)
@@ -310,103 +287,140 @@ BeginProg
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SHP1 (serial number: 185163)
     ModbusClient(SHP1_185163_result_code,ComC5,19200,SHP1_185163_modbus_addr,4,SHP1_185163_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode Is 0 If communication Is successful otherwise set To NAN
-    If SHP1_185163_result_code <> 0 Then SHP1_185163_raw_data() = NAN
     SHP1_185163_scale_factor = kipp_zonen_scale_factor(SMP10_248585_raw_data(1)) 'Convert scale code to scale factor using function
     SHP1_185163_data(1) = SHP1_185163_raw_data(2) * SHP1_185163_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SHP1_185163_data(2) = SHP1_185163_raw_data(3) * SHP1_185163_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SHP1_185163_data(3) = SHP1_185163_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SHP1_185163_data(4) = SHP1_185163_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'SHP1_185163_data(3) = SHP1_185163_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SHP1_185163_data(3) = SHP1_185163_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode Is 0 If communication Is successful otherwise set To NAN
+    If SHP1_185163_result_code <> 0 Then
+       SHP1_185163_data(1) = NAN
+       SHP1_185163_data(2) = NAN
+       SHP1_185163_data(3) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SMP10 (serial number: 248585)    
     ModbusClient(SMP10_248585_result_code,ComC5,19200,SMP10_248585_modbus_addr,4,SMP10_248585_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SMP10_248585_result_code <> 0 Then SMP10_248585_raw_data() = NAN
     SMP10_248585_scale_factor = kipp_zonen_scale_factor(SMP10_248585_raw_data(1)) 'Convert scale code to scale factor using function
     SMP10_248585_data(1) = SMP10_248585_raw_data(2) * SMP10_248585_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SMP10_248585_data(2) = SMP10_248585_raw_data(3) * SMP10_248585_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SMP10_248585_data(3) = SMP10_248585_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SMP10_248585_data(4) = SMP10_248585_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'SMP10_248585_data(3) = SMP10_248585_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SMP10_248585_data(3) = SMP10_248585_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SMP10_248585_result_code <> 0 Then
+       SMP10_248585_data(1) = NAN
+       SMP10_248585_data(2) = NAN
+       SMP10_248585_data(3) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SMP10 (serial number: 196704)
     ModbusClient(SMP10_196704_result_code,ComC5,19200,SMP10_196704_modbus_addr,4,SMP10_196704_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SMP10_196704_result_code <> 0 Then SMP10_196704_raw_data() = NAN
     SMP10_196704_scale_factor = kipp_zonen_scale_factor(SMP10_196704_raw_data(1)) 'Convert scale code to scale factor using function
     SMP10_196704_data(1) = SMP10_196704_raw_data(2) * SMP10_196704_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SMP10_196704_data(2) = SMP10_196704_raw_data(3) * SMP10_196704_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SMP10_196704_data(3) = SMP10_196704_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SMP10_196704_data(4) = SMP10_196704_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'SMP10_196704_data(3) = SMP10_196704_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SMP10_196704_data(3) = SMP10_196704_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SMP10_196704_result_code <> 0 Then
+       SMP10_196704_data(1) = NAN
+       SMP10_196704_data(2) = NAN
+       SMP10_196704_data(3) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SMP12 (serial number: 233555)
-    ModbusClient(SMP12_233555_result_code_signed,ComC5,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_signed(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SMP12_233555_result_code_signed <> 0 Then SMP12_233555_raw_data_signed() = NAN
+    ModbusClient(SMP12_233555_result_code_signed,ComC7,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_signed(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
     SMP12_233555_scale_factor = kipp_zonen_scale_factor(SMP12_233555_raw_data_signed(1)) 'Convert scale code to scale factor using function
     SMP12_233555_data(1) = SMP12_233555_raw_data_signed(2) * SMP12_233555_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SMP12_233555_data(2) = SMP12_233555_raw_data_signed(3) * SMP12_233555_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SMP12_233555_data(3) = SMP12_233555_raw_data_signed(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SMP12_233555_data(4) = SMP12_233555_raw_data_signed(5) * 0.1 'Register 8 - Body temperature
+    'SMP12_233555_data(3) = SMP12_233555_raw_data_signed(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SMP12_233555_data(3) = SMP12_233555_raw_data_signed(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SMP12_233555_result_code_signed <> 0 Then
+       SMP12_233555_data(1) = NAN
+       SMP12_233555_data(2) = NAN
+       SMP12_233555_data(3) = NAN
+    EndIf
 
-    ModbusClient(SMP12_233555_result_code_unsigned(),ComC5,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_unsigned(),15+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
-    If SMP12_233555_result_code_unsigned <> 0 Then SMP12_233555_raw_data_unsigned() = NAN
-    SMP12_233555_data(5) = SMP12_233555_raw_data_unsigned(1) * 0.1 'Register 15 - Tilt of the sensor
-    SMP12_233555_data(6) = SMP12_233555_raw_data_unsigned(2) * 0.1 'Register 16 - Internal relative humidity
+    ModbusClient(SMP12_233555_result_code_unsigned(),ComC7,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_unsigned(),15+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,3)
+    SMP12_233555_data(4) = SMP12_233555_raw_data_unsigned(1) * 0.1 'Register 15 - Tilt of the sensor
+    SMP12_233555_data(5) = SMP12_233555_raw_data_unsigned(2) * 0.1 'Register 16 - Internal relative humidity
+    If SMP12_233555_result_code_unsigned <> 0 Then
+       SMP12_233555_data(4) = NAN
+       SMP12_233555_data(5) = NAN
+    EndIf
     
-    ModbusClient(SMP12_233555_result_code_float(),ComC5,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_float(),20000+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
-    If SMP12_233555_result_code_float <> 0 Then SMP12_233555_raw_data_float() = NAN
-    SMP12_233555_data(7) = SMP12_233555_raw_data_float(1) 'Register 20000 - Roll of the sensor
-    SMP12_233555_data(8) = SMP12_233555_raw_data_float(2) 'Register 20002 - Pitch of the sensor
+    ModbusClient(SMP12_233555_result_code_float(),ComC7,19200,SMP12_233555_modbus_addr,4,SMP12_233555_raw_data_float(),20000+1,2,MODBUS_RETRIES,MODBUS_TIMEOUT,2)
+    SMP12_233555_data(6) = Round(SMP12_233555_raw_data_float(1),2) 'Register 20000 - Roll of the sensor
+    SMP12_233555_data(7) = Round(SMP12_233555_raw_data_float(2),2) 'Register 20002 - Pitch of the sensor
+    If SMP12_233555_result_code_float <> 0 Then
+       SMP12_233555_data(6) = NAN
+       SMP12_233555_data(7) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SMP22 (serial number: 200057)
-    ModbusClient(SMP22_200057_result_code,ComC7,19200,SMP22_200057_modbus_addr,4,SMP22_200057_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SMP22_200057_result_code <> 0 Then SMP22_200057_raw_data() = NAN
+    ModbusClient(SMP22_200057_result_code,ComC5,19200,SMP22_200057_modbus_addr,4,SMP22_200057_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
     SMP22_200057_scale_factor = kipp_zonen_scale_factor(SMP22_200057_raw_data(1)) 'Convert scale code to scale factor using function
     SMP22_200057_data(1) = SMP22_200057_raw_data(2) * SMP22_200057_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SMP22_200057_data(2) = SMP22_200057_raw_data(3) * SMP22_200057_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SMP22_200057_data(3) = SMP22_200057_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SMP22_200057_data(4) = SMP22_200057_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'SMP22_200057_data(3) = SMP22_200057_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SMP22_200057_data(3) = SMP22_200057_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SMP22_200057_result_code <> 0 Then
+       SMP22_200057_data(1) = NAN
+       SMP22_200057_data(2) = NAN
+       SMP22_200057_data(3) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SMP22 (serial number: 200060)
     ModbusClient(SMP22_200060_result_code,ComC7,19200,SMP22_200060_modbus_addr,4,SMP22_200060_raw_data(),4+1,5,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SMP22_200060_result_code <> 0 Then SMP22_200060_raw_data() = NAN
     SMP22_200060_scale_factor = kipp_zonen_scale_factor(SMP22_200060_raw_data(1)) 'Convert scale code to scale factor using function
     SMP22_200060_data(1) = SMP22_200060_raw_data(2) * SMP22_200060_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SMP22_200060_data(2) = SMP22_200060_raw_data(3) * SMP22_200060_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SMP22_200060_data(3) = SMP22_200060_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SMP22_200060_data(4) = SMP22_200060_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'SMP22_200060_data(3) = SMP22_200060_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SMP22_200060_data(3) = SMP22_200060_raw_data(5) * 0.1 'Register 8 - Body temperature
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SMP22_200060_result_code <> 0 Then
+       SMP22_200060_data(1) = NAN
+       SMP22_200060_data(2) = NAN
+       SMP22_200060_data(3) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SGR3 (serial number: 200107)
     ModbusClient(SGR3_200107_result_code,ComC7,19200,SGR3_200107_modbus_addr,4,SGR3_200107_raw_data(),4+1,8,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    'ResultCode is 0 if communication is successful otherwise set to NAN
-    If SGR3_200107_result_code <> 0 Then SGR3_200107_raw_data() = NAN
     SGR3_200107_scale_factor = kipp_zonen_scale_factor(SGR3_200107_raw_data(1)) 'Convert scale code to scale factor using function
     SGR3_200107_data(1) = SGR3_200107_raw_data(2) * SGR3_200107_scale_factor 'Register 5 - Temperature compensated radiation in W/m2
     SGR3_200107_data(2) = SGR3_200107_raw_data(3) * SGR3_200107_scale_factor 'Register 6 - Raw sensor data - calibrated but not linearized or temperature compensated  
-    SGR3_200107_data(5) = SGR3_200107_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
-    SGR3_200107_data(6) = SGR3_200107_raw_data(5) * 0.1 'Register 8 - Body temperature
-    SGR3_200107_data(7) = SGR3_200107_raw_data(6) * 0.1 'Register 9 - External power voltage
+    'SGR3_200107_data(5) = SGR3_200107_raw_data(4) * 0.1 'Register 7 - Standard deviation IO_SENSOR1_DATA
+    SGR3_200107_data(5) = SGR3_200107_raw_data(5) * 0.1 'Register 8 - Body temperature
+    SGR3_200107_data(6) = SGR3_200107_raw_data(6) * 0.1 'Register 9 - External power voltage
     SGR3_200107_data(3) = SGR3_200107_raw_data(7) * SGR3_200107_scale_factor 'Register 10 - Longwave down irradiance (temperature compensated) in W/m2
     SGR3_200107_data(4) = SGR3_200107_raw_data(8) * SGR3_200107_scale_factor 'Register 11 - Raw longwave down irradiance (temperature compensated) in W/m2
+    'ResultCode is 0 if communication is successful otherwise set to NAN
+    If SGR3_200107_result_code <> 0 Then
+       SGR3_200107_data(1) = NAN
+       SGR3_200107_data(2) = NAN
+       SGR3_200107_data(3) = NAN
+       SGR3_200107_data(4) = NAN
+       SGR3_200107_data(5) = NAN
+       SGR3_200107_data(6) = NAN
+    EndIf
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
@@ -421,31 +435,82 @@ BeginProg
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'CHP1 (serial number: 140049)
     VoltDiff(CHP1_140049_DNI_mV,1,mV200C,1,True,0,50,1.0,0)
+    CHP1_140049_DNI_mV = Round(CHP1_140049_DNI_mV, 5)
     BrHalf4W(CHP1_140049_temperature_ohm_100,1,mv200C,mv200C,2,Vx1,1,2100,False,True,0,50,1.0,0)
-    CHP1_140049_temperature_ohm = CHP1_140049_temperature_ohm_100 * 100
+    CHP1_140049_temperature_ohm = Round(CHP1_140049_temperature_ohm_100 * 100, 3)
     PRTCalc(CHP1_140049_temperature_degC,1,CHP1_140049_temperature_ohm/100,1,1,0)
+    CHP1_140049_temperature_degC = Round(CHP1_140049_temperature_degC, 2)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'CGR4 (serial number: 170223)
     VoltDiff(CGR4_170223_LWD_mV,1,mV200C,5,True,0,50,1.0,0)
+    CGR4_170223_LWD_mV = Round(CGR4_170223_LWD_mV, 5)
     BrHalf4W(CGR4_170223_temperature_ohm_100,1,mv200C,mv200C,6,Vx3,1,2100,False,True,0,50,1.0,0)
-    CGR4_170223_temperature_ohm = CGR4_170223_temperature_ohm_100 * 100
+    CGR4_170223_temperature_ohm = Round(CGR4_170223_temperature_ohm_100 * 100, 3)
     PRTCalc(CGR4_170223_temperature_degC,1,CGR4_170223_temperature_ohm/100,1,1,0)
+    CGR4_170223_temperature_degC = Round(CGR4_170223_temperature_degC, 2)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'CMP11 - (serial number: 128767)
     VoltDiff(CMP11_128767_GHI_mV,1,mV200C,4,True,0,50,1.0,0)
+    CMP11_128767_GHI_mV = Round(CMP11_128767_GHI_mV, 5)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'CMP11 - (serial number: 128758)
     VoltDiff(CMP11_128758_DHI_mV,1,mV200C,8,True,0,50,1.0,0)
+    CMP11_128758_DHI_mV = Round(CMP11_128758_DHI_mV, 5)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    'Lufft WS601 (serial number: 29307241115251)
+    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),13+1,13,MODBUS_RETRIES,MODBUS_TIMEOUT+2,1)
+    Lufft_WS601_data(11) = Lufft_WS601_raw_data(1) / 10 'Register 13+1 - relative humidity
+    Lufft_WS601_data(12) = Lufft_WS601_raw_data(5) / 10 'Register 17+3 - relative air pressure
+    Lufft_WS601_data(1) = Lufft_WS601_raw_data(7) / 10 'Register 19+1 - wind direction (min)
+    Lufft_WS601_data(2) = Lufft_WS601_raw_data(8) / 10 'Register 20+1 - wind direction (max)
+    Lufft_WS601_data(3) = Lufft_WS601_raw_data(12) / 10 'Register 24+1 - compass
+    Lufft_WS601_data(4) = Lufft_WS601_raw_data(13) 'Register 25+1 - precipitation type
+    If Lufft_WS601_result_code <> 0 Then
+       Lufft_WS601_data(11) = NAN
+       Lufft_WS601_data(12) = NAN
+       Lufft_WS601_data(1) = NAN
+       Lufft_WS601_data(2) = NAN
+       Lufft_WS601_data(3) = NAN
+       Lufft_WS601_data(4) = NAN
+    EndIf
+
+    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),34+1,12,MODBUS_RETRIES,MODBUS_TIMEOUT+1,1)
+    Lufft_WS601_data(5) = Lufft_WS601_raw_data(1) / 10 'Register 34+1 - ambient air temperature
+    Lufft_WS601_data(6) = Lufft_WS601_raw_data(11) / 10 'Register 44+1 - wind gust speed
+    Lufft_WS601_data(7) = Lufft_WS601_raw_data(12) / 10 'Register 45+1 - wind speed
+    If Lufft_WS601_result_code <> 0 Then
+       Lufft_WS601_data(5) = NAN
+       Lufft_WS601_data(6) = NAN
+       Lufft_WS601_data(7) = NAN
+    EndIf
+    
+    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),48+1,3,MODBUS_RETRIES,MODBUS_TIMEOUT+2,3)
+    Lufft_WS601_data(8) = Lufft_WS601_raw_data(1) / 100 'Register 48+1 - abs. precipitation
+    Lufft_WS601_data(9) = Lufft_WS601_raw_data(2) / 100 'Register 49+1 - precipitation diff
+    Lufft_WS601_data(10) = Lufft_WS601_raw_data(3) / 100 'Register 50+1 - precipitation intensity
+    If Lufft_WS601_result_code <> 0 Then
+       Lufft_WS601_data(8) = NAN
+       Lufft_WS601_data(9) = NAN
+       Lufft_WS601_data(10) = NAN
+    EndIf
+
+    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),82+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
+    Lufft_WS601_data(13) = Lufft_WS601_raw_data(1) / 10 'Register 82+1 - abs. air pressure
+    If Lufft_WS601_result_code <> 0 Then Lufft_WS601_data(13) = NAN
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
 
     'Check the time drift every 12 hrs and reset to UTC if deviation >10 ms
     If IfTime(0,12,Hr) Then NetworkTimeProtocol("ntp.ait.dtu.dk",0,10)
@@ -457,39 +522,11 @@ BeginProg
 
 
   SlowSequence
-
     Scan(10,Sec,2,0)
 
     PanelTemp(CR1000X_primary_temperature_degC,50)
 
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    'Lufft WS601 (serial number: 29307241115251)
-    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),13+1,13,MODBUS_RETRIES,6,1)
-    If Lufft_WS601_result_code <> 0 Then Lufft_WS601_raw_data() = NAN
-    Lufft_WS601_data(11) = Lufft_WS601_raw_data(1) / 10 'Register 13+1 - relative humidity
-    Lufft_WS601_data(12) = Lufft_WS601_raw_data(5) / 10 'Register 17+3 - relative air pressure
-    Lufft_WS601_data(1) = Lufft_WS601_raw_data(7) / 10 'Register 19+1 - wind direction (min)
-    Lufft_WS601_data(2) = Lufft_WS601_raw_data(8) / 10 'Register 20+1 - wind direction (max)
-    Lufft_WS601_data(3) = Lufft_WS601_raw_data(12) / 10 'Register 24+1 - compass
-    Lufft_WS601_data(4) = Lufft_WS601_raw_data(13) 'Register 25+1 - precipitation type
-
-    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),34+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    If Lufft_WS601_result_code <> 0 Then Lufft_WS601_raw_data() = NAN
-    Lufft_WS601_data(5) = Lufft_WS601_raw_data(1) / 10 'Register 34+1 - ambient air temperature
-
-    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),44+1,7,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    If Lufft_WS601_result_code <> 0 Then Lufft_WS601_raw_data() = NAN
-    Lufft_WS601_data(6) = Lufft_WS601_raw_data(1) / 10 'Register 44+1 - wind gust speed
-    Lufft_WS601_data(7) = Lufft_WS601_raw_data(2) / 10 'Register 45+1 - wind speed
-    Lufft_WS601_data(8) = Lufft_WS601_raw_data(5) / 100 'Register 48+1 - abs. precipitation
-    Lufft_WS601_data(9) = Lufft_WS601_raw_data(6) / 100 'Register 49+1 - precipitation diff
-    Lufft_WS601_data(10) = Lufft_WS601_raw_data(7) / 100 'Register 50+1 - precipitation intensity
-
-    ModbusClient(Lufft_WS601_result_code,ComC7,19200,Lufft_WS601_modbus_addr,4,Lufft_WS601_raw_data(),82+1,1,MODBUS_RETRIES,MODBUS_TIMEOUT,1)
-    If Lufft_WS601_result_code <> 0 Then Lufft_WS601_raw_data() = NAN
-    Lufft_WS601_data(13) = Lufft_WS601_raw_data(1) / 10 'Register 82+1 - abs. air pressure
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     'SOLYS2 - (serial number: 140027)
     Socket = TCPOpen("10.61.1.161",15000,100)
     Call calchecksum 'Call subroutine to calculate checksum and add it to the current position command
@@ -499,7 +536,15 @@ BeginProg
     Solys2_140027_azimuth_deg = Round(Position(1), 2)
     Solys2_140027_tilt_deg = Round(Position(2), 2)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
+		CallTable Slow_table_primary
+	  NextScan
+  EndSequence	
 
+
+  SlowSequence
+    Scan(1,Min,2,0)
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     ' Set scale factor of Kipp & Zonen smart pyranometers
     ' The tries and timeouts have been increased to ensure that the scale factors are set
     ModbusClient(Scale_code_result_code(1),ComC5,19200,SHP1_185163_modbus_addr,4,Scale_code_initial(1),34+1,1,3,5,1)
@@ -523,8 +568,8 @@ BeginProg
     
     ModbusClient(Scale_code_result_code(7),ComC7,19200,SMP22_200060_modbus_addr,4,Scale_code_initial(7),34+1,1,3,5,1)
     If Scale_code_initial(7) <> 1 Then ModbusClient(Scale_code_result_code(7),ComC7,19200,SMP22_200060_modbus_addr,6,SCALE_CODE,34+1,1,3,5,1)
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-		CallTable Slow_table_primary
 	  NextScan
   EndSequence	
 
