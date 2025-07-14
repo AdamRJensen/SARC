@@ -7,7 +7,15 @@ import pvlib
 import os
 
 # %%
+# Better calculate Calc_from-GHI-DNI_DHI and Calc_from-DHI-DNI_GHI (they have spikes)
+# Calculate bias, rmse (for elevation above > 5deg)
+# Create bias/rmse function
 
+
+# Assess duplicate columns
+# dsdf.columns[df.columns.duplicated(keep=False)]
+
+# %%
 
 # This probably doesn't work for duplicated time stamps
 def asfreq_with_report(df, freq, round_value=None, report=False):
@@ -28,6 +36,21 @@ def asfreq_with_report(df, freq, round_value=None, report=False):
         print(f"Removed:    {len(removed)}")
         print(f"Added:      {len(added)}")
     return df_new
+
+
+def calculate_metrics(reference, test, condition=None):
+    if len(reference) != len(test):
+        raise ValueError("Reference and test data does not have the same length.")
+    if condition is None:
+        condition = np.ones(len(reference)).astype(bool)
+    metrics = {
+        'rmse': np.sqrt(np.mean((test[condition] - reference[condition])**2)),
+        'bias': np.mean(test[condition] - reference[condition]),
+    }
+    reference_mean = np.mean(reference[condition])
+    metrics['rmse_percent'] = metrics['rmse'] / reference_mean * 100
+    metrics['bias_percent'] = metrics['bias'] / reference_mean * 100
+    return metrics
 
 
 def pt_temperature(resistance, ohms_at_zero_c=100):
@@ -76,6 +99,9 @@ column_rename_dict = {
     'Lufft_WS601_air_pressure_relative_hPa': 'Lufft_WS601_pressure_relative_air_hPa',
     'Lufft_WS601_abs_air_pressure_hPa': 'Lufft_WS601_pressure_absolute_air_hPa',
     'Lufft_WS601_air_pressure_absolute_hPa': 'Lufft_WS601_pressure_absolute_air_hPa',
+    # Unknown date
+    'SPN1_A270_Heater_ratio': 'SPN1_A270_heater_ratio',
+    'SPN1_A270_Sun_ratio': 'SPN1_A270_sun_ratio',
 }
 
 
@@ -83,19 +109,32 @@ def get_file_date(file):
     return pd.to_datetime(os.path.basename(file)[:19], format='%Y-%m-%d_%H-%M-%S')
 
 
-def select_files_from_period(files, start, end):
-    offset = pd.Timedelta(days=1)  # due to file naming convention
-    start = pd.Timestamp(start) + offset
-    end = pd.Timestamp(end) + offset
-    files = [f for f in files if (get_file_date(f) >= start) & (get_file_date(f) <= end)]
+def select_files_from_period(files, start=None, end=None, days_offset=0):
+    offset = pd.Timedelta(days=days_offset)  # due to file naming convention
+    if start is not None:
+        start = pd.Timestamp(start) + offset
+        files = [f for f in files if get_file_date(f) >= start]
+    if end is not None:
+        end = pd.Timestamp(end) + offset
+        files = [f for f in files if get_file_date(f) <= end]
     return files
 
 
-# %%
+def combined_columns(df, column):
+    if column in df.columns[df.columns.duplicated()]:
+        temp_c = df[column].copy()
+        del df[column]
+        df[column] = temp_c.iloc[:, 0].values
+        df.loc[df[column].isna(), column] = temp_c.iloc[:, 1]
+    return df
+
+# %% Read data
 path = 'C:/Users/arajen/Downloads/station_data/'
 
-start = '2025-04-15'
-end = '2025-05-05'
+start = pd.Timestamp.today() - pd.Timedelta(days=7)
+end = pd.Timestamp.today()
+# start = '2025-01-01'
+# end = '2025-04-10'
 
 na_values = [
     "NAN",  # crbasic convention for floats
@@ -128,11 +167,53 @@ for speed in ['Fast', 'Slow']:
             dfi = dfi[~duplicated_rows]
         dfs.append(dfi)
 
-df_raw = pd.concat(dfs, axis='columns')
+df_raw = pd.concat(dfs, axis='columns', join='outer')
+
+# Resolve duplicated column names
+# This was caused by moving the parameter from fast to slow scan
+df_raw = combined_columns(df_raw, 'DR30_65086_temperature_degC')
+df_raw = combined_columns(df_raw, 'SR30_23485_temperature_degC')
 
 df = asfreq_with_report(df_raw, freq='1s', round_value='1s', report=True)
 
 df = df.resample('1min').mean()
+
+
+# %% Corrections
+df.loc['2025-04-06 12:00':'2025-04-07 23:59', 'StarSchenk_7773_GHI_mV'] = np.nan
+df.loc['2025-06-03 10:00':'2025-06-17 14:00', 'StarSchenk_7773_GHI_mV'] = np.nan
+df.loc['2025-05-23 10:00':'2025-05-24 17:00', 'StarSchenk_7773_GHI_mV'] = np.nan
+
+df.loc[df['SPN1_A270_heater_ratio']==-524288, 'SPN1_A270_heater_ratio'] = np.nan
+
+
+# Tracker was turned off
+tracker_instruments = ['CGR4_170223', 'DR30_65086', 'CHP1_140049', 'SMP12_233555', 'SMP22_200060', 'SHP1_185163', 'SMP10_196704']
+tracker_parameters = [c for c in df.columns if '_'.join(c.split('_')[:2]) in tracker_instruments]
+df.loc['2025-07-10 09:15': '2025-07-10 10:40', tracker_parameters] = np.nan
+
+# Incorrect wiring
+df.loc['2025-07-04 14:20': '2025-07-09 23:59', [c for c in df.columns if c.startswith('SMP12')]] = np.nan
+
+# Licor bubble level was shut
+df.loc['2025-06-30 13:25': '2025-07-10 13:32', [c for c in df.columns if c.startswith('Licor')]] = np.nan
+
+# tracker shadow ball was off
+# df.loc['2025-06-30 14:00': '2025-07-03 15:00', ['SMP22_200060_GHI_Wm2', 'SMP22_200060_GHI_raw_Wm2']] = \
+df[['SMP22_200060_GHI_Wm2', 'SMP22_200060_GHI_raw_Wm2']] = \
+    df.loc['2025-06-30 14:00': '2025-07-03 15:00', ['SMP22_200060_DHI_Wm2', 'SMP22_200060_DHI_raw_Wm2']]  # .values
+
+df.loc['2025-06-30 12:00': '2025-07-03 15:00',
+        ['SMP22_200060_DHI_Wm2', 'SMP22_200060_DHI_raw_Wm2', 'SMP22_200060_temperature_degC']] = np.nan
+
+
+# df = df.rename(columns={
+#     'CMP11_128758_DHI_mV': 'Shadow-band_128758_DHI_mV',
+#     'CMP11_128758_DHI_Wm2': 'Shadow-band_128758_DHI_Wm2',
+# })
+
+# XXX end-date should be adjusted
+# df.loc['2025-05-23':, 'SP522_1265_GHI_Wm2'] = np.nan
 
 # %%
 df['StarSchenk_7773_GHI_Wm2'] = 83.8 * df['StarSchenk_7773_GHI_mV']
@@ -155,29 +236,74 @@ CHP1_140049_temperature_depency = {
 
 # %% Calculate solar position
 
-location_dtu = pvlib.location.Location(
+location = pvlib.location.Location(
     latitude=55.79064, longitude=12.52505, altitude=50)
 
-solpos = location_dtu.get_solarposition(df.index)
+solpos = location.get_solarposition(df.index)
 
-df['Calc_from-DHI-DNI_GHI_Wm2'] = \
-    df['SMP22_200060_DHI_Wm2'] + \
-    df['SHP1_185163_DNI_Wm2'] \
-    * np.clip(np.cos(np.deg2rad(solpos['apparent_zenith'])), a_min=0, a_max=None)
-df['Calc_from-GHI-DNI_DHI_Wm2'] = \
-    df['SMP22_200057_GHI_Wm2'] - \
-    df['SHP1_185163_DNI_Wm2'] \
-    * np.clip(np.cos(np.deg2rad(solpos['apparent_zenith'])), a_min=0, a_max=None)
-df['Calc_from-GHI-DHI_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
-    solpos['apparent_zenith'], ghi=df['SMP22_200057_GHI_Wm2'], dhi=df['SMP22_200060_DHI_Wm2'])['dni']
+df['solar_zenith'] = solpos['apparent_zenith']
+df['solar_elevation'] = solpos['apparent_elevation']
+df['solar_azimuth'] = solpos['azimuth']
+
+# %% Clear sky
+cams, _ = pvlib.iotools.get_cams(
+    location.latitude, location.longitude,
+    start=df.index.min(), end=df.index.max(),
+    email='arajen@dtu.dk', time_step='1min')
+
+cams = cams.reindex(df.index)
+
+df['is_clear'] = (df['DR30_65086_DNI_Wm2'] / cams['dni_clear']) > 0.9
+df['is_clear'] = df['is_clear'].rolling('30min').min()
+df['is_overcast'] = df['DR30_65086_DNI_Wm2'] < 5
+
+
+# %%
+zenith_threshold = 87
+
+df['mu'] = np.cos(np.deg2rad(solpos['apparent_zenith'])).clip(lower=0)
+
+# df['BHI'] = (df['SHP1_185163_DNI_Wm2'] * df['mu']).clip(lower=0)
+
+# df['GHI_diff'] = df['SMP22_200057_GHI_Wm2'] - df['Calc_from-DHI-DNI_GHI_Wm2']
+
+# df['GHI_diff_rel'] = (df['SMP22_200057_GHI_Wm2'] / df['Calc_from-DHI-DNI_GHI_Wm2'])*100 - 100
+
+# df['DNI_diff'] = df['SHP1_185163_DNI_Wm2'] - df['DR30_65086_DNI_Wm2']
+
+
+df['Calc_from-DHI-DNI_GHI_Wm2'] = (
+    df['SMP22_200060_DHI_Wm2'] + df['DR30_65086_DNI_Wm2'] * df['mu']).clip(lower=0)
+df.loc[df['Calc_from-DHI-DNI_GHI_Wm2'] > 1500, 'Calc_from-DHI-DNI_GHI_Wm2'] = np.nan
+
+df['Calc_from-GHI-DNI_DHI_Wm2'] = (
+    df['SMP22_200057_GHI_Wm2'] - df['SHP1_185163_DNI_Wm2'] * df['mu']).clip(lower=0)
+
+df['Calc_from-GHI-DHI_DNI_Wm2'] = (
+    df['SMP22_200057_GHI_Wm2'] - df['SMP22_200060_DHI_Wm2']).clip(lower=0) / df['mu']
+df.loc[solpos['apparent_zenith'] > zenith_threshold, 'Calc_from-GHI-DHI_DNI_Wm2'] = np.nan
+
 df['SPN1_A270_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['SPN1_A270_GHI_Wm2'], dhi=df['SPN1_A270_DHI_Wm2'])['dni']
-df['SR_Calc-SR300-SRD100_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
-    solpos['apparent_zenith'], ghi=df['SR300_45389_GHI_Wm2'], dhi=df['SRD100_14401_DHI_Wm2'])['dni']
 
-df['MS80SHplus_1209_DNI_calc_Wm2'] = pvlib.irradiance.complete_irradiance(
+df['SR_Calc-SR300-SRD100_DNI_Wm2'] = (
+    df['SR300_45389_GHI_Wm2'] - df['SRD100_14401_DHI_Wm2']).clip(lower=0) / df['mu']
+df.loc[solpos['apparent_zenith'] > zenith_threshold, 'SR_Calc-SR300-SRD100_DNI_Wm2'] = np.nan
+
+
+# df['MS80SHplus_1209_DNI_calc_Wm2'] = pvlib.irradiance.complete_irradiance(
+#     solpos['apparent_zenith'], ghi=df['MS80SHplus_1209_GHI_Wm2'], dhi=df['MS80SHplus_1209_DHI_Wm2'])['dni']
+df['MS80SHplus_1209_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['MS80SHplus_1209_GHI_Wm2'], dhi=df['MS80SHplus_1209_DHI_Wm2'])['dni']
 
+df['SMP12_233555_tilt_calc_deg'] = np.sqrt(df['SMP12_233555_pitch_deg']**2 + df['SMP12_233555_roll_deg']**2)
+
+# %% Remove empty columns
+
+for c in df.columns:
+    if df[c].empty | df[c].isna().all():
+        print(f"Deleting empty column: {c}")
+        del df[c]
 
 # %%
 
@@ -186,6 +312,8 @@ def convert_parameters_to_table(sensor_names):
     meta = {}
     for sensor in sensor_names:
         split = sensor.split('_')
+        if len(split) < 4:  # ignore, e.g., solar_zenith
+            continue
         meta[sensor] = {}
         meta[sensor]['sensor'] = split[0]
         meta[sensor]['serial_number'] = split[1]
@@ -200,6 +328,33 @@ def convert_parameters_to_table(sensor_names):
 
 
 meta = pd.DataFrame(convert_parameters_to_table(df.columns)).T
+
+meta = meta.sort_values('parameter')
+
+# meta = meta[meta['sensor'] != 'MS80SHplus']
+# meta = meta[meta['sensor'] != 'StarSchenk']
+
+meta['sensor_serial'] = meta['sensor'] + '_' + meta['serial_number']
+
+# %% Plots for each sensor
+
+for s in meta['sensor_serial'].unique():
+    axes = df[meta[meta['sensor_serial'] == s].index].plot(sharex=True, subplots=True, figsize=(8, 8))
+    axes[0].set_title(s)
+    for ax in axes:
+        ax.legend(loc='upper left')
+    axes[-1].set_xlabel(None)
+    plt.show()
+
+# %% Plots for each parameter and unit
+for m in meta['parameter'].unique():
+    for unit in meta.loc[meta['parameter'] == m, 'unit'].unique():
+        fig, ax = plt.subplots()
+        ax.set_title(f"{m} [{unit}]")
+        for i in meta[(meta['parameter'] == m) & (meta['unit'] == unit)].index:
+            df[i].plot(ax=ax, label=' '.join(i.split('_')[:2]))
+        ax.legend()
+        plt.show()
 
 # %%
 fig, axes = plt.subplots(nrows=2, sharex=True)
@@ -222,120 +377,221 @@ axes[1].set_yticks([0, 90, 180, 270, 360])
 axes[0].set_ylim(axes[0].get_ylim())
 axes[0].fill_between(axes[0].get_xlim(), 90, axes[0].get_ylim()[1], color='lightgrey')
 
-
-# %% Plots for each parameter and unit
-for m in meta['parameter'].unique():
-    for unit in meta.loc[meta['parameter']==m, 'unit'].unique():
-        fig, ax = plt.subplots()
-        ax.set_title(f"{m} [{unit}]")
-        for i in meta[(meta['parameter'] == m) & (meta['unit'] == unit)].index:
-            df[i].plot(ax=ax, label=' '.join(i.split('_')[:2]))
-        ax.legend()
-        plt.show()
-
-# %% Plots for each sensor
-
-for s in meta['sensor'].unique():
-    axes = df[meta[meta['sensor'] == s].index].plot(sharex=True, subplots=True, figsize=(8, 8))
-    axes[0].set_title(s)
-    plt.show()
-
 # %% Plotting function
 
 
-def plot_reference(data, reference, parameters, ncols=3, figsize=(8, 8),
-                   title=None, xlim=(-10, 600), ylim=None, kind='relative'):
+def plot_reference(data, reference, parameters, metric_condition=None,
+                   c='b', ncols=3, figsize=None, title=None, xlim=(-10, 600),
+                   ylim=None, kind='relative', **kwargs):
+    # Remove reference from parameters
+    parameters = [p for p in parameters if p != reference]
+
+    nrows = int(np.ceil(len(parameters)/3))
+
+    figsize = (ncols*2, nrows*2) if figsize is None else figsize
 
     if ylim is None:
         if kind == 'relative':
             ylim = (0.5, 1.5)
         elif kind == 'difference':
-            ylim = (-50, 50)
+            ylim = (-100, 100)
         else:
             ylim = xlim
 
     fig, axes = plt.subplots(
-        ncols=ncols, nrows=int(np.ceil(len(parameters)/3)),
+        ncols=ncols, nrows=nrows,
         sharex=True, sharey=True, figsize=figsize)
 
     params = {'s': 1, 'zorder': 10}
     for parameter, ax in zip(parameters, axes.flatten()):
-        if kind == 'relative':
-            ax.scatter(data[reference], data[parameter]/data[reference], **params)
-        elif kind == 'difference':
-            ax.scatter(data[reference], data[parameter]-data[reference], **params)
-        else:
-            ax.scatter(data[reference], data[parameter], **params)
-        ax.set_title(parameter)
-        ax.grid(alpha=0.4, zorder=-1)
+        metrics = calculate_metrics(data[reference], data[parameter], metric_condition)
 
-    if kind != 'relative':
-        pass
-    elif kind == 'difference':
-        pass
-    else:
-        ax.plot(xlim, ylim, c='r', alpha=0.5, lw=1, zorder=-1)
-        ax.set_aspect('equal')
+        if kind == 'relative':
+            ax.scatter(data[reference], data[parameter]/data[reference],
+                       c=c, **params, **kwargs)
+        elif kind == 'difference':
+            ax.scatter(data[reference], data[parameter]-data[reference],
+                       c=c, **params, **kwargs)
+        elif kind == 'elevation':
+            ax.scatter(data['solar_elevation'], data[parameter]-data[reference],
+                       c=c, **params, **kwargs)
+            hb = ax.hexbin(
+                x=dfp[y], y=dfp[x],
+                gridsize=100,
+                # bins='log',
+                # bins=[0, 100, 200, 1000],
+                cmap='viridis',
+                mincnt=1,  # Min. no. points for there to be a color
+                extent=(0, 1500, 0, 1500),  # (xmin, xmax, ymin, ymax)
+                norm='linear',
+                vmin=10,
+                vmax=100,
+            )
+        else:
+            ax.scatter(data[reference], data[parameter], c=c, **params,
+                       alpha=0.1, **kwargs)
+            ax.plot(xlim, ylim, c='r', alpha=0.5, lw=1, zorder=-1)
+            ax.set_aspect('equal')
+            lim_delta = max(xlim[1], ylim[1]) - min(xlim[0], ylim[0])
+            tick_spacing = 100 if lim_delta < 500 else 250
+            ax.set_xticks(np.arange(0, xlim[1], tick_spacing))
+            ax.set_yticks(np.arange(0, ylim[1], tick_spacing))
+        metrics_text = f"RMSE: {metrics['rmse_percent']:.1f}%\nBias: {metrics['bias_percent']:.1f}%"
+        ax.text(0.99, 0.01, metrics_text, transform=ax.transAxes,
+                fontsize=8, verticalalignment='bottom', horizontalalignment='right',
+                bbox=dict(facecolor='white', alpha=0.5, edgecolor='none', boxstyle='round,pad=0.0'),
+                zorder=10)
+
+        ax.set_title('-'.join(parameter.split('_')[0:1] +
+                              parameter.split('_')[3:-1]))
+        ax.grid(alpha=0.4, zorder=-1)
+        ax.tick_params(axis='x', labelrotation=45)
+
+    # Hide unused subplots
+    [ax.set_visible(False) for i, ax in enumerate(axes.flatten()) if i >= len(parameters)]
 
     axes[0, 0].set_xlim(xlim)
     axes[0, 0].set_ylim(ylim)
     fig.suptitle(title)
-    fig.tight_layout()
+    #fig.tight_layout()
+    return fig, axes
 
 
 # %%
-component = 'DNI'
-
 reference = {
     'GHI': 'Calc_from-DHI-DNI_GHI_Wm2',
+    # 'GHI': 'SMP22_200057_GHI_Wm2',
     'DHI': 'SMP22_200060_DHI_Wm2',
     'DNI': 'DR30_65086_DNI_Wm2',
 }
 
-xlim_upper = {'GHI': 1000, 'DHI': 500, 'DNI': 1000}
+df['is_allweather'] = True
 
-sensors = meta[
-    (meta['parameter'] == component) &
-    (meta['unit'] == 'Wm2') &
-    (meta['parameter_modifier'] != 'raw')
-].index
+xlim_upper = {'GHI': 1200, 'DHI': 400, 'DNI': 1200}
 
-for kind in ['relative', 'difference', 'normal']:
-    plot_reference(df, reference[component], sensors, title=component,
-                   kind=kind, xlim=(0, xlim_upper[component]))
+sky = 'is_allweather'
+#sky = 'is_allweather'
+dfp = df[(df['solar_zenith'] < 85) & df[sky]]#.resample('5min').mean()
 
-# %% Compare GHI
+for component in ['GHI']:#, 'DHI', 'DNI']:
+    sensors = meta[
+        (meta['parameter'] == component)
+        & (meta['unit'] == 'Wm2')
+        & (meta['parameter_modifier'] != 'raw')
+        & (meta.index != reference)
+    ].index
 
-# fig, axes = plt.subplots(ncols=4, nrows=int(np.ceil(len(ghi_sensors)/4)),
-#                          sharex=True, sharey=True, figsize=(8, 8))
-# for sensor, ax in zip(ghi_sensors, axes.flatten()):
-#     ax.scatter(df['Calc_from-DHI-DNI_GHI_Wm2'], df[sensor], s=1, zorder=10)
-#     ax.set_title('_'.join(sensor.split('_')[:2]))
-#     ax.set_aspect('equal')
-#     ax.grid(alpha=0.4, zorder=-1)
-#     ax.plot([0, 1000], [0, 1000], c='r', alpha=0.5, lw=1, zorder=-1)
-
-# axes[0, 0].set_ylim(-10, 1100)
-# axes[0, 0].set_xlim(-10, 1100)
-# fig.suptitle('GHI')
-
-# fig.tight_layout()
-
-# %%
-# df[df[ghi_sensors]<-100] = np.nan
-# dfp = df[ghi_sensors].subtract(df['Calc_from-DHI-DNI_GHI_Wm2'], axis='rows')
-# ax = dfp.plot(xlim=('2025-04-01 08','2025-04-01 16'), ylim=(-40,40), legend=True)
-dfp = df[dhi_sensors]
-
-# ax = dfp.plot(xlim=('2025-04-01 08','2025-04-01 16'), ylim=(300,700), legend=True)
-xlim = ('2025-04-03 04', '2025-04-06 18')
-xlim = ('2025-04-12 04', '2025-04-16 18')
-ax = dfp.plot(xlim=xlim, ylim=(0, 700), legend=True)
-ax.legend(ncol=2, loc='upper center', bbox_to_anchor=[0.5, 1.55])
-
+    fig, axes = plot_reference(
+        dfp, reference[component], sensors,
+        metric_condition=dfp['solar_zenith'] < 80,
+        title=component,
+        #c=dfp['SHP1_185163_DNI_Wm2'],
+        kind='difference',
+        ncols={'GHI': 4}.get(component, 3),
+        xlim=(0, xlim_upper[component]),
+        **{'alpha': 0.2},
+        )
+    for ax in axes.flatten():
+        ax.set_xticks([0, 250, 500, 750, 1000])
+    #     ticks = np.arange(0, xlim_upper[component]+0.01, 250)
+    #     ax.set_xticks(ticks)
+    #     ax.set_yticks(ticks)
+        # ax.set_ylabel('Measured [W/m$^2$]')
+    #axes[1, 1].set_xlabel('Reference [W/m$^2$]')
+    #axes.flatten()[-1].set_title(r'GHI - DNI$\cdot$cos($\theta$)')
+    fig.suptitle(f"{component} {sky}")
 
 # %%
-ax=df.loc[solpos['elevation'] <- 10, ghi_sensors].plot.hist(
+x = 'SR300_45389_GHI_Wm2'
+y = 'SMP10_248585_GHI_Wm2'
+
+from matplotlib.colors import Normalize
+
+#from matplotlib.colors import 
+
+
+dfp = df[df['solar_zenith']<90]
+
+fig, ax = plt.subplots(figsize=(8, 8))
+hb = ax.hexbin(
+    x=dfp[y], y=dfp[x],
+    # gridsize=100,
+    # bins='log',
+    # bins=[0, 100, 200, 1000],
+    # cmap='viridis',
+    mincnt=1,  # Min. no. points for there to be a color
+    # extent=(0, 1500, 0, 1500),  # (xmin, xmax, ymin, ymax)
+    norm=Normalize(vmin=0, vmax=100),
+    # vmin=10,
+    # vmax=100,
+)
+ax.set_aspect('equal')
+
+cbar = fig.colorbar(hb, ax=ax)
+cbar.set_label('Counts per hexbin')
+
+# Set axis labels and title
+ax.set_title('Hexbin Plot of Point Density')
+ticks = np.arange(0, 1400+0.01, 200)
+ax.set_xticks(ticks)
+ax.set_yticks(ticks)
+ax.set_xlabel(x)
+ax.set_ylabel(y)
+
+# %%
+
+plt.scatter(
+    x=df['SR300_45389_GHI_Wm2'],
+    y=df['SP522_1265_GHI_Wm2'],
+    alpha=0.5, s=1,
+)
+# %%
+
+# SRD100 - 100% calibrated for clear sky
+# have multipliers for clear and grey skys that could improve a lot
+# GHI 90 % 
+
+
+# %% Export to Viktar
+solarband = [c for c in df.columns if 'solarband' in c.lower()]
+df.loc['2025-05-22': , solarband + ['SHP1_185163_DNI_Wm2', 'SMP22_200060_DHI_Wm2', 'SMP22_200057_GHI_Wm2', 'solar_zenith', 'solar_azimuth']].to_csv('solarband_c3_data.csv')
+
+
+# %%
+# April 6th, 15th (23, 24)
+
+day = pd.Timestamp('2025-04-15 00:00:00+0000', tz='UTC')
+
+ghi_sensors = [
+    'SMP10_248585_GHI_Wm2',
+    # 'CMP11_128767_GHI_Wm2',
+    'SMP12_233555_GHI_Wm2',
+    'SR300_45389_GHI_Wm2',
+    'MS80SH_S24053407_GHI_Wm2',
+]
+# for day in pd.DatetimeIndex(df.index.date).unique().tz_localize('UTC'):
+fig, axes = plt.subplots(ncols=len(ghi_sensors), figsize=(10, 4), sharey=True)
+for sensor, ax in zip(ghi_sensors, axes):
+    df[day: day + pd.Timedelta(hours=10)].plot.scatter(
+        ax=ax,
+        x='Calc_from-DHI-DNI_GHI_Wm2',
+        y=sensor,
+        s=1,
+        zorder=5,
+        )
+    # ax.set_title(day.strftime('%d %b'))
+    ax.set_ylim(-5, 700)
+    ax.set_xlim(-5, 700)
+    ax.set_aspect('equal')
+    ax.set_xlabel('Reference GHI [W/m$^2$]')
+    ax.set_ylabel('Measured GHI [W/m$^2$]')
+    ax.set_title(sensor.split('_')[0])
+    ax.grid(alpha=0.3, zorder=-2)
+fig.tight_layout()
+plt.show()
+
+# %%
+ax = df.loc[solpos['elevation'] <- 10, ghi_sensors].plot.hist(
     bins=61, range=(-3, 3), histtype='step')
 ax.legend(ncol=2, loc='upper center', bbox_to_anchor=[0.5, 1.55])
 
@@ -356,3 +612,22 @@ for col, ax in zip(notkipp, axes):
     ax.set_ylabel(col[:7])
 
 # df[notkipp].plot(xlim=['2025-04-09 15','2025-04-10 12'], sharex=True, figsize=(8,16), subplots=True)
+
+# %% MS80SHplus DNI issue
+fig, axes = plt.subplots(ncols=2, sharey=True)
+axes[0].scatter(df['SHP1_185163_DNI_Wm2'], df['MS80SHplus_1209_DNI_Wm2'], s=1, alpha=0.3)
+axes[1].scatter(df['SHP1_185163_DNI_Wm2'], df['MS80SHplus_1209_DNI_calc_Wm2'], s=1, alpha=0.3)
+
+axes[0].set_ylabel('DNI [W/m$^2$]\n(reported by instrument)')
+axes[1].set_ylabel('DNI [W/m$^2$]\n(calculated from GHI/DHI)')
+
+for ax in axes:
+    ax.set_xlim(0, 1200)
+    ax.set_ylim(0, 1200)
+    ax.set_aspect('equal')
+    ax.grid(alpha=0.3)
+    ax.set_xlabel('DNI [W/m$^2$]\n(measured by pyrheliometer)')
+    ax.plot([0, 1200], [0, 1200], c='r', alpha=0.5)
+fig.tight_layout()
+
+
