@@ -132,9 +132,12 @@ def combined_columns(df, column):
 path = 'C:/Users/arajen/Downloads/station_data/'
 
 start = pd.Timestamp.today() - pd.Timedelta(days=4)
+start = '2025-08-18'
 end = pd.Timestamp.today()
-#start = '2025-08-01'
-#end = '2025-08-30'
+#end = '2025-08-19'
+start = pd.Timestamp.today() - pd.Timedelta(days=7)
+end = pd.Timestamp.today()
+
 
 na_values = [
     "NAN",  # crbasic convention for floats
@@ -224,7 +227,7 @@ except pd.errors.InvalidIndexError:
 # df.loc['2025-05-23':, 'SP522_1265_GHI_Wm2'] = np.nan
 
 # %%
-df['StarSchenk_7773_GHI_Wm2'] = 83.8 * df['StarSchenk_7773_GHI_mV']
+
 df['Licor_PY116375_GHI_Wm2'] = 100 * df['Licor_PY116375_GHI_mV']
 
 
@@ -232,7 +235,7 @@ df['SP510_3882_GHI_Wm2'] = 22.88 * df['SP510_3882_GHI_mV']
 
 df['CMP11_128758_DHI_Wm2'] = df['CMP11_128758_DHI_mV'] / (9.89 * 10**-3)
 df['CMP11_128767_GHI_Wm2'] = df['CMP11_128767_GHI_mV'] / (8.02 * 10**-3)
-df['CHP1_140049_DNI_Wm2'] = df['CHP1_140049_DNI_mV'] / (7.87 * 10**-3)
+df['CHP1_140049_DNI_Wm2'] = df['CHP1_140049_DNI_mV'] / (7.87 * 10**-3) * 0.995478
 df['CGR4_170223_LWN_Wm2'] = df['CGR4_170223_LWD_mV'] / (8.95 * 10**-3)
 df['CGR4_170223_LWD_Wm2'] = (
     df['CGR4_170223_LWD_mV'] / (8.95 * 10**-3)
@@ -326,8 +329,6 @@ df['MS80plus_S24067011_DNI_Wm2'] = pvlib.irradiance.complete_irradiance(
     solpos['apparent_zenith'], ghi=df['MS80plus_S24067011_GHI_Wm2'], dhi=df['MS80plus_S24067011_DHI_Wm2'])['dni']
 
 df['SMP12_233555_tilt_calc_deg'] = np.sqrt(df['SMP12_233555_pitch_deg']**2 + df['SMP12_233555_roll_deg']**2)
-
-
 
 # %% Remove empty columns
 
@@ -692,8 +693,9 @@ df.loc['2025-09-08 12:50':, ['SMP22_200060_DHI_Wm2', 'SMP22_200057_GHI_Wm2']].di
 
 # %%
 
-for d in df.index.to_series().dt.date.unique():
+for d in df.index.to_series().dt.date.unique()[:-1]:
     mask = (df.index.date==d) & (df['DR30_65086_DNI_Wm2'] > 200)
     df_sub = df[mask].resample('5min').mean()
-    df_sub[['DR30_65086_DNI_Wm2', 'SHP1_185163_DNI_Wm2', 'CHP1_140049_DNI_Wm2','PH1_190116_DNI_Wm2']].divide(df_sub['DR30_65086_DNI_Wm2'], axis=0).plot(ylim=[0.95,1.05])
+    df_sub[['DR30_65086_DNI_Wm2', 'SHP1_185163_DNI_Wm2', 'CHP1_140049_DNI_Wm2','PH1_190116_DNI_Wm2']].divide(df_sub['DR30_65086_DNI_Wm2'], axis=0).plot(
+        ylim=[0.96,1.04], grid=True)
     plt.show()
