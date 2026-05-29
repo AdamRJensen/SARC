@@ -1,0 +1,55 @@
+start_time,end_time,description,action,affected_instruments
+2025-07-03 13:25:00+00:00,2025-07-03 14:37:00+00:00,Tracker turn off and restart,remove_data,all
+2025-07-10 09:15:00+00:00,2025-07-10 10:40:00+00:00,Tracker was turned off,remove_data,all
+2025-12-18 12:54:00+00:00,2025-12-18 13:00:00+00:00,Tracker restart and sun sensor was covered - DNI level is affected,remove_data,all
+2026-01-10 11:23:00+00:00,2026-01-10 12:30:00+00:00,Adjusted tracker alignment in sollys software,remove_data,all
+2026-01-10 12:57:00+00:00,2026-01-10 13:04:00+00:00,Adjusted bottom screw of sun sensor,remove_data,all
+2026-03-03 13:05:00+00:00,2026-03-10 11:41:00+00:00,Tracker misalignment - unplugged sun sensor and subsequent realignment,remove_data,all
+2026-03-12 11:15:00+00:00,2026-03-12 13:09:00+00:00,Sun sensor is disconnected,remove_data,all
+2026-04-01 15:27:00+00:00,2026-04-01 15:45:00+00:00,Tracker restart,remove_data,all
+2026-04-07 10:03:00+00:00,2026-04-07 14:05:00+00:00,Tracker alignment issues,remove_data,all
+2025-09-08 11:25:00+00:00,2025-09-08 12:22:00+00:00,Unspecified instrument issue - entire period set to NaN to be safe,remove_data,all
+2025-10-17 10:27:00+00:00,2025-10-17 10:40:00+00:00,Leveled DHI sensor - blocking on DHI and GHI,remove_data,"GHI,DHI"
+2026-01-14 11:44:00+00:00,2026-01-14 12:25:00+00:00,CVF4 ventilator changed for GHI on tracker - shading on GHI and DHI,remove_data,"GHI,DHI"
+2025-06-30 12:00:00+00:00,2025-07-03 15:00:00+00:00,Shadow balls removed from tracker - DHI affected,remove_data,DHI
+2025-09-08 00:00:00+00:00,2025-09-18 10:45:00+00:00,SMP22_200060_DHI moved to bench - measuring GHI instead of DHI,remove_data,DHI
+2025-07-14 15:26:00+00:00,2025-07-14 15:28:00+00:00,Inspection of DHI shadow balls and disk,remove_data,all
+2025-08-13 12:45:00+00:00,2025-08-13 13:15:00+00:00,Many visitors on platform,remove_data,all
+2025-09-04 15:50:00+00:00,2025-09-04 16:12:00+00:00,Many visitors on platform,remove_data,all
+2025-12-02 11:47:00+00:00,2025-12-02 12:14:00+00:00,Added zip ties to the bench,remove_data,all
+2025-12-16 13:50:00+00:00,2025-12-16 14:30:00+00:00,Playing around with the ventilators,remove_data,all
+2026-01-13 15:22:00+00:00,2026-01-13 15:57:00+00:00,Set up camera on the bench,remove_data,all
+2026-03-04 14:45:00+00:00,2026-03-04 15:15:00+00:00,Janne and Mark set up instruments on the bench for calibration,remove_data,all
+2026-03-18 15:52:00+00:00,2026-03-18 15:53:00+00:00,Check pyrheliometer alignment,remove_data,all
+2026-04-08 11:36:00+00:00,2026-04-08 11:37:00+00:00,Check alignment of tracker,remove_data,all
+2025-04-10 06:25:00+00:00,2025-04-10 07:10:00+00:00,Power outage - measurements suspicious until 07:10,remove_data,all
+2026-03-11 10:49:00+00:00,2026-03-11 11:39:00+00:00,Power outage email from DTU - added 10 min for tracker dance,remove_data,all
+2025-02-06 00:00:00+00:00,2025-10-02 00:00:00+00:00,SHP1 calibration factor: 8.61577 / 8.518 * 0.997,action_needed,DNI-SHP1
+2025-10-02 00:00:00+00:00,,SHP1 calibration factor: 0.997,action_needed,DNI-SHP1
+2025-10-29 09:45:00+00:00,2025-10-29 10:26:00+00:00,Replaced SHP1 cable,remove_data,DNI-SHP1
+2025-09-08 12:38:00+00:00,2025-09-10 10:00:00+00:00,SHP1 logged all zeros,remove_data,DNI-SHP1
+2026-05-19 13:34:00+00:00,2026-05-19 13:53:00+00:00,Changed filters in all CVF4,remove_data,all
+2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Guests on the platform,remove_data,all
+2026-04-09 13:20:00+00:00,2026-04-09 13:59:00+00:00,"DHI, LWD, GHI leveling - shading on tracker instruments",remove_data,primary
+2025-12-16 11:25:00+00:00,2025-12-16 12:00:00+00:00,Cleaned ventilator filters - shading on tracker instruments,remove_data,primary
+2026-03-20 10:20:00+00:00,2026-03-20 10:30:00+00:00,Adjusted sun sensor screw,investigate,primary
+2025-10-22 11:14:00+00:00,2025-10-22 11:16:00+00:00,Started heating in the ventilators,investigate,primary
+2026-04-07 13:05:00+00:00,2026-04-07 14:05:00+00:00,Adjusted shadowball length of SMP22 DHI with 0.5cm extra,investigate,primary
+2025-07-04 14:20:00+00:00,2025-07-14 11:05:00+00:00,Swapped GHI SMP22 with SMP12 and changed shadowball position,investigate,primary
+2025-10-22 11:14:00+00:00,2026-01-14 17:00:00+00:00,DHI sensor had a higher operating temperature than the GHI due to the presence of the heater without the ventilator running,investigate,primary
+2025-06-30 13:25:00+00:00,2025-07-10 13:32:00+00:00,"Licor base needs to be changed - bubble unresponsive, releveled at end time",investigate,licor
+2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon arm,investigate,razon
+2025-08-04 09:00:00+00:00,2025-08-04 09:11:00+00:00,Replaced leveling base for Licor sensor - shading,remove_data,secondary
+2025-09-04 08:20:00+00:00,2025-09-04 08:37:00+00:00,Replaced StarScenk 7773 with 8398,investigate,starscenk
+2025-09-10 11:20:00+00:00,2025-09-10 11:30:00+00:00,Releveled SR30 - shading,remove_data,secondary
+2025-09-15 08:40:00+00:00,2025-09-15 08:45:00+00:00,Put up 8466,investigate,starscenk
+2025-11-13 11:44:00+00:00,2025-11-13 11:50:00+00:00,Level EKO rotating shadowband - shading,remove_data,secondary
+2025-11-21 09:26:00+00:00,2025-11-21 09:42:00+00:00,Level EKO MS80SH+ - shading,remove_data,secondary
+2025-12-01 12:45:00+00:00,2025-12-01 13:13:00+00:00,Relevel SR30 - shading,remove_data,secondary
+2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,investigate,razon
+2026-02-17 14:45:00+00:00,2026-02-17 15:00:00+00:00,Attempted relevelling of EKO MS80SH+,remove_data,secondary
+2025-12-16 11:40:00+00:00,2025-12-16 12:04:00+00:00,Changed desiccants on bench - shading,remove_data,secondary
+2025-07-04 14:20:00+00:00,2025-07-09 23:59:00+00:00,Incorrect wiring of SMP12,investigate,smp12
+2025-07-07 12:00:00+00:00,2025-07-10 11:00:00+00:00,Unrealistic high irradiance for SMP12,investigate,smp12
+2026-05-19 13:34:00+00:00,2026-05-19 13:53:00+00:00,Cleaning of CVF4 filters - shading,remove_data,primary
+2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Visitors on roof - shading,remove_data,all
