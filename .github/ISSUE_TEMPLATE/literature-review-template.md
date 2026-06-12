@@ -15,9 +15,6 @@ Authors:
 Year: 
 DOI / URL: 
 
-## Bibtex
-<!-- Paste the bibtext file below (remove the abstract if present) -->
-
 ## Relevance
 <!-- How is this paper relevant to the project? -->
 
@@ -28,3 +25,6 @@ DOI / URL:
 <!-- A list of action items if something needs to be done -->
 
 - [ ]
+
+## Bibtex
+<!-- Paste the bibtext file below (remove the abstract if present) -->
