@@ -32,14 +32,14 @@ from influxdb_client_3 import InfluxDBClient3
 # ---------------------------------------------------------------------------
 # Configuration — edit these or set as environment variables
 # ---------------------------------------------------------------------------
-FTP_HOST     = os.environ.get("SARC_FTP_HOST", "ftp.example.com")
-FTP_USER     = os.environ.get("SARC_FTP_USER", "username")
-FTP_PASSWORD = os.environ.get("SARC_FTP_PASSWORD", "password")
-FTP_DIR      = os.environ.get("SARC_FTP_DIR", "/data")  # remote directory
+FTP_HOST     = os.environ["SARC_FTP_HOST"]
+FTP_USER     = os.environ["SARC_FTP_USER"]
+FTP_PASSWORD = os.environ["SARC_FTP_PASSWORD"]
+FTP_DIR      = os.environ["SARC_FTP_DIR"]  # remote directory
 
-INFLUXDB_HOST  = os.environ.get("INFLUXDB3_HOST", "http://localhost:8181")
-INFLUXDB_TOKEN = os.environ.get("INFLUXDB3_AUTH_TOKEN", "")
-INFLUXDB_DB    = os.environ.get("INFLUXDB3_DATABASE", "sarc")
+INFLUXDB_HOST  = os.environ["INFLUXDB3_HOST"]
+INFLUXDB_TOKEN = os.environ["INFLUXDB3_AUTH_TOKEN"]
+INFLUXDB_DB    = os.environ["INFLUXDB3_DATABASE"]
 
 # File name patterns (date formatted as YYYY-MM-DD)
 FILE_PATTERNS = {
@@ -103,9 +103,12 @@ SOLAR_POSITION_COLUMN_DICT = {
 }
 
 PATTERN_NAN_VALUES: dict[str, list] = {
+    r".*": [-7999, -2147483648, -214748400.0, -21474840.0],
     "SPN1_A270_rh_per": [649.36],
     "SPN1_A270_temperature_degC": [608.51, 608.52],
-    # r"Lufft_.*": [-9999, 6999, 7999],
+    "SPN1_A270_heater_ratio": [-524288.0],
+    "SPN1_A270_sun_ratio": [-2147484.0],
+    "SR300_45389_GHI_mV": [10841.89],
 }
 
 longitude = 55.79064
