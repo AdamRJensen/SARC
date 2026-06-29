@@ -38,7 +38,7 @@ start_time,end_time,description,action,affected_instruments
 2025-07-04 14:20:00+00:00,2025-07-14 11:05:00+00:00,Swapped GHI SMP22 with SMP12 and changed shadowball position,investigate,primary
 2025-10-22 11:14:00+00:00,2026-01-14 17:00:00+00:00,DHI sensor had a higher operating temperature than the GHI due to the presence of the heater without the ventilator running,investigate,primary
 2025-06-30 13:25:00+00:00,2025-07-10 13:32:00+00:00,"Licor base needs to be changed - bubble unresponsive, releveled at end time",investigate,licor
-2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon arm,investigate,razon
+2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon arm,remove_data,razon
 2025-08-04 09:00:00+00:00,2025-08-04 09:11:00+00:00,Replaced leveling base for Licor sensor - shading,remove_data,secondary
 2025-09-04 08:20:00+00:00,2025-09-04 08:37:00+00:00,Replaced StarScenk 7773 with 8398,investigate,starscenk
 2025-09-10 11:20:00+00:00,2025-09-10 11:30:00+00:00,Releveled SR30 - shading,remove_data,secondary
@@ -46,7 +46,7 @@ start_time,end_time,description,action,affected_instruments
 2025-11-13 11:44:00+00:00,2025-11-13 11:50:00+00:00,Level EKO rotating shadowband - shading,remove_data,secondary
 2025-11-21 09:26:00+00:00,2025-11-21 09:42:00+00:00,Level EKO MS80SH+ - shading,remove_data,secondary
 2025-12-01 12:45:00+00:00,2025-12-01 13:13:00+00:00,Relevel SR30 - shading,remove_data,secondary
-2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,investigate,razon
+2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,remove_data,razon
 2026-02-17 14:45:00+00:00,2026-02-17 15:00:00+00:00,Attempted relevelling of EKO MS80SH+,remove_data,secondary
 2025-12-16 11:40:00+00:00,2025-12-16 12:04:00+00:00,Changed desiccants on bench - shading,remove_data,secondary
 2025-07-04 14:20:00+00:00,2025-07-09 23:59:00+00:00,Incorrect wiring of SMP12,investigate,smp12
