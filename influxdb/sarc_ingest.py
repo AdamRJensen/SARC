@@ -32,27 +32,27 @@ from influxdb_client_3 import InfluxDBClient3
 # ---------------------------------------------------------------------------
 # Configuration — edit these or set as environment variables
 # ---------------------------------------------------------------------------
-FTP_HOST     = os.environ["SARC_FTP_HOST"]
-FTP_USER     = os.environ["SARC_FTP_USER"]
+FTP_HOST = os.environ["SARC_FTP_HOST"]
+FTP_USER = os.environ["SARC_FTP_USER"]
 FTP_PASSWORD = os.environ["SARC_FTP_PASSWORD"]
-FTP_DIR      = os.environ["SARC_FTP_DIR"]  # remote directory
+FTP_DIR = os.environ["SARC_FTP_DIR"]  # remote directory
 
-INFLUXDB_HOST  = os.environ["INFLUXDB3_HOST"]
+INFLUXDB_HOST = os.environ["INFLUXDB3_HOST"]
 INFLUXDB_TOKEN = os.environ["INFLUXDB3_AUTH_TOKEN"]
-INFLUXDB_DB    = os.environ["INFLUXDB3_DATABASE"]
+INFLUXDB_DB = os.environ["INFLUXDB3_DATABASE"]
 
 # File name patterns (date formatted as YYYY-MM-DD)
 FILE_PATTERNS = {
-    "primary_fast":     "{date}_00-00-00_primary_fast_table.csv",
-    "secondary_fast":   "{date}_00-00-00_secondary_fast_table.csv",
-    "primary_slow":     "{date}_00-00-00_primary_slow_table.csv",
-    "secondary_slow":   "{date}_00-00-00_secondary_slow_table.csv",
+    "primary_fast": "{date}_00-00-00_primary_fast_table.csv",
+    "secondary_fast": "{date}_00-00-00_secondary_fast_table.csv",
+    "primary_slow": "{date}_00-00-00_primary_slow_table.csv",
+    "secondary_slow": "{date}_00-00-00_secondary_slow_table.csv",
 }
 
 # Parameters that should NOT be averaged in the 1-min aggregation.
 # Cumulative rain is taken as last value; per-interval rain is summed.
 RAIN_CUMULATIVE = "Lufft_WS601_precipitation_cumulative_mm"
-RAIN_INTERVAL   = "Lufft_WS601_precipitation_mm"
+RAIN_INTERVAL = "Lufft_WS601_precipitation_mm"
 
 EXCLUDE_COLUMNS = []  # placeholder for future columns to be excluded
 
@@ -60,40 +60,40 @@ COLUMN_RENAME_DICT = {
     # Commented out entries means that they were changed multiple times
     # "Time_stamp" was changed to "Time" on 2025-04-28
     # https://github.com/AdamRJensen/SARC/issues/25
-    'Time_stamp': 'Time',
+    "Time_stamp": "Time",
     # Naming changes on 2025-03-26
-    'Lufft_WS601_precip_intensive_mmh': 'Lufft_WS601_precipitation_intensity_mmh',
+    "Lufft_WS601_precip_intensive_mmh": "Lufft_WS601_precipitation_intensity_mmh",
     # 'Lufft_WS601_relative_pressure_hPa': 'Lufft_WS601_air_pressure_relative_hPa',
     # 'Lufft_WS601_abs_air_pressure_hPa': 'Lufft_WS601_air_pressure_absolute_hPa',
-    'Lufft_WS601_relative_humidity_per': 'Lufft_WS601_humidity_relative_per',
+    "Lufft_WS601_relative_humidity_per": "Lufft_WS601_humidity_relative_per",
     # 'Lufft_WS601_precip_absolute_mm': 'Lufft_WS601_precipitation_absolute_mm',
     # 'Lufft_WS601_precip_different_mm': 'Lufft_WS601_precipitation_difference_mm',
     # Naming changes on 2025-04-28
-    'MS80SH_S24053407_out_voltage_mV': 'MS80SH_S24053407_GHI_mV',
-    'DR30_65086_out_voltage_mV': 'DR30_65086_DNI_mV',
-    'SR30_23485_out_voltage_mV': 'SR30_23485_GHI_mV',
-    'SR300_45389_out_voltage_mV': 'SR300_45389_GHI_mV',
-    'SP522_1246_out_voltage_mV': 'SP522_1246_GHI_mV',  # removed 2025-08-11
-    'SP422_1843_out_voltage_mV': 'SP422_1843_GHI_mV',
-    'Lufft_WS601_precipitation_difference_mm': 'Lufft_WS601_precipitation_mm',
-    'Lufft_WS601_precipitation_absolute_mm': 'Lufft_WS601_precipitation_cumulative_mm',
-    'SP522_1246_GHI_Wm2': 'SP522_1265_GHI_Wm2',  # removed 2025-08-11
-    'SP522_1246_GHI_mV': 'SP522_1265_GHI_mV',  # removed 2025-08-11
-    'SP522_1246_heater_state': 'SP522_1265_heater_state',  # removed 2025-08-11
+    "MS80SH_S24053407_out_voltage_mV": "MS80SH_S24053407_GHI_mV",
+    "DR30_65086_out_voltage_mV": "DR30_65086_DNI_mV",
+    "SR30_23485_out_voltage_mV": "SR30_23485_GHI_mV",
+    "SR300_45389_out_voltage_mV": "SR300_45389_GHI_mV",
+    "SP522_1246_out_voltage_mV": "SP522_1246_GHI_mV",  # removed 2025-08-11
+    "SP422_1843_out_voltage_mV": "SP422_1843_GHI_mV",
+    "Lufft_WS601_precipitation_difference_mm": "Lufft_WS601_precipitation_mm",
+    "Lufft_WS601_precipitation_absolute_mm": "Lufft_WS601_precipitation_cumulative_mm",
+    "SP522_1246_GHI_Wm2": "SP522_1265_GHI_Wm2",  # removed 2025-08-11
+    "SP522_1246_GHI_mV": "SP522_1265_GHI_mV",  # removed 2025-08-11
+    "SP522_1246_heater_state": "SP522_1265_heater_state",  # removed 2025-08-11
     # Naming changes on 2025-05-02
-    'Lufft_WS601_precip_type': 'Lufft_WS601_precipitation_type',
-    'Lufft_WS601_air_temperature_degC': 'Lufft_WS601_temperature_air_degC',
-    'Lufft_WS601_precip_absolute_mm': 'Lufft_WS601_precipitation_cumulative_mm',
-    'Lufft_WS601_precip_different_mm': 'Lufft_WS601_precipitation_mm',
+    "Lufft_WS601_precip_type": "Lufft_WS601_precipitation_type",
+    "Lufft_WS601_air_temperature_degC": "Lufft_WS601_temperature_air_degC",
+    "Lufft_WS601_precip_absolute_mm": "Lufft_WS601_precipitation_cumulative_mm",
+    "Lufft_WS601_precip_different_mm": "Lufft_WS601_precipitation_mm",
     # 'Lufft_WS601_precip_intensive_mmh': 'Lufft_WS601_precipitation_intensity_mmh',
     # 'Lufft_WS601_relative_humidity_per': 'Lufft_WS601_humidity_relative_per',
-    'Lufft_WS601_relative_pressure_hPa': 'Lufft_WS601_pressure_relative_air_hPa',
-    'Lufft_WS601_air_pressure_relative_hPa': 'Lufft_WS601_pressure_relative_air_hPa',
-    'Lufft_WS601_abs_air_pressure_hPa': 'Lufft_WS601_pressure_absolute_air_hPa',
-    'Lufft_WS601_air_pressure_absolute_hPa': 'Lufft_WS601_pressure_absolute_air_hPa',
+    "Lufft_WS601_relative_pressure_hPa": "Lufft_WS601_pressure_relative_air_hPa",
+    "Lufft_WS601_air_pressure_relative_hPa": "Lufft_WS601_pressure_relative_air_hPa",
+    "Lufft_WS601_abs_air_pressure_hPa": "Lufft_WS601_pressure_absolute_air_hPa",
+    "Lufft_WS601_air_pressure_absolute_hPa": "Lufft_WS601_pressure_absolute_air_hPa",
     # Unknown date
-    'SPN1_A270_Heater_ratio': 'SPN1_A270_heater_ratio',
-    'SPN1_A270_Sun_ratio': 'SPN1_A270_sun_ratio',
+    "SPN1_A270_Heater_ratio": "SPN1_A270_heater_ratio",
+    "SPN1_A270_Sun_ratio": "SPN1_A270_sun_ratio",
 }
 
 SOLAR_POSITION_COLUMN_DICT = {
@@ -115,10 +115,13 @@ longitude = 55.79064
 longitude = 12.52505
 altitude = 50
 
+
 # ---------------------------------------------------------------------------
 # APPLY CUSTOM NAN VALUES
 # ---------------------------------------------------------------------------
-def apply_pattern_nan_values(df: pd.DataFrame, pattern_nan_values: dict[str, list]) -> pd.DataFrame:
+def apply_pattern_nan_values(
+    df: pd.DataFrame, pattern_nan_values: dict[str, list]
+) -> pd.DataFrame:
     """Replace values with NaN based on column name patterns."""
     for pattern, nan_vals in pattern_nan_values.items():
         matching_cols = [c for c in df.columns if re.fullmatch(pattern, c)]
@@ -149,21 +152,27 @@ def parse_toa5(content: str) -> pd.DataFrame:
     df = df.drop(columns=[c for c in EXCLUDE_COLUMNS if c in df.columns])
 
     # Convert integer columns to float
-    df = df.apply(lambda col: col.astype('float64') if pd.api.types.is_integer_dtype(col) else col)
+    df = df.apply(
+        lambda col: col.astype("float64") if pd.api.types.is_integer_dtype(col) else col
+    )
 
     df = apply_pattern_nan_values(df, PATTERN_NAN_VALUES)
 
     # Remove completely identical rows
     # this operation should come before setting index
-    df = df[~df.duplicated(keep='first')]
+    df = df[~df.duplicated(keep="first")]
 
     df["Time"] = pd.to_datetime(df["Time"], utc=True)
     df = df.set_index("Time")
 
     duplicated_indexes = df.index.duplicated().sum()
-    if  duplicated_indexes != 0:
-        warnings.warn(f"File contained {duplicated_indexes} duplicated indexes!", UserWarning, stacklevel=2)
-        df = df[~df.index.duplicated(keep='first')]
+    if duplicated_indexes != 0:
+        warnings.warn(
+            f"File contained {duplicated_indexes} duplicated indexes!",
+            UserWarning,
+            stacklevel=2,
+        )
+        df = df[~df.index.duplicated(keep="first")]
 
     return df
 
@@ -195,8 +204,10 @@ def aggregate_1min(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     combined = pd.concat(frames.values(), axis=1, sort=False)
 
     # Separate special columns if present
-    special_cols = [c for c in [RAIN_CUMULATIVE, RAIN_INTERVAL] if c in combined.columns]
-    normal_cols  = [c for c in combined.columns if c not in special_cols]
+    special_cols = [
+        c for c in [RAIN_CUMULATIVE, RAIN_INTERVAL] if c in combined.columns
+    ]
+    normal_cols = [c for c in combined.columns if c not in special_cols]
 
     agg_parts = []
 
@@ -204,14 +215,10 @@ def aggregate_1min(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
         agg_parts.append(combined[normal_cols].resample("1min").mean())
 
     if RAIN_CUMULATIVE in combined.columns:
-        agg_parts.append(
-            combined[[RAIN_CUMULATIVE]].resample("1min").last()
-        )
+        agg_parts.append(combined[[RAIN_CUMULATIVE]].resample("1min").last())
 
     if RAIN_INTERVAL in combined.columns:
-        agg_parts.append(
-            combined[[RAIN_INTERVAL]].resample("1min").sum()
-        )
+        agg_parts.append(combined[[RAIN_INTERVAL]].resample("1min").sum())
 
     return pd.concat(agg_parts, axis=1, sort=False)
 
@@ -221,7 +228,8 @@ def aggregate_1min(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 def get_solar_parameters(times, latitude, longitude, altitude):
     solar_parameters = pvlib.solarposition.get_solarposition(
-        times, latitude, longitude, altitude)
+        times, latitude, longitude, altitude
+    )
     solar_parameters = solar_parameters.rename(columns=SOLAR_POSITION_COLUMN_DICT)
     solar_parameters = solar_parameters[SOLAR_POSITION_COLUMN_DICT.values()]
     solar_parameters["dni_extra"] = pvlib.irradiance.get_extra_radiation(times)
@@ -230,22 +238,6 @@ def get_solar_parameters(times, latitude, longitude, altitude):
 
     return solar_parameters.round(2)
 
-
-# ---------------------------------------------------------------------------
-# RETRIEVE REMOTE DATA
-# ---------------------------------------------------------------------------
-def get_mcclear(latitue, longitude, start, end):
-    cams, _ = pvlib.iotools.get_cams(
-        latitude=latitude,
-        longitude=longitude,
-        start=start,
-        end=end,
-        email="arajen@dtu.dk",
-        identifier="mcclear",
-        time_step="1min",
-        label="left",
-    )
-    return cams[["ghi_clear", "dhi_clear", "dni_clear"]]
 
 # ---------------------------------------------------------------------------
 # InfluxDB writing
@@ -259,7 +251,7 @@ def write_dataframe(client: InfluxDBClient3, df: pd.DataFrame, table: str) -> No
     chunk_size = 4000
     total = 0
     for i in range(0, len(df), chunk_size):
-        chunk = df.iloc[i:i + chunk_size]
+        chunk = df.iloc[i : i + chunk_size]
         client.write(
             record=chunk,
             data_frame_measurement_name=table,
@@ -329,7 +321,8 @@ def main():
         print("Computing 1-minute aggregates...")
         data_1min = aggregate_1min(raw_frames)
         solar_parameters = get_solar_parameters(
-            data_1min.index, latitude=55.79064, longitude=12.52505, altitude=50)
+            data_1min.index, latitude=55.79064, longitude=12.52505, altitude=50
+        )
         agg = pd.concat([data_1min, solar_parameters], axis=1, sort=False)
         write_dataframe(client, agg, "aggregated_1min")
     else:
