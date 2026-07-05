@@ -49,14 +49,14 @@ from mysql.connector import errorcode
 # ---------------------------------------------------------------------------
 SD_DATA_DIR = os.environ.get(
     "SARC_SD_DATA_DIR",
-    r"\\ait-pdfs.win.dtu.dk\Department\Cme\Section-ES\Solar future\SARC\Station_SD_data\secondary",
+    r"\\ait-pdfs.win.dtu.dk\Department\Cme\Section-ES\Solar future\SARC\Station_SD_data",
 )
 
-MYSQL_HOST     = os.environ.get("SARC_MYSQL_HOST", "localhost")
-MYSQL_PORT     = int(os.environ.get("SARC_MYSQL_PORT", "3306"))
-MYSQL_USER     = os.environ.get("SARC_MYSQL_USER", "root")
-MYSQL_PASSWORD = os.environ.get("SARC_MYSQL_PASSWORD", "")
-MYSQL_DATABASE = os.environ.get("SARC_MYSQL_DATABASE", "sarc")
+MYSQL_HOST     = os.environ.get("MYSQL_SARC_HOST", "localhost")
+MYSQL_PORT     = int(os.environ.get("MYSQL_SARC_PORT", "3306"))
+MYSQL_USER     = os.environ.get("MYSQL_SARC_USER", "root")
+MYSQL_PASSWORD = os.environ.get("MYSQL_SARC_PASSWORD", "LldfSdfD12k#k31ef8")
+MYSQL_DATABASE = os.environ.get("MYSQL_SARC_DATABASE", "sarc")
 
 # Raw table names (used both for writing and for querying back during aggregation)
 RAW_TABLES = ["primary_fast", "secondary_fast", "primary_slow", "secondary_slow"]
@@ -88,6 +88,9 @@ EXCLUDE_COLUMNS = [
     'MS80SHplus_1209_temperature_degC',
     'MS80SHplus_1209_tilt_x_deg',
     'MS80SHplus_1209_tilt_y_deg',
+    'SPN1_A270_data(12)',
+    'SPN1_A270_data(13)',
+    'SPN1_A270_data(14)',
 ]
 
 COLUMN_RENAME_DICT = {
@@ -350,7 +353,7 @@ def write_dataframe(conn, df: pd.DataFrame, table: str) -> None:
     )
 
     cursor = conn.cursor()
-    chunk_size = 4000
+    chunk_size = 20000
     total = 0
     rows = list(df.itertuples(index=False, name=None))
     for i in range(0, len(rows), chunk_size):
