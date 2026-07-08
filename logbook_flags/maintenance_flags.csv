@@ -54,3 +54,4 @@ start_time,end_time,description,action,affected_instruments
 2026-05-19 13:34:00+00:00,2026-05-19 13:53:00+00:00,Cleaning of CVF4 filters - shading,remove_data,primary
 2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Visitors on roof - shading,remove_data,all
 2025-07-16 08:30:00+00:00,2025-07-16 14:00:00+00:00,High DHI measurements,remove_data,DHI
+2025-08-04 09:00:00+00:00,2025-08-04 09:55:00+00:00,High DHI measurements,remove_data,DHI
