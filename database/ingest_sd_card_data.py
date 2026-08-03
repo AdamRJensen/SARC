@@ -131,6 +131,10 @@ COLUMN_RENAME_DICT = {
     # Unknown date
     'SPN1_A270_Heater_ratio': 'SPN1_A270_heater_ratio',
     'SPN1_A270_Sun_ratio': 'SPN1_A270_sun_ratio',
+    # Rename ventilation speed columns (removes sensor type from name)
+    "CVF4_193087_speed_GHI_Hz": "CVF4_193087_speed_Hz",
+    "CVF4_193086_speed_DHI_Hz": "CVF4_193086_speed_Hz",
+    "CVF4_247678_speed_LWD_Hz": "CVF4_247678_speed_Hz",
 }
 
 SOLAR_POSITION_COLUMN_DICT = {
