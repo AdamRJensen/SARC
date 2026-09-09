@@ -57,4 +57,4 @@ start_time,end_time,description,action,affected_instruments
 2025-08-04 09:00:00+00:00,2025-08-04 09:55:00+00:00,High DHI measurements,remove_data,DHI
 2025-06-02 16:11:00+00:00,2026-01-14 12:07:00+00:00,CVF4 193086 ventilator logged zero speed.,remove_data,CVF4_193086_speed_Hz
 2026-01-14 12:07:00+00:00,,CVF4 ventilator was replaced.,rename,{"CVF4_193086_speed_Hz":"CVF4_300704_speed_Hz"}
-
+2025-07-04 14:20:00+00:00,2025-07-04 14:35:00+00:00,SMP22_GHI moved to the bench and measurements are unreliable,remove_data,GHI
