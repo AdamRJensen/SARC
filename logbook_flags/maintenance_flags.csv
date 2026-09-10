@@ -55,3 +55,12 @@ start_time,end_time,description,action,affected_instruments
 2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Visitors on roof - shading,remove_data,all
 2025-07-16 08:30:00+00:00,2025-07-16 14:00:00+00:00,High DHI measurements,remove_data,DHI
 2025-08-04 09:00:00+00:00,2025-08-04 09:55:00+00:00,High DHI measurements,remove_data,DHI
+2025-06-02 16:11:00+00:00,2026-01-14 12:07:00+00:00,CVF4 193086 ventilator logged zero speed.,remove_data,CVF4_193086_speed_Hz
+2026-01-14 12:07:00+00:00,,CVF4 ventilator was replaced.,rename,{"CVF4_193086_speed_Hz":"CVF4_300704_speed_Hz"}
+2025-07-04 14:20:00+00:00,2025-07-04 14:35:00+00:00,SMP22_GHI moved to the bench and measurements are unreliable,remove_data,GHI
+2025-06-06 04:30:00+00:00,2025-06-06 09:50:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"GHI,DHI"
+2025-06-16 05:50:00+00:00,2025-06-16 08:15:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"GHI,DHI"
+2025-12-25 00:00:00+00:00,2025-12-25 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"GHI,DHI"
+2026-01-05 08:00:00+00:00,2026-01-05 10:00:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"GHI,DHI"
+2026-01-06 00:00:00+00:00,2026-01-06 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"GHI,DHI"
+2025-10-24,2026-03-10,Period with intense tracker misalignment due to low irradiances and no corrections by sun sensor,remove_data,"DNI,DHI"
