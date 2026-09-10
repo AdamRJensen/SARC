@@ -63,4 +63,4 @@ start_time,end_time,description,action,affected_instruments
 2025-12-25 00:00:00+00:00,2025-12-25 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"GHI,DHI"
 2026-01-05 08:00:00+00:00,2026-01-05 10:00:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"GHI,DHI"
 2026-01-06 00:00:00+00:00,2026-01-06 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"GHI,DHI"
-2025-10-24,2026-03-10,Period with intense tracker misalignment due to low irradiances and no corrections by sun sensor,remove_data,"DNI,DHI"
+2025-10-24 00:00:00+00:00,2026-03-10 23:59:00+00:00,Period with intense tracker misalignment due to low irradiances and no corrections by sun sensor,remove_data,"DNI,DHI"
