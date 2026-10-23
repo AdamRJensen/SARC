@@ -9,6 +9,7 @@ start_time,end_time,description,action,affected_instruments
 2026-04-01 15:27:00+00:00,2026-04-01 15:45:00+00:00,Tracker restart,remove_data,all
 2026-04-07 10:03:00+00:00,2026-04-07 14:05:00+00:00,Tracker alignment issues,remove_data,all
 2025-09-08 11:25:00+00:00,2025-09-08 12:22:00+00:00,Unspecified instrument issue - entire period set to NaN to be safe,remove_data,all
+2025-10-08 14:47:00+00:00,2025-10-17 10:40:00+00:00,CVF4 enclosure was not mounted correctly and was partly blocking the SMP22 DHI sensor. Measurements are notably too low.,remove_data,DHI
 2025-10-17 10:27:00+00:00,2025-10-17 10:40:00+00:00,Leveled DHI sensor - blocking on DHI and GHI,remove_data,"GHI,DHI"
 2026-01-14 11:44:00+00:00,2026-01-14 12:25:00+00:00,CVF4 ventilator changed for GHI on tracker - shading on GHI and DHI,remove_data,"GHI,DHI"
 2025-06-30 12:00:00+00:00,2025-07-03 15:00:00+00:00,Shadow balls removed from tracker - DHI affected,remove_data,DHI
