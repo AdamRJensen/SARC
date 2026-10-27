@@ -54,7 +54,7 @@ Usage:
   python sarc_ingest.py --mode ftp --start-date 2025-06-01 --end-date 2025-06-10
   python sarc_ingest.py --mode ftp --start-date 2025-06-01 --tables primary_slow
   python sarc_ingest.py --mode reaggregate                # whole raw record
-  python sarc_ingest.py --mode reaggregate --start-date 2025-06-01
+  python sarc_ingest.py --mode reaggregate --start-date 2025-06-01 --end-date 2025-06-02
   python sarc_ingest.py --mode reaggregate --rebuild      # drop + recreate + refill
   python sarc_ingest.py --mode logbook                    # refresh logbook flags
   python sarc_ingest.py --mode logbook --start-date 2025-06-01
@@ -100,6 +100,40 @@ AGGREGATIONS: dict[str, str] = {
     "SP522_1265_heater_state":                 "max",
     "SolarBandC3_SN50013_sun":                 "max",
 }
+
+
+MASK_COLUMN_PATTERNS = [
+    # Primary fast
+    "SHP1_185163_",
+    "SMP10_248585_",
+    "SMP10_196704_",
+    "SMP12_233555_",
+    "SMP22_200057_",
+    "SMP22_200060_",
+    "SGR3_200107_",
+    "CHP1_140049_",
+    "CGR4_170223_",
+    "CMP11_128767_GHI_mV",
+    "CMP11_128758_DHI_mV",
+    # Secondary fast
+    "DR30_65086_DNI",
+    "DR30_65086_tilt_deg",
+    "DR30_65086_temperature_degC",
+    "MS80SH_S24053407_",
+    "SR30_23485_GHI",
+    "SR30_23485_temperature_degC",
+    "SR300_45389_GHI_",
+    "SR300_45389_temperature_degC",
+    "SRD100_14401_DHI_Wm2",
+    "SRD100_14401_temperature_degC",
+    "SRD100_14401_thermopile_",
+    "SP422_1843_GHI_",
+    "SP522_1265_GHI_",
+    "SP510_3882_GHI_mV",
+    "Licor_PY116375_GHI_mV",
+    "StarSchenk_7773_GHI_mV",
+    "SunVue30_112_",
+]
 
 
 def aggregation(name: str) -> str:
@@ -186,6 +220,8 @@ EXCLUDE_COLUMNS = [
     'SPN1_A270_data(12)',
     'SPN1_A270_data(13)',
     'SPN1_A270_data(14)',
+    'PH1_190116_DNI_raw_Wm2',
+    'PR1_190116_DHI_raw_Wm2',
 ]
 
 COLUMN_RENAME_DICT = {
@@ -434,6 +470,52 @@ def circular_mean(values: pd.Series) -> float:
     return float(0.0 if degrees >= 360.0 - 1e-9 else degrees)
 
 
+def mask_gaps(df, max_gap="10s", rule="1min", patterns=None):
+    """
+    Set sub-minute data points to NAN if the minute they belong to has long gaps.
+    A "long gap" is defined by max_gap.
+    """
+    max_gap = pd.Timedelta(max_gap)
+
+    if patterns is not None:
+        combined = re.compile("|".join(f"(?:{p})" for p in patterns))
+        checked_cols = df.columns[df.columns.str.contains(combined)]
+    else:
+        checked_cols = df.columns
+
+    df = df.copy()
+    rule_td = pd.tseries.frequencies.to_offset(rule)
+
+    index_floor = df.index.floor(rule)
+    for col in checked_cols:
+        real = df[col].dropna()
+        if real.empty:
+            continue
+        bins = real.index.floor(rule)
+
+        # Internal gaps
+        bins_s = pd.Series(bins, index=real.index)
+        diffs = real.index.to_series().diff()
+        cross_bin = bins_s.ne(bins_s.shift(1, fill_value=bins_s.iloc[0] - rule_td))
+        diffs[cross_bin] = pd.NaT
+        
+        internal_gap = diffs.groupby(bins).max()
+
+        # Head gap: distance from bin start to first sample in bin
+        head_gap = (real.index - bins).to_series(index=real.index).groupby(bins).min()
+
+        # Tail gap: distance from last sample in bin to bin end
+        tail_gap = (bins + rule_td - real.index).to_series(index=real.index).groupby(bins).min()
+
+        largest_gap = pd.concat([internal_gap, head_gap, tail_gap], axis=1).max(axis=1)
+        bad_bins = largest_gap[largest_gap > max_gap].index
+
+        mask = index_floor.isin(bad_bins)
+        df.loc[mask, col] = float("nan")
+
+    return df
+
+
 def aggregate_1min(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """
     Combine all raw frames and resample to 1 minute, using each channel's
@@ -441,6 +523,9 @@ def aggregate_1min(frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     """
     combined = pd.concat(frames.values(), axis=1, sort=False)
     combined = combined.loc[:, ~combined.columns.duplicated(keep="first")]
+
+    combined = mask_gaps(combined, max_gap="10s", rule="1min",
+                         patterns=MASK_COLUMN_PATTERNS)
 
     by_method: dict[str, list[str]] = {}
     for col in combined.columns:
