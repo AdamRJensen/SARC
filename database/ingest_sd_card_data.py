@@ -1,13 +1,19 @@
 """
-SARC MySQL ingestion script — SD card backfill
------------------------------------------------------
-Reads historical Campbell Scientific TOA5 .dat files retrieved from the
-datalogger SD cards, writes raw data to MySQL, then computes 1-minute
-aggregates per calendar day across the ingested date range.
+SARC MySQL ingestion script — SD card backfill + FTP daily files
+----------------------------------------------------------------
+Reads Campbell Scientific TOA5 data files, writes raw data to MySQL, then
+computes 1-minute aggregates per calendar day across the ingested date range.
+Two sources are supported:
 
-Each time the datalogger restarts it creates a new file series with a
-timestamp prefix (e.g. 2025-04-08_12-54-18_primary_fast_table0.dat).
-Large tables are split into numbered chunk files.
+  sd mode (default): historical .dat files retrieved from the datalogger SD
+    cards. Each time the datalogger restarts it creates a new file series
+    with a timestamp prefix (e.g. 2025-04-08_12-54-18_primary_fast_table0.dat).
+    Large tables are split into numbered chunk files.
+
+  ftp mode: daily .csv files published to the SARC FTP server, one file
+    per table per calendar day (e.g. 2025-06-01_00-00-00_primary_fast_table.csv).
+    Useful both for routine daily syncing and for backfilling holes in a
+    specific table over a specific date range.
 
 Tables written (database: sarc):
   - primary_fast       (primary fast table, 1s)
@@ -23,13 +29,17 @@ new sensor channels showing up in the logger files never require a
 manual schema change.
 
 Usage:
-  python sarc_ingest_sd_data.py
+  python sarc_ingest_sd_data.py                     # sd mode (default)
+  python sarc_ingest_sd_data.py --mode sd --source <dir>
+  python sarc_ingest_sd_data.py --mode ftp --start-date 2025-06-01 --end-date 2025-06-10
+  python sarc_ingest_sd_data.py --mode ftp --start-date 2025-06-01 --tables primary_slow secondary_fast
 
 Requires:
-  pip install mysql-connector-python pandas numpy pvlib --break-system-packages
+  pip install pymysql pandas numpy pvlib --break-system-packages
 """
 
 import argparse
+import ftplib
 import io
 import os
 import re
@@ -41,8 +51,8 @@ import pandas as pd
 import pvlib
 import warnings
 
-import mysql.connector
-from mysql.connector import errorcode
+import pymysql
+from pymysql.constants import ER
 
 # ---------------------------------------------------------------------------
 # Configuration — edit these or set as environment variables
@@ -58,16 +68,34 @@ MYSQL_USER     = os.environ.get("MYSQL_SARC_USER", "root")
 MYSQL_PASSWORD = os.environ.get("MYSQL_SARC_PASSWORD", "LldfSdfD12k#k31ef8")
 MYSQL_DATABASE = os.environ.get("MYSQL_SARC_DATABASE", "sarc")
 
+
+# FTP connection for daily files (only required when running --mode ftp;
+# looked up lazily in get_ftp_connection() so sd-mode runs don't need these set)
+FTP_HOST     = os.environ.get("SARC_FTP_HOST", "")
+FTP_PORT     = int(os.environ.get("SARC_FTP_PORT", "21"))
+FTP_USER     = os.environ.get("SARC_FTP_USER", "")
+FTP_PASSWORD = os.environ.get("SARC_FTP_PASSWORD", "")
+FTP_DIR      = os.environ.get("SARC_FTP_DIR", "/")  # remote directory
+
 # Raw table names (used both for writing and for querying back during aggregation)
 RAW_TABLES = ["primary_fast", "secondary_fast", "primary_slow", "secondary_slow"]
 
-# Glob patterns for each raw table type.
+# Glob patterns for each raw table type (sd mode).
 # Filenames follow: {session-timestamp}_{table}_table{N}.dat
-TABLE_GLOBS = {
+SD_TABLE_GLOBS = {
     "primary_fast":   "**/*_primary_fast_table*.dat",
     "primary_slow":   "**/*_primary_slow_table*.dat",
     "secondary_fast": "**/*_secondary_fast_table*.dat",
     "secondary_slow": "**/*_secondary_slow_table*.dat",
+}
+
+# Daily filename patterns on the FTP server (ftp mode). `{date}` is filled
+# in as YYYY-MM-DD.
+FILE_PATTERNS = {
+    "primary_fast":   "{date}_00-00-00_primary_fast_table.csv",
+    "secondary_fast": "{date}_00-00-00_secondary_fast_table.csv",
+    "primary_slow":   "{date}_00-00-00_primary_slow_table.csv",
+    "secondary_slow": "{date}_00-00-00_secondary_slow_table.csv",
 }
 
 # Parameters that should NOT be averaged in the 1-min aggregation.
@@ -223,7 +251,7 @@ def find_sd_files(source_dir: str) -> dict[str, list[Path]]:
     """
     root = Path(source_dir)
     result = {}
-    for table, pattern in TABLE_GLOBS.items():
+    for table, pattern in SD_TABLE_GLOBS.items():
         files = list(root.glob(pattern))
         files.sort()
         result[table] = files
@@ -285,7 +313,7 @@ def get_solar_parameters(times, latitude, longitude, altitude):
 # ---------------------------------------------------------------------------
 def get_connection():
     """Open a connection to the sarc MySQL database."""
-    return mysql.connector.connect(
+    return pymysql.connect(
         host=MYSQL_HOST,
         port=MYSQL_PORT,
         user=MYSQL_USER,
@@ -343,8 +371,11 @@ def write_dataframe(conn, df: pd.DataFrame, table: str) -> None:
 
     # Reset index into a `time` column, matching the table's primary key
     df = df.rename_axis("time").reset_index()
-    # mysql-connector needs None, not NaN, for NULL values
-    df = df.where(pd.notnull(df), None)
+    # pymysql rejects NaN outright (mysql-connector silently tolerated it), so
+    # it must become None. astype(object) first is required: on a float64
+    # column, pandas silently coerces None back into NaN in .where() since a
+    # numpy float64 array has nowhere else to put a NULL.
+    df = df.astype(object).where(df.notna(), None)
 
     columns = list(df.columns)
     col_list = ", ".join(f"`{c}`" for c in columns)
@@ -415,38 +446,61 @@ def aggregate_day(conn, day: date) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Main
+# FTP download
 # ---------------------------------------------------------------------------
-def main():
-    parser = argparse.ArgumentParser(
-        description="Backfill SARC SD card data into MySQL"
-    )
-    parser.add_argument(
-        "--source",
-        default=SD_DATA_DIR,
-        help=f"Directory containing Station_SD_data files (default: {SD_DATA_DIR})",
-    )
-    args = parser.parse_args()
+def get_ftp_connection() -> ftplib.FTP:
+    """Open and authenticate a plain FTP connection to the SARC FTP server."""
+    ftp = ftplib.FTP()
+    ftp.connect(FTP_HOST, FTP_PORT)
+    ftp.login(FTP_USER, FTP_PASSWORD)
+    return ftp
 
-    # Connect to MySQL
+
+def download_file(ftp: ftplib.FTP, filename: str) -> str | None:
+    """Download a single file from FTP, return content as string or None."""
+    remote_path = f"{FTP_DIR.rstrip('/')}/{filename}"
+    buf = io.BytesIO()
     try:
-        conn = get_connection()
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("MySQL access denied — check SARC_MYSQL_USER / SARC_MYSQL_PASSWORD")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print(f"Database '{MYSQL_DATABASE}' does not exist")
-        else:
-            print(err)
-        return
+        ftp.retrbinary(f"RETR {remote_path}", buf.write)
+        return buf.getvalue().decode("utf-8", errors="replace")
+    except ftplib.error_perm as e:
+        print(f"  WARNING: Could not download {remote_path}: {e}")
+        return None
 
-    print(f"Scanning {args.source} for SD card .dat files...")
-    files_by_table = find_sd_files(args.source)
 
-    overall_start = None
-    overall_end   = None
+def fetch_ftp_table_day(ftp: ftplib.FTP, table: str, day: date) -> pd.DataFrame:
+    """Download and parse one table's daily file for a given calendar day."""
+    filename = FILE_PATTERNS[table].format(date=day.strftime("%Y-%m-%d"))
+    content = download_file(ftp, filename)
+    if content is None:
+        return pd.DataFrame()
+    return parse_toa5(content)
 
-    # --- Raw ingestion: process each file individually to keep memory bounded ---
+
+# ---------------------------------------------------------------------------
+# Shared ingestion helpers
+# ---------------------------------------------------------------------------
+def ingest_dataframe(conn, df: pd.DataFrame, table: str, overall_range: tuple) -> tuple:
+    """Write df to `table` and fold its time span into (overall_start, overall_end)."""
+    overall_start, overall_end = overall_range
+    if df.empty:
+        return overall_start, overall_end
+
+    write_dataframe(conn, df, table)
+
+    if overall_start is None or df.index.min() < overall_start:
+        overall_start = df.index.min()
+    if overall_end is None or df.index.max() > overall_end:
+        overall_end = df.index.max()
+    return overall_start, overall_end
+
+
+def run_sd_ingest(conn, source_dir: str) -> tuple:
+    """Ingest all SD card .dat files under source_dir. Returns (overall_start, overall_end)."""
+    print(f"Scanning {source_dir} for SD card .dat files...")
+    files_by_table = find_sd_files(source_dir)
+
+    overall_start, overall_end = None, None
     for table in RAW_TABLES:
         files = files_by_table.get(table, [])
         if not files:
@@ -458,17 +512,120 @@ def main():
             content = path.read_text(encoding="utf-8", errors="replace")
             df = parse_toa5(content)
             if df.empty:
-                print(f"    (empty after parsing, skipping)")
+                print("    (empty after parsing, skipping)")
                 continue
             print(f"    Parsed {len(df):,} rows  "
                   f"({df.index.min()} → {df.index.max()})")
-            # Write high resolution raw data (unaggregated) to MySQL
-            write_dataframe(conn, df, table)
+            overall_start, overall_end = ingest_dataframe(
+                conn, df, table, (overall_start, overall_end))
 
-            if overall_start is None or df.index.min() < overall_start:
-                overall_start = df.index.min()
-            if overall_end is None or df.index.max() > overall_end:
-                overall_end = df.index.max()
+    return overall_start, overall_end
+
+
+def run_ftp_ingest(conn, start_date: date, end_date: date, tables: list[str]) -> tuple:
+    """
+    Ingest daily FTP files for `tables` over [start_date, end_date] (inclusive).
+    Missing files (e.g. a day the logger didn't publish) are skipped with a warning.
+    """
+    if not (FTP_HOST and FTP_USER and FTP_PASSWORD):
+        raise SystemExit(
+            "FTP mode requires SARC_FTP_HOST, SARC_FTP_USER and SARC_FTP_PASSWORD "
+            "to be set as environment variables."
+        )
+
+    print(f"Connecting to FTP server {FTP_HOST}...")
+    ftp = get_ftp_connection()
+
+    overall_start, overall_end = None, None
+    try:
+        for table in tables:
+            print(f"\n{table}: fetching {start_date} → {end_date}")
+            day = start_date
+            while day <= end_date:
+                print(f"  {day}: downloading {FILE_PATTERNS[table].format(date=day)}...")
+                df = fetch_ftp_table_day(ftp, table, day)
+                if df.empty:
+                    print(f"    (no data for {day}, skipping)")
+                else:
+                    print(f"    Parsed {len(df):,} rows")
+                    overall_start, overall_end = ingest_dataframe(
+                        conn, df, table, (overall_start, overall_end))
+                day += timedelta(days=1)
+    finally:
+        try:
+            ftp.quit()  # graceful QUIT so the server frees the connection slot right away
+        except Exception:
+            ftp.close()
+
+    return overall_start, overall_end
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+def _parse_date(value: str) -> date:
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"Invalid date {value!r}, expected YYYY-MM-DD")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Ingest SARC data into MySQL, from SD card backfill files or the daily FTP feed"
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["sd", "ftp"],
+        default="sd",
+        help="sd: backfill from SD card .dat files (default). "
+             "ftp: fetch daily .csv files from the FTP server for a date range.",
+    )
+    parser.add_argument(
+        "--source",
+        default=SD_DATA_DIR,
+        help=f"[sd mode] Directory containing Station_SD_data files (default: {SD_DATA_DIR})",
+    )
+    parser.add_argument(
+        "--start-date",
+        type=_parse_date,
+        help="[ftp mode] First day to fetch, inclusive (YYYY-MM-DD). Default: yesterday.",
+    )
+    parser.add_argument(
+        "--end-date",
+        type=_parse_date,
+        help="[ftp mode] Last day to fetch, inclusive (YYYY-MM-DD). Default: --start-date, "
+             "or yesterday if --start-date is also omitted.",
+    )
+    parser.add_argument(
+        "--tables",
+        nargs="+",
+        choices=RAW_TABLES,
+        default=RAW_TABLES,
+        help="[ftp mode] Which raw tables to fetch (default: all four). "
+             "Useful for filling holes in a single dataset over a date range.",
+    )
+    args = parser.parse_args()
+
+    # Connect to MySQL
+    try:
+        conn = get_connection()
+    except pymysql.err.MySQLError as err:
+        errno = err.args[0] if err.args else None
+        if errno == ER.ACCESS_DENIED_ERROR:
+            print("MySQL access denied — check SARC_MYSQL_USER / SARC_MYSQL_PASSWORD")
+        elif errno == ER.BAD_DB_ERROR:
+            print(f"Database '{MYSQL_DATABASE}' does not exist")
+        else:
+            print(err)
+        return
+
+    if args.mode == "sd":
+        overall_start, overall_end = run_sd_ingest(conn, args.source)
+    else:
+        end_date = args.end_date or args.start_date or (date.today() - timedelta(days=1))
+        start_date = args.start_date or end_date
+        overall_start, overall_end = run_ftp_ingest(conn, start_date, end_date, args.tables)
 
     if overall_start is None:
         print("\nNo data ingested — skipping aggregation")
