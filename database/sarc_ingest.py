@@ -220,6 +220,7 @@ EXCLUDE_COLUMNS = [
     'SPN1_A270_data(12)',
     'SPN1_A270_data(13)',
     'SPN1_A270_data(14)',
+    'MS80plus_S24067011_rh_per ',  # not logged due to additional modbus call
     'PH1_190116_DNI_raw_Wm2',
     'PR1_190116_DHI_raw_Wm2',
 ]
@@ -275,7 +276,7 @@ SOLAR_POSITION_COLUMN_MAP = {
 }
 
 PATTERN_NAN_VALUES: dict[str, list] = {
-    r".*": [-7999, -2147483648, -214748400.0, -21474840.0],
+    r".*": [-9999, -999.9, -7999, -2147483648, -214748400.0, -21474840.0],
     "SPN1_A270_rh_per": [649.36],
     "SPN1_A270_temperature_degC": [608.51, 608.52],
     "SPN1_A270_heater_ratio": [-524288.0],
