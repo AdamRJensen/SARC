@@ -126,7 +126,7 @@ MASK_COLUMN_PATTERNS = [
     "SR300_45389_temperature_degC",
     "SRD100_14401_DHI_Wm2",
     "SRD100_14401_temperature_degC",
-    "SRD100_14401_thermopile_",
+    "SRD100_14401_sensor_",
     "SP422_1843_GHI_",
     "SP522_1265_GHI_",
     "SP510_3882_GHI_mV",
@@ -267,6 +267,16 @@ COLUMN_RENAME_DICT = {
     "CVF4_193087_speed_GHI_Hz": "CVF4_193087_speed_Hz",
     "CVF4_193086_speed_DHI_Hz": "CVF4_193086_speed_Hz",
     "CVF4_247678_speed_LWD_Hz": "CVF4_247678_speed_Hz",
+    # SRD100 sensor are not thermopiles (renamed in datalogger on 2026-10-28)
+    "SRD100_14401_thermopile_1x1_Wm2": "SRD100_14401_sensor_1x1_Wm2",
+    "SRD100_14401_thermopile_1x2_Wm2": "SRD100_14401_sensor_1x2_Wm2",
+    "SRD100_14401_thermopile_1x3_Wm2": "SRD100_14401_sensor_1x3_Wm2",
+    "SRD100_14401_thermopile_2x1_Wm2": "SRD100_14401_sensor_2x1_Wm2",
+    "SRD100_14401_thermopile_2x2_Wm2": "SRD100_14401_sensor_2x2_Wm2",
+    "SRD100_14401_thermopile_2x3_Wm2": "SRD100_14401_sensor_2x3_Wm2",
+    "SRD100_14401_thermopile_3x1_Wm2": "SRD100_14401_sensor_3x1_Wm2",
+    "SRD100_14401_thermopile_3x2_Wm2": "SRD100_14401_sensor_3x2_Wm2",
+    "SRD100_14401_thermopile_3x3_Wm2": "SRD100_14401_sensor_3x3_Wm2",
 }
 
 SOLAR_POSITION_COLUMN_MAP = {
