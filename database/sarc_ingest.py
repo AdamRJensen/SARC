@@ -118,10 +118,8 @@ MASK_COLUMN_PATTERNS = [
     # Secondary fast
     "DR30_65086_DNI",
     "DR30_65086_tilt_deg",
-    "DR30_65086_temperature_degC",
     "MS80SH_S24053407_",
     "SR30_23485_GHI",
-    "SR30_23485_temperature_degC",
     "SR300_45389_GHI_",
     "SR300_45389_temperature_degC",
     "SRD100_14401_DHI_Wm2",
