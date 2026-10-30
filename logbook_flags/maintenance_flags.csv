@@ -64,7 +64,7 @@ start_time,end_time,description,action,affected_instruments
 2025-12-25 00:00:00+00:00,2025-12-25 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"SMP22_200057,SMP22_200060"
 2026-01-05 08:00:00+00:00,2026-01-05 10:00:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"SMP22_200057,SMP22_200060"
 2026-01-06 00:00:00+00:00,2026-01-06 23:59:00+00:00,Period flagged by BSRN limits (DHI higher than GHI),remove_data,"SMP22_200057,SMP22_200060"
-2025-10-24 00:00:00+00:00,2026-03-10 23:59:00+00:00,Period with intense tracker misalignment due to low irradiances and no corrections by sun sensor,remove_data,"DNI,SMP22_200060"
+2025-10-24 00:00:00+00:00,2026-03-10 23:59:00+00:00,Period with intense tracker misalignment due to low irradiances and no corrections by sun sensor,remove_data,"DR30_65086,SMP22_200060"
 2025-09-08 00:00:00+00:00,2025-09-10 09:14:00+00:00,SHP1 was measuring zero during this period,remove_data,SHP1_185163
 2025-04-28 15:35:00+00:00,2025-04-30 14:20:00+00:00,Soiling of CHP1,remove_data,CHP1_140049
 2025-05-09 00:00:00+00:00,2025-05-09 09:04:00+00:00,Soiling of DR30,remove_data,DR30_65086
