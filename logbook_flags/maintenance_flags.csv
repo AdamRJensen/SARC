@@ -58,7 +58,6 @@ start_time,end_time,description,action,affected_instruments
 2025-04-10 00:00:00+00:00,2025-04-10 11:45:00+00:00,Soiling of DR30 and SHP1,remove_data,"DR30_65086,SHP1_185163"
 2025-04-15 00:00:00+00:00,2025-04-15 09:00:00+00:00,Soiling of all pyrheliometers,remove_data,"DR30_65086,SHP1_185163,CHP1_140049"
 2025-04-17 07:00:00+00:00,2025-04-17 23:59:00+00:00,Soiling of all pyrheliometers,remove_data,"DR30_65086,SHP1_185163,CHP1_140049"
-2025-05-09 00:00:00+00:00,2025-05-09 13:00:00+00:00,Soiling of all pyrheliometers,remove_data,"DR30_65086,SHP1_185163,CHP1_140049"
 2026-04-07 00:00:00+00:00,2026-04-07 10:00:00+00:00,Soiling of DR30,remove_data,DR30_65086
 2026-04-22 00:00:00+00:00,2026-04-23 11:00:00+00:00,Soiling of SHP1,remove_data,SHP1_185163
 2026-04-26 00:00:00+00:00,2026-04-28 10:00:00+00:00,Soiling of DR30,remove_data,DR30_65086
