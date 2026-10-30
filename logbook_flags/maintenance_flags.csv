@@ -31,13 +31,13 @@ start_time,end_time,description,action,affected_instruments
 2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Guests on the platform,remove_data,radiometers
 2026-04-09 13:20:00+00:00,2026-04-09 13:59:00+00:00,"DHI, LWD, GHI leveling - shading on tracker instruments",remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
 2025-12-16 11:25:00+00:00,2025-12-16 12:00:00+00:00,Cleaned ventilator filters - shading on tracker instruments,remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
-2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon arm,remove_data,"Razon,PR1,PH1"
+2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon arm,remove_data,"Razon_190116,PR1_190116,PH1_190116"
 2025-08-04 09:00:00+00:00,2025-08-04 09:11:00+00:00,Replaced leveling base for Licor sensor - shading,remove_data,table
 2025-09-10 11:20:00+00:00,2025-09-10 11:30:00+00:00,Releveled SR30 - shading,remove_data,table
 2025-11-13 11:44:00+00:00,2025-11-13 11:50:00+00:00,Level EKO rotating shadowband - shading,remove_data,table
 2025-11-21 09:26:00+00:00,2025-11-21 09:42:00+00:00,Level EKO MS80SH+ - shading,remove_data,table
 2025-12-01 12:45:00+00:00,2025-12-01 13:13:00+00:00,Relevel SR30 - shading,remove_data,table
-2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,remove_data,"Razon,PR1,PH1"
+2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,remove_data,"Razon_190116,PR1_190116,PH1_190116"
 2026-02-17 14:45:00+00:00,2026-02-17 15:00:00+00:00,Attempted relevelling of EKO MS80SH+,remove_data,table
 2025-12-16 11:40:00+00:00,2025-12-16 12:04:00+00:00,Changed desiccants on table - shading,remove_data,table
 2026-05-19 13:34:00+00:00,2026-05-19 13:53:00+00:00,Cleaning of CVF4 filters - shading,remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
