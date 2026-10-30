@@ -65,3 +65,4 @@ start_time,end_time,description,action,affected_instruments
 2026-05-17 00:00:00+00:00,2026-05-19 11:00:00+00:00,Soiling of SHP1,remove_data,SHP1_185163
 2025-07-10 16:00:00+00:00,2025-07-10 20:00:00+00:00,Unexplainable drop in the SHP1 irradiance in the afternoon,remove_data,SHP1_185163
 2025-07-13 12:00:00+00:00,2025-07-13 20:00:00+00:00,Unexplainable drop in the SHP1 irradiance in the afternoon,remove_data,SHP1_185163
+2025-07-04 14:20:00+00:00,2025-07-14 11:05:00+00:00,SMP12 was placed on the tracker and part of the time incorrectly wired.,remove_data,"SMP12_233555"
