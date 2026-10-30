@@ -293,7 +293,7 @@ PATTERN_NAN_VALUES: dict[str, list] = {
     "SR300_45389_GHI_mV": [10841.89],
     # Single corrupted sample in secondary_slow; the channel is 0 everywhere else.
     "SP422_1843_heater_state": [698.3754],
-    "Lufft_WS601_wind_", [3276.7],  # all wind parameters
+    "Lufft_WS601_wind_": [3276.7],  # wind/compass parameters, maximum signed 16-bit integer
 }
 
 LATITUDE  = 55.79064
