@@ -23,7 +23,6 @@ if data.index.tz is not None:
     data = data.tz_convert("UTC").tz_localize(None)
 
 
-print("Success")
 conn = si.get_connection()
 try:
     si.write_dataframe(conn, data[columns], si.AGG_TABLE)
