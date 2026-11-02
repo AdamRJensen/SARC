@@ -33,6 +33,7 @@ start_time,end_time,description,action,affected_instruments
 2025-12-16 11:25:00+00:00,2025-12-16 12:00:00+00:00,Cleaned ventilator filters - shading on tracker instruments,remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
 2025-07-03 00:00:00+00:00,2025-07-14 11:20:00+00:00,Razon shading disk was not installed.,remove_data,"Razon_190116,PR1_190116"
 2025-07-14 11:10:00+00:00,2025-07-14 11:20:00+00:00,Mounted the Razon shading disk/arm,remove_data,"Razon_190116,PR1_190116,PH1_190116"
+2026-03-25 00:00:00+00:00,2026-03-25 23:59:00+00:00,Razon tracker was misaligned (high DHI and low DNI).,remove_data,"Razon_190116,PR1_190116,PH1_190116"
 2025-08-04 09:00:00+00:00,2025-08-04 09:11:00+00:00,Replaced leveling base for Licor sensor - shading,remove_data,table
 2025-09-10 11:20:00+00:00,2025-09-10 11:30:00+00:00,Releveled SR30 - shading,remove_data,table
 2025-11-13 11:44:00+00:00,2025-11-13 11:50:00+00:00,Level EKO rotating shadowband - shading,remove_data,table
