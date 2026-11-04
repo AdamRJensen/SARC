@@ -42,7 +42,6 @@ start_time,end_time,description,action,affected_instruments
 2025-12-16 11:20:00+00:00,2025-12-16 11:50:00+00:00,Removed washer of 1.44 mm from Razon shading arm to adjust centering of shading disk,remove_data,"Razon_190116,PR1_190116,PH1_190116"
 2026-02-17 14:45:00+00:00,2026-02-17 15:00:00+00:00,Attempted relevelling of EKO MS80SH+,remove_data,table
 2025-12-16 11:40:00+00:00,2025-12-16 12:04:00+00:00,Changed desiccants on table - shading,remove_data,table
-2026-05-19 13:34:00+00:00,2026-05-19 13:53:00+00:00,Cleaning of CVF4 filters - shading,remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
 2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Visitors on roof - shading,remove_data,radiometers
 2025-07-16 08:30:00+00:00,2025-07-16 14:00:00+00:00,High DHI measurements,remove_data,SMP22_200060
 2025-08-04 09:00:00+00:00,2025-08-04 09:55:00+00:00,High DHI measurements,remove_data,SMP22_200060
