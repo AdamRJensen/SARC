@@ -291,8 +291,6 @@ PATTERN_NAN_VALUES: dict[str, list] = {
     "SPN1_A270_heater_ratio": [-524288.0],
     "SPN1_A270_sun_ratio": [-2147484.0],
     "SR300_45389_GHI_mV": [10841.89],
-    # Single corrupted sample in secondary_slow; the channel is 0 everywhere else.
-    "SP422_1843_heater_state": [698.3754],
     "Lufft_WS601_(wind|compass).*": [3276.7],  # wind/compass parameters, maximum signed 16-bit integer
 }
 
