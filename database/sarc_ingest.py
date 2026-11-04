@@ -285,7 +285,7 @@ SOLAR_POSITION_COLUMN_MAP = {
 
 PATTERN_NAN_VALUES: dict[str, list] = {
     r".*": [-9999, -999.9, -7999, -2147483648, -214748400.0, -21474840.0],
-    "SR30_": [65535],  # max value of unsigned 16-bit int
+    "SR30_.*": [65535],  # max value of unsigned 16-bit int
     "SPN1_A270_rh_per": [649.36],
     "SPN1_A270_temperature_degC": [608.51, 608.52],
     "SPN1_A270_heater_ratio": [-524288.0],
@@ -293,7 +293,7 @@ PATTERN_NAN_VALUES: dict[str, list] = {
     "SR300_45389_GHI_mV": [10841.89],
     # Single corrupted sample in secondary_slow; the channel is 0 everywhere else.
     "SP422_1843_heater_state": [698.3754],
-    "Lufft_WS601_wind_": [3276.7],  # wind/compass parameters, maximum signed 16-bit integer
+    "Lufft_WS601_(wind|compass).*": [3276.7],  # wind/compass parameters, maximum signed 16-bit integer
 }
 
 LATITUDE  = 55.79064
