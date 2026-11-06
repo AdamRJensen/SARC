@@ -66,3 +66,4 @@ start_time,end_time,description,action,affected_instruments
 2025-07-13 12:00:00+00:00,2025-07-13 20:00:00+00:00,Unexplainable drop in the SHP1 irradiance in the afternoon,remove_data,SHP1_185163
 2025-07-04 14:20:00+00:00,2025-07-14 11:05:00+00:00,SMP12 was placed on the tracker and part of the time incorrectly wired.,remove_data,SMP12_233555
 2026-01-03 20:00:00+00:00,2026-01-08 00:00:00+00:00,SGR3 pyrgeometer covered by snow,remove_data,SGR3_200107
+2025-06-30 13:25:00+00:00,2025-07-10 13:32:00+00:00,Licor is unlevel - leveling plate was changed.,remove_data,Licor_PY116375
