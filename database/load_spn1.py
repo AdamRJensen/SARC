@@ -10,10 +10,19 @@ filename = "A270_Corrected2.hdf"
 
 data = pd.read_hdf(path / filename)
 
+data = data.rename(columns={
+    "SPN1_A270_GHI_Corr": "SPN1_A270_GHI_Corr1_Wm2",
+    "SPN1_A270_DHI_Corr": "SPN1_A270_DHI_Corr1_Wm2",
+    "SPN1_A270_DNI_Corr": "SPN1_A270_DNI_Corr1_Wm2",
+    "SPN1_A270_GHI_Corr2": "SPN1_A270_GHI_Corr2_Wm2",
+    "SPN1_A270_DHI_Corr2": "SPN1_A270_DHI_Corr2_Wm2",
+    "SPN1_A270_DNI_Corr2": "SPN1_A270_DNI_Corr2_Wm2",
+})
+
 columns = []
 for c in ["GHI", "DNI", "DHI"]:
-    for ii in ["", "2"]:
-        col_name = f"SPN1_A270_{c}_Corr{ii}"
+    for ii in ["Corr1", "Corr2"]:
+        col_name = f"SPN1_A270_{c}_{ii}_Wm2"
         columns.append(col_name)
 
 data.loc[(data[columns] < -5).any(axis=1), columns] = float("nan")
