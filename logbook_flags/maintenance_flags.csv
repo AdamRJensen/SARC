@@ -37,7 +37,7 @@ start_time,end_time,description,action,affected_instruments
 2025-12-16 11:40:00+00:00,2025-12-16 12:04:00+00:00,Changed desiccants on table - shading,remove_data,table
 2026-05-22 14:00:00+00:00,2026-05-22 14:08:00+00:00,Visitors on roof - shading,remove_data,radiometers
 2025-07-16 08:30:00+00:00,2025-07-16 14:00:00+00:00,High DHI measurements,remove_data,SMP22_200060
-2025-08-04 09:00:00+00:00,2025-08-04 09:55:00+00:00,High DHI measurements,remove_data,SMP22_200060
+2025-08-04 09:00:00+00:00,2025-08-04 10:38:00+00:00,Misaligned tracker,remove_data,"DR30_65086,SHP1_185163,CHP1_140049,SMP22_200060,SMP10_196704"
 2025-06-02 16:11:00+00:00,2026-01-14 12:07:00+00:00,CVF4 193086 ventilator logged zero speed.,remove_data,CVF4_193086
 2025-07-04 14:20:00+00:00,2025-07-04 14:35:00+00:00,SMP22_GHI moved to the table and measurements are unreliable,remove_data,SMP22_200057
 2025-06-06 04:30:00+00:00,2025-06-06 09:50:00+00:00,Period with DHI higher than GHI (identified in BSRN limits plot),remove_data,"SMP22_200057,SMP22_200060"
