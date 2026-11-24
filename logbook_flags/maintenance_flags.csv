@@ -63,3 +63,4 @@ start_time,end_time,description,action,affected_instruments
 2026-06-21 05:00:00+00:00,2026-06-21 05:07:00+00:00,Drop in DHI measured by the SMP22 that was not observed by the other DHI sensors.,remove_data,SMP22_200060
 2026-07-18 04:30:00+00:00,2026-07-18 04:39:00+00:00,Drop in DHI measured by the SMP22 that was not observed by the other DHI sensors.,remove_data,SMP22_200060
 2026-07-08 00:00:00+00:00,2026-07-14 08:20:00+00:00,Soiling of DR30,remove_data,DR30_65086
+2026-03-25 00:00:00+00:00,2026-03-25 23:59:00+00:00,Unknown low readings of the shadowband CMP11 DHI,remove_data,CMP11_128758
